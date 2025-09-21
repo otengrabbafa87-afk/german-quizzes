@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Quiz – Telling Time in German (30 Questions)</title>
+<style>
+  body { font-family: Arial,sans-serif; background:linear-gradient(to right,#283c86,#45a247); color:#fff; text-align:center; padding:30px; }
+  .quiz-box { background:#fff; color:#333; padding:20px; border-radius:15px; max-width:800px; margin:auto; box-shadow:0 6px 12px rgba(0,0,0,0.3); }
+  .question { font-size:22px; margin-bottom:20px; }
+  .answers { display:grid; gap:15px; }
+  .answer { padding:15px; border-radius:10px; cursor:pointer; font-weight:bold; transition:0.3s; background:#2196f3; color:#fff; }
+  .answer:hover { transform:scale(1.05); }
+  .correct { background:#4caf50 !important; }
+  .wrong { background:#f44336 !important; }
+  .score { font-size:22px; margin-top:20px; }
+  .timer { font-size:20px; margin:10px; color:#e91e63; }
+  .explanation { margin-top:14px; text-align:left; color:#333; background:#f5f5f7; padding:12px; border-radius:10px; }
+</style>
+</head>
+<body>
+  <h1>🕒 Quiz – Telling Time in German (30 Questions)</h1>
+  <div class="quiz-box" id="quiz">
+    <div class="question" id="question">Question</div>
+    <div class="answers" id="answers"></div>
+    <div class="explanation" id="explanation" style="display:none;"></div>
+    <div class="timer" id="timer">⏱ 15s</div>
+    <div class="score" id="score">Score: 0</div>
+    <button onclick="nextQuestion()">Next Question</button>
+  </div>
+<script>
+const quizData = [
+{question:"What is 08:00 in German (official)?", answers:["acht Minuten","achtzehn Uhr","acht Uhr","acht Uhr null"], correct:"acht Uhr", explain:"Correct: 08:00 = acht Uhr."},
+{question:"How do you say 13:00 in German (official)?", answers:["dreizehn Minuten","eins Uhr","ein Uhr","dreizehn Uhr"], correct:"dreizehn Uhr", explain:"Correct: 13:00 = dreizehn Uhr (1 PM)."},
+{question:"Translate 08:15 (official).", answers:["viertel nach acht","acht Uhr fünfzehn","achtzehn Uhr fünfzehn","acht Uhr dreißig"], correct:"acht Uhr fünfzehn", explain:"Correct: 08:15 = acht Uhr fünfzehn."},
+{question:"Translate 13:30 (official).", answers:["ein Uhr dreißig","dreizehn Uhr dreißig","dreizehn Uhr fünfzehn","halb zwei"], correct:"dreizehn Uhr dreißig", explain:"Correct: 13:30 = dreizehn Uhr dreißig (1:30 PM)."},
+{question:"Translate 20:45 (official).", answers:["neunzehn Uhr fünfundvierzig","zwanzig Uhr fünfundvierzig","acht Uhr fünfundvierzig","viertel vor neun"], correct:"zwanzig Uhr fünfundvierzig", explain:"Correct: 20:45 = zwanzig Uhr fünfundvierzig (8:45 PM)."},
+{question:"Translate 00:00 (official).", answers:["zwölf Uhr","eins Uhr","null Uhr","vierundzwanzig Uhr"], correct:"null Uhr", explain:"Correct: 00:00 = null Uhr (midnight)."},
+{question:"Translate 15:25 (official).", answers:["fünfzehn Uhr fünfundzwanzig","viertel vor drei","fünfzehn Uhr dreißig","drei Uhr fünfundzwanzig"], correct:"fünfzehn Uhr fünfundzwanzig", explain:"Correct: 15:25 = fünfzehn Uhr fünfundzwanzig."},
+{question:"Translate 19:20 (official).", answers:["neunzehn Uhr zwanzig","zwanzig vor acht","siebzehn Uhr zwanzig","sieben Uhr zwanzig"], correct:"neunzehn Uhr zwanzig", explain:"Correct: 19:20 = neunzehn Uhr zwanzig."},
+{question:"Translate 16:00 (official).", answers:["sechzehn Uhr null Minuten","sechzehn Minuten","sechzehn Uhr","vier Uhr"], correct:"sechzehn Uhr", explain:"Correct: 16:00 = sechzehn Uhr (4 PM)."},
+{question:"Translate 01:35 (official).", answers:["halb zwei","eins Uhr dreißig","dreizehn Uhr fünfunddreißig","ein Uhr fünfunddreißig"], correct:"ein Uhr fünfunddreißig", explain:"Correct: 01:35 = ein Uhr fünfunddreißig."},
+{question:"How do you say 07:15 (unofficial)?", answers:["viertel nach sieben","halb acht","viertel vor acht","sieben Uhr fünfzehn"], correct:"viertel nach sieben", explain:"Correct: 07:15 = viertel nach sieben."},
+{question:"How do you say 07:45 (unofficial)?", answers:["halb acht","sieben Uhr fünfundvierzig","viertel vor acht","viertel nach sieben"], correct:"viertel vor acht", explain:"Correct: 07:45 = viertel vor acht."},
+{question:"How do you say 07:30 (unofficial)?", answers:["halb acht","sieben Uhr dreißig","halb sieben","viertel nach sieben"], correct:"halb acht", explain:"Correct: 07:30 = halb acht."},
+{question:"How do you say 07:25 (unofficial)?", answers:["fünf nach halb sieben","fünf vor sieben","fünf vor halb acht","sieben Uhr fünfundzwanzig"], correct:"fünf vor halb acht", explain:"Correct: 07:25 = fünf vor halb acht."},
+{question:"How do you say 07:35 (unofficial)?", answers:["sieben Uhr fünfunddreißig","fünf vor halb acht","fünf nach halb acht","viertel nach sieben"], correct:"fünf nach halb acht", explain:"Correct: 07:35 = fünf nach halb acht."},
+{question:"How do you say 07:05 (unofficial)?", answers:["fünf vor sieben","sieben Uhr fünf","fünf nach sieben","sieben Uhr fünf Minuten"], correct:"fünf nach sieben", explain:"Correct: 07:05 = fünf nach sieben."},
+{question:"How do you say 07:50 (unofficial)?", answers:["acht Uhr fünfzig","zehn vor acht","zwanzig nach sieben","zehn nach acht"], correct:"zehn vor acht", explain:"Correct: 07:50 = zehn vor acht."},
+{question:"How do you say 03:05 (unofficial)?", answers:["fünf vor drei","halb vier","fünf nach drei","drei Uhr fünf"], correct:"fünf nach drei", explain:"Correct: 03:05 = fünf nach drei."},
+{question:"How do you say 03:50 (unofficial)?", answers:["fünf vor drei","drei Uhr fünfzig","zehn nach drei","zehn vor vier"], correct:"zehn vor vier", explain:"Correct: 03:50 = zehn vor vier."},
+{question:"How do you say 11:55 (unofficial)?", answers:["fünf vor zwölf","fünf nach zwölf","halb zwölf","elf Uhr fünfundfünfzig"], correct:"fünf vor zwölf", explain:"Correct: 11:55 = fünf vor zwölf."},
+{question:"What does 'die Stunde' mean?", answers:["the hour","the quarter","the watch","the minute"], correct:"the hour", explain:"Correct: die Stunde = the hour."},
+{question:"What does 'die Minute' mean?", answers:["the second","the hour","the watch","the minute"], correct:"the minute", explain:"Correct: die Minute = the minute."},
+{question:"What does 'das Viertel' mean in time context?", answers:["half","minute","quarter","hour"], correct:"quarter", explain:"Correct: das Viertel = quarter (15 minutes)."},
+{question:"What does 'halb drei' mean?", answers:["3:00","2:00","2:30","3:30"], correct:"2:30", explain:"Correct: halb drei = half to three = 2:30."},
+{question:"What does 'viertel nach sechs' mean?", answers:["7:15","6:15","6:45","5:45"], correct:"6:15", explain:"Correct: viertel nach sechs = 6:15."},
+{question:"What does 'viertel vor sechs' mean?", answers:["6:15","5:45","5:15","6:45"], correct:"5:45", explain:"Correct: viertel vor sechs = 5:45."},
+{question:"What does 'fünf nach halb vier' mean?", answers:["3:25","3:15","4:35","3:35"], correct:"3:35", explain:"Correct: fünf nach halb vier = 3:35."},
+{question:"What does 'fünf vor halb vier' mean?", answers:["3:20","3:25","3:35","2:55"], correct:"3:25", explain:"Correct: fünf vor halb vier = 3:25."},
+{question:"How do you ask 'What time is it?' (common)?", answers:["Hast du Uhr?","Wieviel Zeit ist es?","Wie spät ist es?","Welche Uhr ist es?"], correct:"Wie spät ist es?", explain:"Correct: Wie spät ist es? = What time is it?"},
+{question:"How do you ask 'What time is it?' (alternative)?", answers:["Wann Uhr ist es?","Wieviel Uhr ist es?","Welche Zeit ist es?","Wie spät ist es?"], correct:"Wieviel Uhr ist es?", explain:"Correct: Wieviel Uhr ist es? is also used."}
+];
+let current=0,score=0,timer,timeLeft=15;
+const qEl=document.getElementById("question");
+const aEl=document.getElementById("answers");
+const tEl=document.getElementById("timer");
+const sEl=document.getElementById("score");
+const eEl=document.getElementById("explanation");
+
+function loadQuestion(){
+  const q=quizData[current];
+  qEl.innerHTML=(current+1)+". "+q.question;
+  aEl.innerHTML="";
+  eEl.style.display="none"; eEl.innerHTML="";
+  q.answers.forEach(ans=>{
+    const btn=document.createElement("div");
+    btn.className="answer";
+    btn.innerText=ans;
+    btn.onclick=()=>checkAnswer(btn,ans,q.correct,q.explain);
+    aEl.appendChild(btn);
+  });
+  resetTimer();
+}
+function lockAnswers(){ document.querySelectorAll(".answer").forEach(b=>b.style.pointerEvents="none"); }
+function checkAnswer(button,answer,correct,explanation){
+  clearInterval(timer); lockAnswers();
+  if(answer===correct){ button.classList.add("correct"); score+=10; }
+  else{ button.classList.add("wrong"); }
+  sEl.innerText="Score: "+score;
+  eEl.style.display="block"; eEl.innerHTML=explanation;
+}
+function nextQuestion(){
+  clearInterval(timer); current++;
+  if(current<quizData.length) loadQuestion();
+  else document.getElementById("quiz").innerHTML="<h2>Quiz finished!</h2><p>Final score: "+score+"</p>";
+}
+function resetTimer(){
+  timeLeft=15; tEl.innerText="⏱ "+timeLeft+"s";
+  clearInterval(timer);
+  timer=setInterval(()=>{
+    timeLeft--; tEl.innerText="⏱ "+timeLeft+"s";
+    if(timeLeft<=0){ clearInterval(timer); lockAnswers();
+      const q=quizData[current];
+      eEl.style.display="block"; eEl.innerHTML="⏰ Time's up. "+q.explain;
+    }
+  },1000);
+}
+loadQuestion();
+</script>
+</body>
+</html>
