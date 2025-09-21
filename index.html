@@ -17,16 +17,32 @@
     }
     p {
       font-size: 1.2em;
-      margin-bottom: 30px;
+      margin-bottom: 40px;
+    }
+    .quiz-card {
+      background: #fff;
+      color: #333;
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 15px;
+      max-width: 500px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    }
+    .quiz-card h2 {
+      margin-top: 0;
+      color: #ff416c;
+    }
+    .quiz-card p {
+      font-size: 1.1em;
     }
     .quiz-link {
       display: inline-block;
-      margin: 10px;
-      padding: 15px 25px;
-      font-size: 1.2em;
+      margin-top: 10px;
+      padding: 12px 20px;
+      font-size: 1.1em;
       background: #ff416c;
       color: #fff;
-      border-radius: 10px;
+      border-radius: 8px;
       text-decoration: none;
       transition: 0.3s;
     }
@@ -40,12 +56,26 @@
   <h1>🎉 German Quizzes Portal</h1>
   <p>Welcome! Choose a quiz to begin:</p>
 
-  <!-- Add quizzes here -->
-  <a class="quiz-link" href="quiz_time_30.html">👉 Start Quiz 1</a>
+  <!-- Quiz 1 -->
+  <div class="quiz-card">
+    <h2>📖 Imperativ Trainer</h2>
+    <p>Übe den Imperativ mit 50 Fragen.</p>
+    <a class="quiz-link" href="quiz_time_30.html">👉 Start Quiz</a>
+  </div>
 
-  <!-- Future quizzes -->
-  <!-- <a class="quiz-link" href="quiz2.html">👉 Start Quiz 2</a> -->
-  <!-- <a class="quiz-link" href="quiz3.html">👉 Start Quiz 3</a> -->
+  <!-- Quiz 2 (future) -->
+  <div class="quiz-card">
+    <h2>🧍 Körperteile</h2>
+    <p>Lerne wichtige Körperteile und Vokabeln.</p>
+    <a class="quiz-link" href="quiz2.html">👉 Start Quiz</a>
+  </div>
+
+  <!-- Quiz 3 (future) -->
+  <div class="quiz-card">
+    <h2>💊 Gesundheit</h2>
+    <p>Trainiere Ausdrücke rund um Gesundheit & Arztbesuche.</p>
+    <a class="quiz-link" href="quiz3.html">👉 Start Quiz</a>
+  </div>
 
 </body>
 </html>
