@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Possessivpronomen Quiz (30 Fragen)</title>
+<style>
+  body { font-family: Arial,sans-serif; background:linear-gradient(to right,#00c6ff,#0072ff); color:#fff; text-align:center; padding:30px; }
+  .quiz-box { background:#fff; color:#333; padding:20px; border-radius:15px; max-width:750px; margin:auto; box-shadow:0 6px 12px rgba(0,0,0,0.3); }
+  .question { font-size:22px; margin-bottom:20px; }
+  .answers { display:grid; gap:15px; }
+  .answer { padding:15px; border-radius:10px; cursor:pointer; font-weight:bold; transition:0.3s; background:#2196f3; color:#fff; }
+  .answer:hover { transform:scale(1.05); }
+  .correct { background:#4caf50 !important; }
+  .wrong { background:#f44336 !important; }
+  .score { font-size:22px; margin-top:20px; }
+  .timer { font-size:20px; margin:10px; color:#e91e63; }
+  .explanation { margin-top:14px; text-align:left; color:#333; background:#f5f5f7; padding:12px; border-radius:10px; }
+  button { margin:10px; padding:10px 20px; border:none; border-radius:8px; background:#ff416c; color:#fff; font-size:16px; cursor:pointer; }
+  button:hover { background:#ff4b2b; }
+</style>
+</head>
+<body>
+  <h1>👨‍👩‍👧‍👦 Possessivpronomen Quiz (30 Fragen)</h1>
+  <div class="quiz-box" id="quiz">
+    <div class="question" id="question">Frage</div>
+    <div class="answers" id="answers"></div>
+    <div class="explanation" id="explanation" style="display:none;"></div>
+    <div class="timer" id="timer">⏱ 20s</div>
+    <div class="score" id="score">Punkte: 0</div>
+    <button onclick="prevQuestion()">⬅️ Zurück</button>
+    <button onclick="nextQuestion()">➡️ Nächste Frage</button>
+  </div>
+<script>
+const quizData = [
+{question:"___ Vater ist Arzt. (mein)", answers:["seinen","deinen","meinen","Mein"], correct:"Mein", explain:`Richtig: Mein Vater – Nominativ, 'mein' maskulin im Nominativ.`},
+{question:"Ist das ___ Tasche, Maria? (dein)", answers:["ihrer","Eure","deine","meinem"], correct:"deine", explain:`Richtig: deine Tasche – feminin, Nominativ.`},
+{question:"___ Bruder spielt Fußball. (sein)", answers:["ihren","deinem","Sein","sein"], correct:"Sein", explain:`Richtig: Sein Bruder – maskulin, Nominativ.`},
+{question:"___ Schwester ist sehr nett. (ihr)", answers:["unserem","ihren","Ihre","Sein"], correct:"Ihre", explain:`Richtig: Ihre Schwester – feminin, Nominativ.`},
+{question:"___ Haus ist groß. (unser)", answers:["Unser","Sein","Mein","ihre"], correct:"Unser", explain:`Richtig: Unser Haus – neutral, Nominativ.`},
+{question:"___ Freunde kommen später. (euer)", answers:["meine","ihrem","Eure","ihrer"], correct:"Eure", explain:`Richtig: Eure Freunde – Plural, Nominativ.`},
+{question:"Sind das ___ Bücher, Kinder? (euer)", answers:["eure","sein","unserem","ihren"], correct:"eure", explain:`Richtig: eure Bücher – Plural, Nominativ.`},
+{question:"___ Auto ist kaputt. (sein)", answers:["Sein","deine","seinem","ihrer"], correct:"Sein", explain:`Richtig: Sein Auto – neutral, Nominativ.`},
+{question:"___ Tochter ist sehr fleißig. (ihr)", answers:["seine","Ihre","Sein","deinen"], correct:"Ihre", explain:`Richtig: Ihre Tochter – feminin, Nominativ.`},
+{question:"___ Lehrer ist streng. (mein)", answers:["Mein","meiner","ihre","Ihre"], correct:"Mein", explain:`Richtig: Mein Lehrer – maskulin, Nominativ.`},
+{question:"Ich sehe ___ Hund. (mein)", answers:["meinen","ihrer","Unser","meine"], correct:"meinen", explain:`Richtig: Ich sehe meinen Hund – maskulin Akkusativ.`},
+{question:"Sie besucht ___ Freunde. (ihr)", answers:["ihrer","Eure","Ihre","ihre"], correct:"ihre", explain:`Richtig: Sie besucht ihre Freunde – Plural Akkusativ.`},
+{question:"Wir kaufen ___ Bücher. (unser)", answers:["deine","Sein","unsere","seinem"], correct:"unsere", explain:`Richtig: Wir kaufen unsere Bücher – Plural Akkusativ.`},
+{question:"Kennst du ___ Bruder? (dein)", answers:["unserem","ihren","deinen","unserer"], correct:"deinen", explain:`Richtig: Kennst du deinen Bruder – maskulin Akkusativ.`},
+{question:"Er liebt ___ Mutter. (sein)", answers:["Unser","Sein","seine","Mein"], correct:"seine", explain:`Richtig: Er liebt seine Mutter – feminin Akkusativ.`},
+{question:"Sie schreibt ___ Namen. (ihr)", answers:["seinem","Sein","ihren","unsere"], correct:"ihren", explain:`Richtig: Sie schreibt ihren Namen – maskulin Akkusativ.`},
+{question:"Er sucht ___ Schlüssel. (sein)", answers:["seinen","ihrer","unserem","seinem"], correct:"seinen", explain:`Richtig: Er sucht seinen Schlüssel – maskulin Akkusativ.`},
+{question:"Wir besuchen ___ Oma. (unser)", answers:["meinem","Unser","deinen","unsere"], correct:"unsere", explain:`Richtig: Wir besuchen unsere Oma – feminin Akkusativ.`},
+{question:"Hast du ___ Tasche gesehen? (mein)", answers:["meine","meinen","seinen","ihren"], correct:"meine", explain:`Richtig: Hast du meine Tasche gesehen – feminin Akkusativ.`},
+{question:"Er hat ___ Kind gesehen. (sein)", answers:["sein","Ihre","seinen","deine"], correct:"sein", explain:`Richtig: Er hat sein Kind gesehen – neutral Akkusativ.`},
+{question:"Ich helfe ___ Schwester. (mein)", answers:["deinen","unsere","seinem","meiner"], correct:"meiner", explain:`Richtig: Ich helfe meiner Schwester – feminin Dativ.`},
+{question:"Sie gibt ___ Vater ein Geschenk. (ihr)", answers:["unserem","seinem","ihrem","meiner"], correct:"ihrem", explain:`Richtig: Sie gibt ihrem Vater – maskulin Dativ.`},
+{question:"Er zeigt ___ Freund das Auto. (sein)", answers:["unserer","meinem","ihre","seinem"], correct:"seinem", explain:`Richtig: Er zeigt seinem Freund – maskulin Dativ.`},
+{question:"Kannst du ___ Bruder helfen? (dein)", answers:["meiner","meinen","deinem","Ihre"], correct:"deinem", explain:`Richtig: Kannst du deinem Bruder helfen – maskulin Dativ.`},
+{question:"Wir danken ___ Lehrerin. (unser)", answers:["ihrer","Ihre","unserer","ihren"], correct:"unserer", explain:`Richtig: Wir danken unserer Lehrerin – feminin Dativ.`},
+{question:"Die Kinder helfen ___ Mutter. (ihr)", answers:["Eure","ihrer","ihren","Ihre"], correct:"ihrer", explain:`Richtig: Die Kinder helfen ihrer Mutter – feminin Dativ.`},
+{question:"Ich schenke ___ Freund ein Buch. (mein)", answers:["ihren","meiner","Sein","meinem"], correct:"meinem", explain:`Richtig: Ich schenke meinem Freund – maskulin Dativ.`},
+{question:"Sie erzählt ___ Kindern eine Geschichte. (ihr)", answers:["Unser","ihren","meinem","Mein"], correct:"ihren", explain:`Richtig: Sie erzählt ihren Kindern – Plural Dativ.`},
+{question:"Wir gratulieren ___ Kollegen. (unser)", answers:["unsere","unserem","Mein","Eure"], correct:"unserem", explain:`Richtig: Wir gratulieren unserem Kollegen – maskulin Dativ.`},
+{question:"Er antwortet ___ Lehrer. (sein)", answers:["seinem","meine","seine","unsere"], correct:"seinem", explain:`Richtig: Er antwortet seinem Lehrer – maskulin Dativ.`}
+];
+let current=0,score=0,timer,timeLeft=20;
+const qEl=document.getElementById("question");
+const aEl=document.getElementById("answers");
+const tEl=document.getElementById("timer");
+const sEl=document.getElementById("score");
+const eEl=document.getElementById("explanation");
+
+function loadQuestion(){
+  const q=quizData[current];
+  qEl.innerHTML=(current+1)+". "+q.question;
+  aEl.innerHTML="";
+  eEl.style.display="none"; eEl.innerHTML="";
+  q.answers.forEach(ans=>{
+    const btn=document.createElement("div");
+    btn.className="answer";
+    btn.innerText=ans;
+    btn.onclick=()=>checkAnswer(btn,ans,q.correct,q.explain);
+    aEl.appendChild(btn);
+  });
+  resetTimer();
+}
+function lockAnswers(){ document.querySelectorAll(".answer").forEach(b=>b.style.pointerEvents="none"); }
+function checkAnswer(button,answer,correct,explanation){
+  clearInterval(timer); lockAnswers();
+  if(answer===correct){ button.classList.add("correct"); score+=10; }
+  else{ button.classList.add("wrong"); }
+  sEl.innerText="Punkte: "+score;
+  eEl.style.display="block"; eEl.innerHTML=explanation;
+}
+function nextQuestion(){
+  clearInterval(timer); current++;
+  if(current<quizData.length) loadQuestion();
+  else document.getElementById("quiz").innerHTML="<h2>Quiz beendet!</h2><p>Endpunktzahl: "+score+"</p>";
+}
+function prevQuestion(){
+  if(current>0){ current--; loadQuestion(); }
+}
+function resetTimer(){
+  timeLeft=20; tEl.innerText="⏱ "+timeLeft+"s";
+  clearInterval(timer);
+  timer=setInterval(()=>{
+    timeLeft--; tEl.innerText="⏱ "+timeLeft+"s";
+    if(timeLeft<=0){ clearInterval(timer); lockAnswers();
+      const q=quizData[current];
+      eEl.style.display="block"; eEl.innerHTML="⏰ Zeit abgelaufen. "+q.explain;
+    }
+  },1000);
+}
+loadQuestion();
+</script>
+</body>
+</html>
