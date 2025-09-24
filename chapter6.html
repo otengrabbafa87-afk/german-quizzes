@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lektion 6 – Was ist dein Problem? | Quiz-Hub</title>
+<style>
+  :root{
+    --bg1:#4facfe; --bg2:#00f2fe;
+    --card:#ffffff; --text:#333; --accent:#ff416c; --accent2:#ff4b2b;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; font-family:Arial,Helvetica,sans-serif; color:#fff;
+    background:linear-gradient(135deg,var(--bg1),var(--bg2));
+    min-height:100vh; display:flex; flex-direction:column; align-items:center;
+  }
+  header{ text-align:center; padding:40px 16px 10px }
+  h1{ font-size:2.2rem; margin:6px 0 8px }
+  .subtitle{opacity:.9}
+  .wrap{ width: min(1100px, 92vw); margin: 10px auto 40px; }
+  .toolbar{ display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin:10px 0 30px }
+  .btn{
+    background:var(--card); color:var(--accent); border:none; border-radius:999px;
+    padding:10px 18px; font-weight:700; cursor:pointer; text-decoration:none;
+    box-shadow:0 6px 14px rgba(0,0,0,.15); transition:.2s transform, .2s box-shadow;
+  }
+  .btn:hover{ transform:translateY(-2px); box-shadow:0 10px 18px rgba(0,0,0,.2) }
+  .grid{
+    display:grid; gap:18px;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+  .card{
+    background:var(--card); color:var(--text);
+    border-radius:16px; padding:18px; box-shadow:0 6px 16px rgba(0,0,0,.18);
+    display:flex; flex-direction:column; justify-content:space-between; min-height:170px;
+    transition:.2s transform, .2s box-shadow;
+  }
+  .card:hover{ transform:translateY(-4px); box-shadow:0 12px 22px rgba(0,0,0,.22) }
+  .card h2{ font-size:1.15rem; margin:0 0 10px }
+  .card p{ margin:0 0 14px; color:#555 }
+  .start{
+    align-self:flex-start; margin-top:auto;
+    background:var(--accent); color:#fff; padding:10px 14px; border-radius:10px;
+    text-decoration:none; font-weight:700; transition:.2s background;
+  }
+  .start:hover{ background:var(--accent2) }
+  footer{opacity:.9; padding:28px 0 36px; font-size:.9rem}
+</style>
+</head>
+<body>
+  <header>
+    <h1>📘 Lektion 6 – Was ist dein Problem?</h1>
+    <div class="subtitle">Wähle ein Thema und starte ein 25‑Fragen‑Quiz.</div>
+    <div class="toolbar">
+      <a href="index.html" class="btn">⬅ Zurück zur Startseite</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="grid">
+      <article class="card">
+        <h2>🔧 Probleme & Lösungen</h2>
+        <p>Alltagssituationen (Auto/Computer/Handy) & passende Lösungen.</p>
+        <a class="start" href="quiz_ch6_probleme.html">👉 Starten</a>
+      </article>
+
+      <article class="card">
+        <h2>💊 Gesundheitsprobleme</h2>
+        <p>Symptome, Arztkommunikation & passende Reaktionen.</p>
+        <a class="start" href="quiz_ch6_gesundheit.html">👉 Starten</a>
+      </article>
+
+      <article class="card">
+        <h2>📅 Termine vereinbaren</h2>
+        <p>Wann? Am/um … – Telefonieren, Bitten & Bestätigen.</p>
+        <a class="start" href="quiz_ch6_termine.html">👉 Starten</a>
+      </article>
+
+      <article class="card">
+        <h2>🏃 Imperativ & Gesundheit</h2>
+        <p>Tipps für die Gesundheit: „Trink Tee!“, „Mach Sport!“</p>
+        <a class="start" href="quiz_ch6_imperativ_gesundheit.html">👉 Starten</a>
+      </article>
+
+      <article class="card">
+        <h2>🧍 Körperteile</h2>
+        <p>Kopf, Hals, Rücken … Zuordnen & Sätze bilden.</p>
+        <a class="start" href="quiz_ch6_koerperteile.html">👉 Starten</a>
+      </article>
+
+      <article class="card">
+        <h2>🎨 Farben & Tattoos</h2>
+        <p>Lesen zum Thema Tattoos, Farben erkennen & bewerten.</p>
+        <a class="start" href="quiz_ch6_farben_tattoos.html">👉 Starten</a>
+      </article>
+
+      <article class="card">
+        <h2>🚲 Fahrradkuriere & Alltag</h2>
+        <p>Dialoge ordnen, Orte & Uhrzeiten zuordnen.</p>
+        <a class="start" href="quiz_ch6_fahrradkuriere.html">👉 Starten</a>
+      </article>
+
+      <article class="card">
+        <h2>⏳ Präteritum: haben & sein</h2>
+        <p>„Gestern hatte … / war …“ – vergangene Situationen.</p>
+        <a class="start" href="quiz_ch6_praeteritum.html">👉 Starten</a>
+      </article>
+
+      <article class="card">
+        <h2>🧩 Grammatik‑Mix</h2>
+        <p>Possessivartikel, Personalpronomen, Ordnungszahlen.</p>
+        <a class="start" href="quiz_ch6_grammatik_mix.html">👉 Starten</a>
+      </article>
+    </div>
+  </main>
+
+  <footer>© Lektion 6 – Quiz-Hub • Entwickelt für den Unterricht</footer>
+</body>
+</html>
