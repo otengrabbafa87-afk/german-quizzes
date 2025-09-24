@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>🎨 Farben & Tattoos (40 Fragen)</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: linear-gradient(to right, #ee0979, #ff6a00); text-align: center; padding: 20px; color: #333; }
+    .quiz-box { background:#fff; padding:20px; border-radius:15px; max-width:850px; margin:auto; box-shadow:0 6px 12px rgba(0,0,0,0.3);}
+    .question { font-size:20px; margin-bottom:20px; }
+    .answers { display:grid; gap:10px; }
+    .answer { padding:12px; border-radius:8px; cursor:pointer; background:#2196f3; color:#fff; transition:0.3s; }
+    .answer:hover { transform:scale(1.05); }
+    .correct { background:#4caf50 !important; }
+    .wrong { background:#f44336 !important; }
+    .score { font-size:18px; margin-top:20px; }
+    .timer { font-size:18px; margin:10px; color:#e91e63; }
+    .explanation { margin-top:12px; text-align:left; color:#333; background:#f5f5f5; padding:10px; border-radius:8px; }
+    input[type="text"] { padding:8px; font-size:16px; width:60%; }
+    button { margin-top:10px; padding:10px 20px; font-size:16px; cursor:pointer; background:#ff416c; border:none; border-radius:8px; color:#fff; }
+    button:hover { background:#ff4b2b; }
+  </style>
+</head>
+<body>
+  <h1>🎨 Farben & Tattoos (40 Fragen)</h1>
+  <div class="quiz-box" id="quiz">
+    <div class="question" id="question">Frage</div>
+    <div class="answers" id="answers"></div>
+    <div id="fillin" style="display:none;">
+      <input type="text" id="fillInput" placeholder="Deine Antwort">
+      <button onclick="checkFill()">Antwort prüfen</button>
+    </div>
+    <div class="explanation" id="explanation" style="display:none;"></div>
+    <div class="timer" id="timer"></div>
+    <div class="score" id="score">Punkte: 0</div>
+    <button onclick="prevQuestion()">⬅ Zurück</button>
+    <button onclick="nextQuestion()">Nächste Frage ➡</button>
+    <p><a href="chapter6.html">🔙 Zurück zu Lektion 6</a></p>
+  </div>
+
+<script>
+const quizData = [
+  // ---- 20 Multiple Choice ----
+  {type:"mc", question:"Welche Farbe ist ‚rot‘?", answers:["red","blue","green","yellow"], correct:"red", explain:"Rot = red."},
+  {type:"mc", question:"Welche Farbe ist ‚grün‘?", answers:["green","blue","yellow","black"], correct:"green", explain:"Grün = green."},
+  {type:"mc", question:"Welche Farbe ist ‚blau‘?", answers:["blue","black","red","yellow"], correct:"blue", explain:"Blau = blue."},
+  {type:"mc", question:"Welche Farbe ist ‚gelb‘?", answers:["yellow","green","blue","brown"], correct:"yellow", explain:"Gelb = yellow."},
+  {type:"mc", question:"Welche Farbe ist ‚schwarz‘?", answers:["black","white","red","blue"], correct:"black", explain:"Schwarz = black."},
+  {type:"mc", question:"Welche Farbe ist ‚weiß‘?", answers:["white","black","yellow","green"], correct:"white", explain:"Weiß = white."},
+  {type:"mc", question:"Welche Farbe ist ‚grau‘?", answers:["grey","brown","blue","yellow"], correct:"grey", explain:"Grau = grey."},
+  {type:"mc", question:"Welche Farbe ist ‚braun‘?", answers:["brown","green","red","blue"], correct:"brown", explain:"Braun = brown."},
+  {type:"mc", question:"Welche Farbe ist ‚lila‘?", answers:["purple","pink","blue","green"], correct:"purple", explain:"Lila = purple."},
+  {type:"mc", question:"Welche Farbe ist ‚rosa‘?", answers:["pink","red","purple","brown"], correct:"pink", explain:"Rosa = pink."},
+
+  // Leseverstehen (Tattoo Text)
+  {type:"mc", question:"In Deutschland haben 25% der Menschen ein Tattoo. (R/F)", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: 25 von 100 Deutschen haben ein Tattoo."},
+  {type:"mc", question:"Frauen mögen Tattoos lieber als Männer. (R/F)", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Frauen sind öfter tätowiert."},
+  {type:"mc", question:"Jugendliche unter 18 dürfen Tattoos ohne Eltern machen. (R/F)", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: Unter 18 nur mit Zustimmung der Eltern."},
+  {type:"mc", question:"Viele Tattoos sind billig. (R/F)", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: Tattoos können sehr teuer sein."},
+  {type:"mc", question:"Tattoos bleiben für immer. (R/F)", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Tattoos sind dauerhaft."},
+  {type:"mc", question:"Was ist korrekt? Tattoos sind…", answers:["dauerhaft","billig","gefährlich","verboten"], correct:"dauerhaft", explain:"Tattoos bleiben dauerhaft."},
+  {type:"mc", question:"Welche Farbe ist oft bei Tattoos beliebt?", answers:["schwarz","grau","gelb","rosa"], correct:"schwarz", explain:"Schwarze Tattoos sind am häufigsten."},
+  {type:"mc", question:"Welche Aussage stimmt NICHT?", answers:["25% der Deutschen haben Tattoos","Frauen sind öfter tätowiert","Alle Tattoos sind kostenlos","Unter 18 nur mit Eltern"], correct:"Alle Tattoos sind kostenlos", explain:"Tattoos kosten Geld, sie sind nicht kostenlos."},
+  {type:"mc", question:"Wie nennt man ‚tattoo artist‘ auf Deutsch?", answers:["Tätowierer","Arzt","Maler","Lehrer"], correct:"Tätowierer", explain:"Tattoo artist = der Tätowierer."},
+  {type:"mc", question:"Was passt? Ein Tattoo auf dem ___", answers:["Arm","Auto","Haus","Buch"], correct:"Arm", explain:"Man sagt: Tattoo auf dem Arm."},
+
+  // ---- 20 Fill in the Blank ----
+  {type:"fill", question:"(the red tattoo) Er hat ___ auf dem Arm.", correct:"das rote Tattoo", explain:"Tattoo ist neutral → das rote Tattoo."},
+  {type:"fill", question:"(the blue color) Meine Lieblingsfarbe ist ___.", correct:"die blaue Farbe", explain:"Farbe ist feminin → die blaue Farbe."},
+  {type:"fill", question:"(the green eyes) Sie hat ___.", correct:"grüne Augen", explain:"Augen Plural → grüne Augen."},
+  {type:"fill", question:"(the black hair) Er hat ___.", correct:"schwarze Haare", explain:"Haare Plural → schwarze Haare."},
+  {type:"fill", question:"(the white shirt) Er trägt ___.", correct:"ein weißes Hemd", explain:"Hemd ist neutral → ein weißes Hemd."},
+  {type:"fill", question:"(the yellow flower) Ich sehe ___.", correct:"eine gelbe Blume", explain:"Blume ist feminin → eine gelbe Blume."},
+  {type:"fill", question:"(the brown dog) Das ist ___.", correct:"ein brauner Hund", explain:"Hund ist maskulin → ein brauner Hund."},
+  {type:"fill", question:"(the grey cat) Sie hat ___.", correct:"eine graue Katze", explain:"Katze ist feminin → eine graue Katze."},
+  {type:"fill", question:"(the purple book) Ich lese ___.", correct:"ein lila Buch", explain:"Buch ist neutral → ein lila Buch."},
+  {type:"fill", question:"(the pink dress) Sie trägt ___.", correct:"ein rosa Kleid", explain:"Kleid ist neutral → ein rosa Kleid."},
+  {type:"fill", question:"(25 percent) In Deutschland haben ___ der Menschen ein Tattoo.", correct:"25 Prozent", explain:"Im Text: 25 Prozent."},
+  {type:"fill", question:"(the tattoo artist) Mein Freund ist ___.", correct:"ein Tätowierer", explain:"Tattoo artist = Tätowierer."},
+  {type:"fill", question:"(the tattoo on the back) Sie hat ___.", correct:"ein Tattoo auf dem Rücken", explain:"Rücken = maskulin → auf dem Rücken."},
+  {type:"fill", question:"(the tattoo on the hand) Er trägt ___.", correct:"ein Tattoo auf der Hand", explain:"Hand = feminin → auf der Hand."},
+  {type:"fill", question:"(the tattoo on the neck) Er hat ___.", correct:"ein Tattoo am Hals", explain:"Hals = maskulin → am Hals."},
+  {type:"fill", question:"(the tattoo on the foot) Sie hat ___.", correct:"ein Tattoo auf dem Fuß", explain:"Fuß = maskulin → auf dem Fuß."},
+  {type:"fill", question:"(the tattoo on the chest) Er trägt ___.", correct:"ein Tattoo auf der Brust", explain:"Brust = feminin → auf der Brust."},
+  {type:"fill", question:"(the tattoo on the stomach) Sie hat ___.", correct:"ein Tattoo am Bauch", explain:"Bauch = maskulin → am Bauch."},
+  {type:"fill", question:"(the tattoo on the face) Er hat ___.", correct:"ein Tattoo im Gesicht", explain:"Gesicht = neutral → im Gesicht."},
+  {type:"fill", question:"(the tattoo on the ear) Sie trägt ___.", correct:"ein Tattoo am Ohr", explain:"Ohr = neutral → am Ohr."}
+];
+
+let current=0,score=0,timer,timeLeft=0;
+const qEl=document.getElementById("question");
+const aEl=document.getElementById("answers");
+const fEl=document.getElementById("fillin");
+const input=document.getElementById("fillInput");
+const tEl=document.getElementById("timer");
+const sEl=document.getElementById("score");
+const eEl=document.getElementById("explanation");
+
+function loadQuestion(){
+  const q=quizData[current];
+  qEl.innerHTML=(current+1)+". "+q.question;
+  aEl.innerHTML=""; fEl.style.display="none"; eEl.style.display="none"; eEl.innerHTML="";
+  if(q.type==="mc"){
+    q.answers.forEach(ans=>{
+      const btn=document.createElement("div");
+      btn.className="answer"; btn.innerText=ans;
+      btn.onclick=()=>checkAnswer(btn,ans,q.correct,q.explain);
+      aEl.appendChild(btn);
+    });
+    resetTimer(20);
+  } else {
+    fEl.style.display="block";
+    input.value=""; input.focus();
+    resetTimer(35);
+  }
+}
+function checkAnswer(button,answer,correct,explanation){
+  clearInterval(timer); lockAnswers();
+  if(answer===correct){ button.classList.add("correct"); score+=10; }
+  else{ button.classList.add("wrong"); }
+  sEl.innerText="Punkte: "+score;
+  eEl.style.display="block"; eEl.innerHTML=explanation;
+}
+function checkFill(){
+  clearInterval(timer);
+  const q=quizData[current];
+  let ans=input.value.trim();
+  if(ans===q.correct){ score+=10; eEl.innerHTML="✅ Richtig: "+q.correct; }
+  else{ eEl.innerHTML="❌ Falsch. Richtige Antwort: "+q.correct; }
+  eEl.style.display="block"; sEl.innerText="Punkte: "+score;
+}
+function lockAnswers(){ document.querySelectorAll(".answer").forEach(b=>b.style.pointerEvents="none"); }
+function nextQuestion(){ clearInterval(timer); current++; if(current<quizData.length) loadQuestion(); else qEl.innerHTML="🎉 Quiz beendet! Punkte: "+score; }
+function prevQuestion(){ if(current>0){ current--; loadQuestion(); } }
+function resetTimer(seconds){
+  timeLeft=seconds; tEl.innerText="⏱ "+timeLeft+"s"; clearInterval(timer);
+  timer=setInterval(()=>{ timeLeft--; tEl.innerText="⏱ "+timeLeft+"s";
+    if(timeLeft<=0){ clearInterval(timer);
+      const q=quizData[current]; eEl.style.display="block"; eEl.innerHTML="⏰ Zeit abgelaufen. Richtige Antwort: "+q.correct;
+    }
+  },1000);
+}
+loadQuestion();
+</script>
+</body>
+</html>
