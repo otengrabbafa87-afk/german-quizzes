@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Quiz: Gesundheitsprobleme (25 Fragen)</title>
+<style>
+  body { font-family: Arial,sans-serif; background:linear-gradient(to right,#11998e,#38ef7d); color:#fff; text-align:center; padding:30px; }
+  .quiz-box { background:#fff; color:#333; padding:20px; border-radius:15px; max-width:750px; margin:auto; box-shadow:0 6px 12px rgba(0,0,0,0.3); }
+  .question { font-size:22px; margin-bottom:20px; }
+  .answers { display:grid; gap:15px; }
+  .answer { padding:15px; border-radius:10px; cursor:pointer; font-weight:bold; transition:0.3s; background:#2196f3; color:#fff; }
+  .answer:hover { transform:scale(1.05); }
+  .correct { background:#4caf50 !important; }
+  .wrong { background:#f44336 !important; }
+  .score { font-size:22px; margin-top:20px; }
+  .timer { font-size:20px; margin:10px; color:#e91e63; }
+  .explanation { margin-top:14px; text-align:left; color:#333; background:#f5f5f7; padding:12px; border-radius:10px; }
+  button { margin:10px; padding:10px 20px; border:none; border-radius:8px; background:#ff416c; color:#fff; font-size:16px; cursor:pointer; }
+  button:hover { background:#ff4b2b; }
+  input[type=text] { padding:10px; font-size:16px; width:60%; margin-top:10px; }
+</style>
+</head>
+<body>
+  <h1>💊 Gesundheitsprobleme (25 Fragen)</h1>
+  <div class="quiz-box" id="quiz">
+    <div class="question" id="question">Frage</div>
+    <div class="answers" id="answers"></div>
+    <div id="fillInput" style="display:none;">
+      <input type="text" id="userFill" placeholder="Antwort eingeben" />
+      <button onclick="submitFill()">Antwort prüfen</button>
+    </div>
+    <div class="explanation" id="explanation" style="display:none;"></div>
+    <div class="timer" id="timer">⏱ 20s</div>
+    <div class="score" id="score">Punkte: 0</div>
+    <button onclick="prevQuestion()">⬅️ Zurück</button>
+    <button onclick="nextQuestion()">➡️ Nächste Frage</button><br><br>
+    <a href="chapter6.html" style="color:#ff416c; font-weight:bold;">🔙 Zurück zu Lektion 6</a>
+  </div>
+<script>
+const quizData = [
+{question:"Ich habe Zahnschmerzen. Ich gehe zum ___.", type:"mc", answers:["Lehrer","Polizist","Apotheke","Zahnarzt"], correct:"Zahnarzt", explain:`Richtig: Zahnschmerzen → Zahnarzt.`},
+{question:"Ich habe Fieber. Ich gehe zum ___.", type:"mc", answers:["Lehrer","Bäcker","Arzt","Mechaniker"], correct:"Arzt", explain:`Richtig: Mit Fieber geht man zum Arzt.`},
+{question:"Was sagt man, wenn jemand krank ist?", type:"mc", answers:["Herzlichen Glückwunsch","Viel Spaß","Gute Besserung","Guten Tag"], correct:"Gute Besserung", explain:`Richtig: Man sagt ‚Gute Besserung!‘.`},
+{question:"Ich habe Husten. Ich brauche ___.", type:"mc", answers:["Brot","Hustensaft","Cola","Kaffee"], correct:"Hustensaft", explain:`Richtig: Gegen Husten nimmt man Hustensaft.`},
+{question:"Ich habe Schnupfen. Ich brauche viele ___.", type:"mc", answers:["Schuhe","Bücher","Taschentücher","Flaschen"], correct:"Taschentücher", explain:`Richtig: Schnupfen → Taschentücher.`},
+{question:"Ich habe Bauchschmerzen. Ich gehe in die ___.", type:"mc", answers:["Werkstatt","Bank","Apotheke","Post"], correct:"Apotheke", explain:`Richtig: Medikamente gibt es in der Apotheke.`},
+{question:"Ich habe Kopfschmerzen. Ich nehme eine ___.", type:"mc", answers:["Schokolade","Tablette","Banane","Jacke"], correct:"Tablette", explain:`Richtig: Gegen Kopfschmerzen nimmt man Tabletten.`},
+{question:"Der Patient ist krank. Er bleibt ___.", type:"mc", answers:["zu Hause","in der Schule","im Kino","im Auto"], correct:"zu Hause", explain:`Richtig: Krank → man bleibt zu Hause.`},
+{question:"Ich bin erkältet. Ich gehe zum ___.", type:"mc", answers:["Polizist","Arzt","Friseur","Koch"], correct:"Arzt", explain:`Richtig: Erkältung behandelt der Arzt.`},
+{question:"Ich habe Zahnschmerzen. Ich brauche einen Termin beim ___.", type:"mc", answers:["Bäcker","Mechaniker","Zahnarzt","Arzt"], correct:"Zahnarzt", explain:`Richtig: Zahnschmerzen → Zahnarzt.`},
+{question:"Ich habe Rückenschmerzen. Ich gehe zum ___.", type:"mc", answers:["Bäcker","Apotheker","Lehrer","Arzt"], correct:"Arzt", explain:`Richtig: Rückenschmerzen → Arzt.`},
+{question:"Der Hals tut weh. Ich trinke ___.", type:"mc", answers:["Bier","Tee","Saft","Cola"], correct:"Tee", explain:`Richtig: Bei Halsschmerzen hilft Tee.`},
+{question:"Ich habe Fieber. Ich bleibe im ___.", type:"mc", answers:["Kino","Büro","Auto","Bett"], correct:"Bett", explain:`Richtig: Krank → man bleibt im Bett.`},
+{question:"Mein Kind ist krank. Ich rufe den ___ an.", type:"mc", answers:["Friseur","Arzt","Lehrer","Mechaniker"], correct:"Arzt", explain:`Richtig: Krankes Kind → Arzt.`},
+{question:"Ich habe Kopfschmerzen. Ich gehe in die ___.", type:"mc", answers:["Post","Apotheke","Werkstatt","Bank"], correct:"Apotheke", explain:`Richtig: Medikamente → Apotheke.`},
+{question:"Ich habe ___. (Fieber)", type:"fill", answers:["Fieber"], correct:"Fieber", explain:`Richtig: Ich habe Fieber.`},
+{question:"Sie hat ___. (Kopfschmerzen)", type:"fill", answers:["Kopfschmerzen"], correct:"Kopfschmerzen", explain:`Richtig: Sie hat Kopfschmerzen.`},
+{question:"Er hat ___. (Husten)", type:"fill", answers:["Husten"], correct:"Husten", explain:`Richtig: Er hat Husten.`},
+{question:"Wir haben ___. (Schnupfen)", type:"fill", answers:["Schnupfen"], correct:"Schnupfen", explain:`Richtig: Wir haben Schnupfen.`},
+{question:"Du hast ___. (Bauchschmerzen)", type:"fill", answers:["Bauchschmerzen"], correct:"Bauchschmerzen", explain:`Richtig: Du hast Bauchschmerzen.`},
+{question:"Ich brauche ___. (Taschentücher)", type:"fill", answers:["Taschentücher"], correct:"Taschentücher", explain:`Richtig: Bei Schnupfen braucht man Taschentücher.`},
+{question:"Ich nehme eine ___. (Tablette)", type:"fill", answers:["Tablette"], correct:"Tablette", explain:`Richtig: Gegen Kopfschmerzen nimmt man eine Tablette.`},
+{question:"Ich trinke ___. (Tee)", type:"fill", answers:["Tee"], correct:"Tee", explain:`Richtig: Bei Halsschmerzen trinkt man Tee.`},
+{question:"Mein Kind hat ___. (Fieber)", type:"fill", answers:["Fieber"], correct:"Fieber", explain:`Richtig: Mein Kind hat Fieber.`},
+{question:"Er bleibt ___. (zu Hause)", type:"fill", answers:["zu Hause"], correct:"zu Hause", explain:`Richtig: Krank → man bleibt zu Hause.`}
+];
+let current=0,score=0,timer,timeLeft=20;
+const qEl=document.getElementById("question");
+const aEl=document.getElementById("answers");
+const tEl=document.getElementById("timer");
+const sEl=document.getElementById("score");
+const eEl=document.getElementById("explanation");
+const fillBox=document.getElementById("fillInput");
+const userFill=document.getElementById("userFill");
+
+function loadQuestion(){
+  const q=quizData[current];
+  qEl.innerHTML=(current+1)+". "+q.question;
+  aEl.innerHTML=""; eEl.style.display="none"; eEl.innerHTML="";
+  userFill.value=""; fillBox.style.display="none";
+  if(q.type==="mc"){
+    aEl.style.display="grid";
+    q.answers.forEach(ans=>{
+      const btn=document.createElement("div");
+      btn.className="answer"; btn.innerText=ans;
+      btn.onclick=()=>checkAnswer(btn,ans,q.correct,q.explain);
+      aEl.appendChild(btn);
+    });
+  } else {
+    aEl.style.display="none";
+    fillBox.style.display="block";
+  }
+  resetTimer();
+}
+function lockAnswers(){ document.querySelectorAll(".answer").forEach(b=>b.style.pointerEvents="none"); }
+function checkAnswer(button,answer,correct,explanation){
+  clearInterval(timer); lockAnswers();
+  if(answer===correct){ button.classList.add("correct"); score+=10; }
+  else{ button.classList.add("wrong"); }
+  sEl.innerText="Punkte: "+score; eEl.style.display="block"; eEl.innerHTML=explanation;
+}
+function submitFill(){
+  clearInterval(timer);
+  const q=quizData[current]; const ans=userFill.value.trim().toLowerCase();
+  if(q.answers.map(a=>a.toLowerCase()).includes(ans)){ score+=10; eEl.innerHTML="✅ "+q.explain; }
+  else{ eEl.innerHTML="❌ Falsch. "+q.explain; }
+  sEl.innerText="Punkte: "+score; eEl.style.display="block";
+}
+function nextQuestion(){
+  clearInterval(timer); current++;
+  if(current<quizData.length) loadQuestion();
+  else document.getElementById("quiz").innerHTML="<h2>Quiz beendet!</h2><p>Endpunktzahl: "+score+"</p><a href='chapter6.html'>🔙 Zurück zu Lektion 6</a>";
+}
+function prevQuestion(){
+  if(current>0){ current--; loadQuestion(); }
+}
+function resetTimer(){
+  timeLeft=20; tEl.innerText="⏱ "+timeLeft+"s";
+  clearInterval(timer);
+  timer=setInterval(()=>{
+    timeLeft--; tEl.innerText="⏱ "+timeLeft+"s";
+    if(timeLeft<=0){ clearInterval(timer);
+      const q=quizData[current];
+      eEl.style.display="block"; eEl.innerHTML="⏰ Zeit abgelaufen. "+q.explain;
+    }
+  },1000);
+}
+loadQuestion();
+</script>
+</body>
+</html>
