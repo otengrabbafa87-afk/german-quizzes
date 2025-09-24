@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Wochentage & Verben Quiz (30 Fragen)</title>
+<style>
+  body { font-family: Arial,sans-serif; background:linear-gradient(to right,#36d1dc,#5b86e5); color:#fff; text-align:center; padding:30px; }
+  .quiz-box { background:#fff; color:#333; padding:20px; border-radius:15px; max-width:750px; margin:auto; box-shadow:0 6px 12px rgba(0,0,0,0.3); }
+  .question { font-size:22px; margin-bottom:20px; }
+  .answers { display:grid; gap:15px; }
+  .answer { padding:15px; border-radius:10px; cursor:pointer; font-weight:bold; transition:0.3s; background:#2196f3; color:#fff; }
+  .answer:hover { transform:scale(1.05); }
+  .correct { background:#4caf50 !important; }
+  .wrong { background:#f44336 !important; }
+  .score { font-size:22px; margin-top:20px; }
+  .timer { font-size:20px; margin:10px; color:#e91e63; }
+  .explanation { margin-top:14px; text-align:left; color:#333; background:#f5f5f7; padding:12px; border-radius:10px; }
+  button { margin:10px; padding:10px 20px; border:none; border-radius:8px; background:#ff416c; color:#fff; font-size:16px; cursor:pointer; }
+  button:hover { background:#ff4b2b; }
+</style>
+</head>
+<body>
+  <h1>📅 Wochentage & Verben Quiz (30 Fragen)</h1>
+  <div class="quiz-box" id="quiz">
+    <div class="question" id="question">Frage</div>
+    <div class="answers" id="answers"></div>
+    <div class="explanation" id="explanation" style="display:none;"></div>
+    <div class="timer" id="timer">⏱ 20s</div>
+    <div class="score" id="score">Punkte: 0</div>
+    <button onclick="prevQuestion()">⬅️ Zurück</button>
+    <button onclick="nextQuestion()">➡️ Nächste Frage</button>
+  </div>
+<script>
+const quizData = [
+{question:"Welcher Tag kommt nach Montag?", answers:["Dienstag","ist","sind","bist"], correct:"Dienstag", explain:`Richtig: Nach Montag kommt Dienstag.`},
+{question:"Welcher Tag ist vor Sonntag?", answers:["werdet","hast","Samstag","bist"], correct:"Samstag", explain:`Richtig: Vor Sonntag ist Samstag.`},
+{question:"Abkürzung für Mittwoch?", answers:["wird","Samstag","Do","Mi"], correct:"Mi", explain:`Richtig: Mittwoch wird abgekürzt mit 'Mi'.`},
+{question:"Abkürzung für Donnerstag?", answers:["Do","hat","Sonntag","haben"], correct:"Do", explain:`Richtig: Donnerstag wird abgekürzt mit 'Do'.`},
+{question:"Heute ist Montag, morgen ist…?", answers:["Dienstag","Freitag","wird","Donnerstag"], correct:"Dienstag", explain:`Richtig: Montag → Dienstag.`},
+{question:"Heute ist Freitag, übermorgen ist…?", answers:["Sonntag","Mi","Montag","hast"], correct:"Sonntag", explain:`Richtig: Freitag → Samstag → Sonntag.`},
+{question:"Gestern war Donnerstag, heute ist…?", answers:["sind","Dienstag","Do","Freitag"], correct:"Freitag", explain:`Richtig: Donnerstag → Freitag.`},
+{question:"Vorgestern war Dienstag, heute ist…?", answers:["Montag","werdet","Donnerstag","Freitag"], correct:"Donnerstag", explain:`Richtig: Dienstag → Mittwoch → Donnerstag.`},
+{question:"Am ___ habe ich einen Termin. (Wednesday)", answers:["sind","Dienstag","habe","Mittwoch"], correct:"Mittwoch", explain:`Richtig: Am Mittwoch habe ich einen Termin.`},
+{question:"Am Wochenende fahren wir…", answers:["hat","weg","sind","Dienstag"], correct:"weg", explain:`Richtig: Am Wochenende fahren wir weg.`},
+{question:"Welcher Tag ist heute, wenn gestern Montag war?", answers:["Do","sind","Mittwoch","Dienstag"], correct:"Dienstag", explain:`Richtig: Montag → Dienstag.`},
+{question:"Welcher Tag ist übermorgen, wenn heute Samstag ist?", answers:["Freitag","werdet","Freitag","Montag"], correct:"Montag", explain:`Richtig: Samstag → Sonntag → Montag.`},
+{question:"Welcher Tag ist vorgestern, wenn heute Sonntag ist?", answers:["Freitag","werdet","Montag","hast"], correct:"Freitag", explain:`Richtig: Sonntag → Samstag → Freitag.`},
+{question:"Heute ist Mittwoch, gestern war…?", answers:["weg","sind","Samstag","Dienstag"], correct:"Dienstag", explain:`Richtig: Mittwoch → Dienstag.`},
+{question:"Morgen ist Donnerstag, heute ist…?", answers:["Freitag","Mittwoch","sind","Dienstag"], correct:"Mittwoch", explain:`Richtig: Heute ist Mittwoch.`},
+{question:"Ich ___ ein Auto. (haben)", answers:["Dienstag","ist","weg","habe"], correct:"habe", explain:`Richtig: Ich habe ein Auto.`},
+{question:"Du ___ müde. (sein)", answers:["bist","hast","Dienstag","bin"], correct:"bist", explain:`Richtig: Du bist müde.`},
+{question:"Er ___ ein Buch. (haben)", answers:["hat","habt","Dienstag","sind"], correct:"hat", explain:`Richtig: Er hat ein Buch.`},
+{question:"Wir ___ Lehrer. (sein)", answers:["bist","sind","Dienstag","werdet"], correct:"sind", explain:`Richtig: Wir sind Lehrer.`},
+{question:"Ihr ___ eine Frage. (haben)", answers:["habt","ist","Donnerstag","Montag"], correct:"habt", explain:`Richtig: Ihr habt eine Frage.`},
+{question:"Sie ___ glücklich. (sein, Plural)", answers:["Montag","Sonntag","Dienstag","sind"], correct:"sind", explain:`Richtig: Sie sind glücklich.`},
+{question:"Ich ___ bald 30 Jahre alt. (werden)", answers:["sind","weg","Freitag","werde"], correct:"werde", explain:`Richtig: Ich werde bald 30.`},
+{question:"Das Wetter ___ kalt. (werden)", answers:["wird","Dienstag","Sonntag","hast"], correct:"wird", explain:`Richtig: Das Wetter wird kalt.`},
+{question:"Ihr ___ klug. (werden)", answers:["werdet","sind","Dienstag","ist"], correct:"werdet", explain:`Richtig: Ihr werdet klug.`},
+{question:"Du ___ eine Schwester. (haben)", answers:["Samstag","Dienstag","hast","Mi"], correct:"hast", explain:`Richtig: Du hast eine Schwester.`},
+{question:"Wir ___ morgen frei. (haben)", answers:["sind","hat","haben","weg"], correct:"haben", explain:`Richtig: Wir haben frei.`},
+{question:"Sie ___ sehr nett. (sein, Singular)", answers:["Dienstag","Dienstag","ist","hat"], correct:"ist", explain:`Richtig: Sie ist sehr nett.`},
+{question:"Ich ___ Student. (sein)", answers:["sind","ist","bin","wird"], correct:"bin", explain:`Richtig: Ich bin Student.`},
+{question:"Er ___ Arzt. (sein)", answers:["ist","bin","Donnerstag","sind"], correct:"ist", explain:`Richtig: Er ist Arzt.`},
+{question:"Wir ___ glücklich. (sein)", answers:["sind","werde","Dienstag","Donnerstag"], correct:"sind", explain:`Richtig: Wir sind glücklich.`}
+];
+let current=0,score=0,timer,timeLeft=20;
+const qEl=document.getElementById("question");
+const aEl=document.getElementById("answers");
+const tEl=document.getElementById("timer");
+const sEl=document.getElementById("score");
+const eEl=document.getElementById("explanation");
+
+function loadQuestion(){
+  const q=quizData[current];
+  qEl.innerHTML=(current+1)+". "+q.question;
+  aEl.innerHTML="";
+  eEl.style.display="none"; eEl.innerHTML="";
+  q.answers.forEach(ans=>{
+    const btn=document.createElement("div");
+    btn.className="answer";
+    btn.innerText=ans;
+    btn.onclick=()=>checkAnswer(btn,ans,q.correct,q.explain);
+    aEl.appendChild(btn);
+  });
+  resetTimer();
+}
+function lockAnswers(){ document.querySelectorAll(".answer").forEach(b=>b.style.pointerEvents="none"); }
+function checkAnswer(button,answer,correct,explanation){
+  clearInterval(timer); lockAnswers();
+  if(answer===correct){ button.classList.add("correct"); score+=10; }
+  else{ button.classList.add("wrong"); }
+  sEl.innerText="Punkte: "+score;
+  eEl.style.display="block"; eEl.innerHTML=explanation;
+}
+function nextQuestion(){
+  clearInterval(timer); current++;
+  if(current<quizData.length) loadQuestion();
+  else document.getElementById("quiz").innerHTML="<h2>Quiz beendet!</h2><p>Endpunktzahl: "+score+"</p>";
+}
+function prevQuestion(){
+  if(current>0){ current--; loadQuestion(); }
+}
+function resetTimer(){
+  timeLeft=20; tEl.innerText="⏱ "+timeLeft+"s";
+  clearInterval(timer);
+  timer=setInterval(()=>{
+    timeLeft--; tEl.innerText="⏱ "+timeLeft+"s";
+    if(timeLeft<=0){ clearInterval(timer); lockAnswers();
+      const q=quizData[current];
+      eEl.style.display="block"; eEl.innerHTML="⏰ Zeit abgelaufen. "+q.explain;
+    }
+  },1000);
+}
+loadQuestion();
+</script>
+</body>
+</html>
