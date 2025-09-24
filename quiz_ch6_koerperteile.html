@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>🧍 Körperteile (25 Fragen)</title>
+  <title>🧍 Körperteile (25 Fragen mit Artikeln)</title>
   <style>
     body { font-family: Arial, sans-serif; background: linear-gradient(to right, #00c6ff, #0072ff); text-align: center; padding: 20px; color: #333; }
     .quiz-box { background:#fff; padding:20px; border-radius:15px; max-width:800px; margin:auto; box-shadow:0 6px 12px rgba(0,0,0,0.3);}
@@ -21,7 +21,7 @@
   </style>
 </head>
 <body>
-  <h1>🧍 Körperteile (25 Fragen)</h1>
+  <h1>🧍 Körperteile (25 Fragen mit Artikeln)</h1>
   <div class="quiz-box" id="quiz">
     <div class="question" id="question">Frage</div>
     <div class="answers" id="answers"></div>
@@ -40,33 +40,33 @@
 <script>
 const quizData = [
   // Multiple Choice – 20s
-  {type:"mc", question:"Was bedeutet ‚Kopf‘?", answers:["head","arm","leg","stomach"], correct:"head", explain:"Kopf = head"},
-  {type:"mc", question:"Wie sagt man ‚hand‘ auf Deutsch?", answers:["Hand","Arm","Bein","Fuß"], correct:"Hand", explain:"Hand = hand"},
-  {type:"mc", question:"Welcher Körperteil ist ‚leg‘?", answers:["Bein","Kopf","Rücken","Hand"], correct:"Bein", explain:"Bein = leg"},
-  {type:"mc", question:"‚Auge‘ bedeutet…", answers:["eye","ear","nose","mouth"], correct:"eye", explain:"Auge = eye"},
-  {type:"mc", question:"‚Nase‘ bedeutet…", answers:["nose","ear","eye","mouth"], correct:"nose", explain:"Nase = nose"},
-  {type:"mc", question:"Welcher Körperteil ist ‚mouth‘?", answers:["Mund","Nase","Auge","Hand"], correct:"Mund", explain:"Mund = mouth"},
-  {type:"mc", question:"Was ist ‚ear‘ auf Deutsch?", answers:["Ohr","Nase","Hand","Knie"], correct:"Ohr", explain:"Ohr = ear"},
-  {type:"mc", question:"Welcher Körperteil ist ‚back‘?", answers:["Rücken","Bauch","Brust","Knie"], correct:"Rücken", explain:"Rücken = back"},
-  {type:"mc", question:"‚Finger‘ bedeutet…", answers:["finger","toe","hand","arm"], correct:"finger", explain:"Finger = finger"},
-  {type:"mc", question:"Welcher Körperteil ist ‚foot‘?", answers:["Fuß","Hand","Arm","Bein"], correct:"Fuß", explain:"Fuß = foot"},
-  {type:"mc", question:"‚Zahn‘ bedeutet…", answers:["tooth","ear","eye","nose"], correct:"tooth", explain:"Zahn = tooth"},
-  {type:"mc", question:"‚Brust‘ bedeutet…", answers:["chest","leg","arm","nose"], correct:"chest", explain:"Brust = chest"},
-  {type:"mc", question:"Was ist ‚stomach‘ auf Deutsch?", answers:["Bauch","Kopf","Nase","Ohr"], correct:"Bauch", explain:"Bauch = stomach"},
-  {type:"mc", question:"‚Knie‘ bedeutet…", answers:["knee","neck","ear","mouth"], correct:"knee", explain:"Knie = knee"},
-  {type:"mc", question:"‚Hals‘ bedeutet…", answers:["neck","hand","arm","back"], correct:"neck", explain:"Hals = neck"},
+  {type:"mc", question:"Wie heißt ‚the head‘ auf Deutsch?", answers:["der Kopf","die Kopf","das Kopf","die Köpfe"], correct:"der Kopf", explain:"Kopf ist maskulin: der Kopf."},
+  {type:"mc", question:"Wie heißt ‚the hand‘ auf Deutsch?", answers:["die Hand","der Hand","das Hand","die Hände"], correct:"die Hand", explain:"Hand ist feminin: die Hand."},
+  {type:"mc", question:"Wie heißt ‚the leg‘ auf Deutsch?", answers:["das Bein","der Bein","die Bein","die Beine"], correct:"das Bein", explain:"Bein ist neutral: das Bein."},
+  {type:"mc", question:"Was bedeutet ‚das Auge‘?", answers:["the eye","the nose","the mouth","the ear"], correct:"the eye", explain:"Auge = eye, neutral: das Auge."},
+  {type:"mc", question:"Welcher Artikel gehört zu ‚Nase‘?", answers:["die Nase","der Nase","das Nase","den Nase"], correct:"die Nase", explain:"Nase ist feminin: die Nase."},
+  {type:"mc", question:"‚der Mund‘ bedeutet…", answers:["the mouth","the nose","the eye","the hand"], correct:"the mouth", explain:"Mund ist maskulin: der Mund."},
+  {type:"mc", question:"Was ist ‚ear‘ auf Deutsch?", answers:["das Ohr","der Ohr","die Ohr","den Ohr"], correct:"das Ohr", explain:"Ohr ist neutral: das Ohr."},
+  {type:"mc", question:"Welcher Artikel gehört zu ‚Rücken‘?", answers:["der Rücken","die Rücken","das Rücken","den Rücken"], correct:"der Rücken", explain:"Rücken ist maskulin: der Rücken."},
+  {type:"mc", question:"‚der Finger‘ bedeutet…", answers:["the finger","the toe","the hand","the arm"], correct:"the finger", explain:"Finger ist maskulin: der Finger."},
+  {type:"mc", question:"Wie heißt ‚the foot‘ auf Deutsch?", answers:["der Fuß","die Fuß","das Fuß","die Füße"], correct:"der Fuß", explain:"Fuß ist maskulin: der Fuß."},
+  {type:"mc", question:"Welcher Artikel gehört zu ‚Zahn‘?", answers:["der Zahn","die Zahn","das Zahn","den Zahn"], correct:"der Zahn", explain:"Zahn ist maskulin: der Zahn."},
+  {type:"mc", question:"‚die Brust‘ bedeutet…", answers:["the chest","the leg","the arm","the nose"], correct:"the chest", explain:"Brust ist feminin: die Brust."},
+  {type:"mc", question:"Wie heißt ‚the stomach‘ auf Deutsch?", answers:["der Bauch","die Bauch","das Bauch","den Bauch"], correct:"der Bauch", explain:"Bauch ist maskulin: der Bauch."},
+  {type:"mc", question:"Welcher Artikel gehört zu ‚Knie‘?", answers:["das Knie","der Knie","die Knie","den Knie"], correct:"das Knie", explain:"Knie ist neutral: das Knie."},
+  {type:"mc", question:"‚der Hals‘ bedeutet…", answers:["the neck","the hand","the arm","the back"], correct:"the neck", explain:"Hals ist maskulin: der Hals."},
 
   // Fill in the blank – 35s (with English hints)
-  {type:"fill", question:"(eye) Ich sehe mit meinem ___.", correct:"Auge", explain:"Richtig: Ich sehe mit meinem Auge."},
-  {type:"fill", question:"(hand) Ich schreibe mit der ___.", correct:"Hand", explain:"Richtig: Ich schreibe mit der Hand."},
-  {type:"fill", question:"(foot) Ich laufe mit dem ___.", correct:"Fuß", explain:"Richtig: Ich laufe mit dem Fuß."},
-  {type:"fill", question:"(ear) Ich höre mit dem ___.", correct:"Ohr", explain:"Richtig: Ich höre mit dem Ohr."},
-  {type:"fill", question:"(nose) Ich rieche mit der ___.", correct:"Nase", explain:"Richtig: Ich rieche mit der Nase."},
-  {type:"fill", question:"(mouth) Ich esse mit dem ___.", correct:"Mund", explain:"Richtig: Ich esse mit dem Mund."},
-  {type:"fill", question:"(finger) Ich tippe mit dem ___.", correct:"Finger", explain:"Richtig: Ich tippe mit dem Finger."},
-  {type:"fill", question:"(knee) Ich knie auf dem ___.", correct:"Knie", explain:"Richtig: Ich knie auf dem Knie."},
-  {type:"fill", question:"(neck) Der Schal ist um den ___.", correct:"Hals", explain:"Richtig: Der Schal ist um den Hals."},
-  {type:"fill", question:"(back) Mein Rucksack ist auf dem ___.", correct:"Rücken", explain:"Richtig: Mein Rucksack ist auf dem Rücken."}
+  {type:"fill", question:"(the eye) Ich sehe mit ___.", correct:"dem Auge", explain:"Auge ist neutral → Dativ: mit dem Auge."},
+  {type:"fill", question:"(the hand) Ich schreibe mit ___.", correct:"der Hand", explain:"Hand ist feminin → Dativ: mit der Hand."},
+  {type:"fill", question:"(the foot) Ich laufe mit ___.", correct:"dem Fuß", explain:"Fuß ist maskulin → Dativ: mit dem Fuß."},
+  {type:"fill", question:"(the ear) Ich höre mit ___.", correct:"dem Ohr", explain:"Ohr ist neutral → Dativ: mit dem Ohr."},
+  {type:"fill", question:"(the nose) Ich rieche mit ___.", correct:"der Nase", explain:"Nase ist feminin → Dativ: mit der Nase."},
+  {type:"fill", question:"(the mouth) Ich esse mit ___.", correct:"dem Mund", explain:"Mund ist maskulin → Dativ: mit dem Mund."},
+  {type:"fill", question:"(the finger) Ich tippe mit ___.", correct:"dem Finger", explain:"Finger ist maskulin → Dativ: mit dem Finger."},
+  {type:"fill", question:"(the knee) Ich knie auf ___.", correct:"dem Knie", explain:"Knie ist neutral → Dativ: auf dem Knie."},
+  {type:"fill", question:"(the neck) Der Schal ist um ___.", correct:"den Hals", explain:"Hals ist maskulin → Akkusativ: um den Hals."},
+  {type:"fill", question:"(the back) Mein Rucksack ist auf ___.", correct:"dem Rücken", explain:"Rücken ist maskulin → Dativ: auf dem Rücken."}
 ];
 
 let current=0,score=0,timer,timeLeft=0;
