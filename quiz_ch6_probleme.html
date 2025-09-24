@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Quiz: Probleme & Lösungen (25 Fragen)</title>
+<style>
+  body { font-family: Arial,sans-serif; background:linear-gradient(to right,#8e2de2,#4a00e0); color:#fff; text-align:center; padding:30px; }
+  .quiz-box { background:#fff; color:#333; padding:20px; border-radius:15px; max-width:750px; margin:auto; box-shadow:0 6px 12px rgba(0,0,0,0.3); }
+  .question { font-size:22px; margin-bottom:20px; }
+  .answers { display:grid; gap:15px; }
+  .answer { padding:15px; border-radius:10px; cursor:pointer; font-weight:bold; transition:0.3s; background:#2196f3; color:#fff; }
+  .answer:hover { transform:scale(1.05); }
+  .correct { background:#4caf50 !important; }
+  .wrong { background:#f44336 !important; }
+  .score { font-size:22px; margin-top:20px; }
+  .timer { font-size:20px; margin:10px; color:#e91e63; }
+  .explanation { margin-top:14px; text-align:left; color:#333; background:#f5f5f7; padding:12px; border-radius:10px; }
+  button { margin:10px; padding:10px 20px; border:none; border-radius:8px; background:#ff416c; color:#fff; font-size:16px; cursor:pointer; }
+  button:hover { background:#ff4b2b; }
+  input[type=text] { padding:10px; font-size:16px; width:60%; margin-top:10px; }
+</style>
+</head>
+<body>
+  <h1>🔧 Probleme & Lösungen (25 Fragen)</h1>
+  <div class="quiz-box" id="quiz">
+    <div class="question" id="question">Frage</div>
+    <div class="answers" id="answers"></div>
+    <div id="fillInput" style="display:none;">
+      <input type="text" id="userFill" placeholder="Antwort eingeben" />
+      <button onclick="submitFill()">Antwort prüfen</button>
+    </div>
+    <div class="explanation" id="explanation" style="display:none;"></div>
+    <div class="timer" id="timer">⏱ 20s</div>
+    <div class="score" id="score">Punkte: 0</div>
+    <button onclick="prevQuestion()">⬅️ Zurück</button>
+    <button onclick="nextQuestion()">➡️ Nächste Frage</button><br><br>
+    <a href="chapter6.html" style="color:#ff416c; font-weight:bold;">🔙 Zurück zu Lektion 6</a>
+  </div>
+<script>
+const quizData = [
+{question:"Mein Auto ist kaputt. Ich muss zur ___ gehen.", type:"mc", answers:["Schule","Apotheke","Werkstatt","Bank"], correct:"Werkstatt", explain:`Richtig: Bei Auto-Problemen gehst du zur Werkstatt.`},
+{question:"Mein Handy ist weg. Ich gehe zum ___.", type:"mc", answers:["Fundbüro","Museum","Bahnhof","Arzt"], correct:"Fundbüro", explain:`Richtig: Verlorene Dinge findet man im Fundbüro.`},
+{question:"Ich habe Zahnschmerzen. Ich gehe zum ___.", type:"mc", answers:["Friseur","Zahnarzt","Mechaniker","Lehrer"], correct:"Zahnarzt", explain:`Richtig: Zahnschmerzen behandelt der Zahnarzt.`},
+{question:"Mein Computer ist kaputt. Ich brauche einen ___.", type:"mc", answers:["Apotheker","Koch","Polizist","Techniker"], correct:"Techniker", explain:`Richtig: Ein Techniker repariert Computer.`},
+{question:"Mein Fahrrad ist kaputt. Ich gehe zum ___.", type:"mc", answers:["Fahrradladen","Postamt","Bäcker","Supermarkt"], correct:"Fahrradladen", explain:`Richtig: Fahrräder werden im Fahrradladen repariert.`},
+{question:"Ich habe Fieber. Ich gehe zum ___.", type:"mc", answers:["Bäcker","Mechaniker","Arzt","Lehrer"], correct:"Arzt", explain:`Richtig: Mit Fieber gehst du zum Arzt.`},
+{question:"Meine Kreditkarte ist weg. Ich rufe sofort die ___ an.", type:"mc", answers:["Schule","Post","Bank","Apotheke"], correct:"Bank", explain:`Richtig: Bei Kartenverlust ruft man die Bank an.`},
+{question:"Mein Fernseher funktioniert nicht. Ich rufe den ___ an.", type:"mc", answers:["Polizist","Zahnarzt","Bäcker","Elektriker"], correct:"Elektriker", explain:`Richtig: Elektriker reparieren Fernseher.`},
+{question:"Ich habe Halsschmerzen. Ich trinke ___.", type:"mc", answers:["Limonade","Cola","Tee","Bier"], correct:"Tee", explain:`Richtig: Bei Halsschmerzen hilft Tee.`},
+{question:"Meine Tasche ist weg. Ich gehe zur ___.", type:"mc", answers:["Bank","Bäckerei","Polizei","Apotheke"], correct:"Polizei", explain:`Richtig: Bei Diebstahl gehst du zur Polizei.`},
+{question:"Mein Drucker ist leer. Ich brauche neue ___.", type:"mc", answers:["Tabletten","Patronen","Zahnpasta","Schuhe"], correct:"Patronen", explain:`Richtig: Drucker brauchen Patronen.`},
+{question:"Ich habe Kopfschmerzen. Ich nehme eine ___.", type:"mc", answers:["Tablette","Banane","Jacke","Flasche"], correct:"Tablette", explain:`Richtig: Gegen Kopfschmerzen nimmt man eine Tablette.`},
+{question:"Mein Schlüssel ist weg. Ich rufe den ___.", type:"mc", answers:["Lehrer","Apotheker","Schlüsseldienst","Zahnarzt"], correct:"Schlüsseldienst", explain:`Richtig: Der Schlüsseldienst öffnet Türen.`},
+{question:"Das Licht ist kaputt. Ich rufe den ___.", type:"mc", answers:["Kellner","Bäcker","Elektriker","Polizist"], correct:"Elektriker", explain:`Richtig: Elektriker reparieren Stromprobleme.`},
+{question:"Ich habe Bauchschmerzen. Ich gehe in die ___.", type:"mc", answers:["Werkstatt","Post","Apotheke","Bank"], correct:"Apotheke", explain:`Richtig: Medikamente gibt es in der Apotheke.`},
+{question:"Der Computer ist kaputt. Ich ___ einen Techniker.", type:"fill", answers:["brauche","rufe an"], correct:"brauche", explain:`Richtig: Man braucht oder ruft einen Techniker an.`},
+{question:"Ich habe Zahnschmerzen. Ich gehe zum ___.", type:"fill", answers:["Zahnarzt"], correct:"Zahnarzt", explain:`Richtig: Zahnschmerzen → Zahnarzt.`},
+{question:"Mein Auto ist kaputt. Ich rufe die ___ an.", type:"fill", answers:["Werkstatt"], correct:"Werkstatt", explain:`Richtig: Autos werden in der Werkstatt repariert.`},
+{question:"Mein Handy ist weg. Ich gehe zum ___.", type:"fill", answers:["Fundbüro"], correct:"Fundbüro", explain:`Richtig: Verlorene Sachen → Fundbüro.`},
+{question:"Ich habe Fieber. Ich gehe zum ___.", type:"fill", answers:["Arzt"], correct:"Arzt", explain:`Richtig: Mit Fieber gehst du zum Arzt.`},
+{question:"Mein Schlüssel ist weg. Ich rufe den ___.", type:"fill", answers:["Schlüsseldienst"], correct:"Schlüsseldienst", explain:`Richtig: Der Schlüsseldienst öffnet Türen.`},
+{question:"Ich habe Kopfschmerzen. Ich nehme eine ___.", type:"fill", answers:["Tablette"], correct:"Tablette", explain:`Richtig: Gegen Kopfschmerzen nimmt man Tabletten.`},
+{question:"Meine Kreditkarte ist weg. Ich rufe die ___ an.", type:"fill", answers:["Bank"], correct:"Bank", explain:`Richtig: Bei Kartenverlust ruft man die Bank an.`},
+{question:"Das Licht ist kaputt. Ich rufe den ___.", type:"fill", answers:["Elektriker"], correct:"Elektriker", explain:`Richtig: Elektriker reparieren Lampen.`},
+{question:"Ich habe Bauchschmerzen. Ich gehe in die ___.", type:"fill", answers:["Apotheke"], correct:"Apotheke", explain:`Richtig: Medikamente → Apotheke.`}
+];
+let current=0,score=0,timer,timeLeft=20;
+const qEl=document.getElementById("question");
+const aEl=document.getElementById("answers");
+const tEl=document.getElementById("timer");
+const sEl=document.getElementById("score");
+const eEl=document.getElementById("explanation");
+const fillBox=document.getElementById("fillInput");
+const userFill=document.getElementById("userFill");
+
+function loadQuestion(){
+  const q=quizData[current];
+  qEl.innerHTML=(current+1)+". "+q.question;
+  aEl.innerHTML=""; eEl.style.display="none"; eEl.innerHTML="";
+  userFill.value=""; fillBox.style.display="none";
+  if(q.type==="mc"){
+    aEl.style.display="grid";
+    q.answers.forEach(ans=>{
+      const btn=document.createElement("div");
+      btn.className="answer"; btn.innerText=ans;
+      btn.onclick=()=>checkAnswer(btn,ans,q.correct,q.explain);
+      aEl.appendChild(btn);
+    });
+  } else {
+    aEl.style.display="none";
+    fillBox.style.display="block";
+  }
+  resetTimer();
+}
+function lockAnswers(){ document.querySelectorAll(".answer").forEach(b=>b.style.pointerEvents="none"); }
+function checkAnswer(button,answer,correct,explanation){
+  clearInterval(timer); lockAnswers();
+  if(answer===correct){ button.classList.add("correct"); score+=10; }
+  else{ button.classList.add("wrong"); }
+  sEl.innerText="Punkte: "+score; eEl.style.display="block"; eEl.innerHTML=explanation;
+}
+function submitFill(){
+  clearInterval(timer);
+  const q=quizData[current]; const ans=userFill.value.trim().toLowerCase();
+  if(q.answers.map(a=>a.toLowerCase()).includes(ans)){ score+=10; eEl.innerHTML="✅ "+q.explain; }
+  else{ eEl.innerHTML="❌ Falsch. "+q.explain; }
+  sEl.innerText="Punkte: "+score; eEl.style.display="block";
+}
+function nextQuestion(){
+  clearInterval(timer); current++;
+  if(current<quizData.length) loadQuestion();
+  else document.getElementById("quiz").innerHTML="<h2>Quiz beendet!</h2><p>Endpunktzahl: "+score+"</p><a href='chapter6.html'>🔙 Zurück zu Lektion 6</a>";
+}
+function prevQuestion(){
+  if(current>0){ current--; loadQuestion(); }
+}
+function resetTimer(){
+  timeLeft=20; tEl.innerText="⏱ "+timeLeft+"s";
+  clearInterval(timer);
+  timer=setInterval(()=>{
+    timeLeft--; tEl.innerText="⏱ "+timeLeft+"s";
+    if(timeLeft<=0){ clearInterval(timer);
+      const q=quizData[current];
+      eEl.style.display="block"; eEl.innerHTML="⏰ Zeit abgelaufen. "+q.explain;
+    }
+  },1000);
+}
+loadQuestion();
+</script>
+</body>
+</html>
