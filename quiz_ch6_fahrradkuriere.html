@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>🚲 Fahrradkuriere & Alltag (50 Fragen)</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: linear-gradient(to right, #56ab2f, #a8e063); text-align: center; padding: 20px; color: #333; }
+    .quiz-box { background:#fff; padding:20px; border-radius:15px; max-width:850px; margin:auto; box-shadow:0 6px 12px rgba(0,0,0,0.3);}
+    .question { font-size:20px; margin-bottom:20px; }
+    .answers { display:grid; gap:10px; }
+    .answer { padding:12px; border-radius:8px; cursor:pointer; background:#2196f3; color:#fff; transition:0.3s; }
+    .answer:hover { transform:scale(1.05); }
+    .correct { background:#4caf50 !important; }
+    .wrong { background:#f44336 !important; }
+    .score { font-size:18px; margin-top:20px; }
+    .timer { font-size:18px; margin:10px; color:#e91e63; }
+    .explanation { margin-top:12px; text-align:left; color:#333; background:#f5f5f5; padding:10px; border-radius:8px; }
+    input[type="text"] { padding:8px; font-size:16px; width:60%; }
+    button { margin-top:10px; padding:10px 20px; font-size:16px; cursor:pointer; background:#ff416c; border:none; border-radius:8px; color:#fff; }
+    button:hover { background:#ff4b2b; }
+    .text-box { background:#f0f0f0; padding:12px; border-radius:10px; margin:15px 0; text-align:left; }
+  </style>
+</head>
+<body>
+  <h1>🚲 Fahrradkuriere & Alltag (50 Fragen)</h1>
+  <div class="quiz-box" id="quiz">
+    <div id="passage" class="text-box" style="display:none;">
+      <b>Text:</b><br>
+      Lukas ist Fahrradkurier in Berlin. Er beginnt seine Arbeit um 10 Uhr morgens.<br>
+      Er bringt Pizza, Getränke und Pakete zu den Kunden. Oft fährt er 30 Kilometer am Tag.<br>
+      Manchmal ist das Wetter schlecht, aber er fährt trotzdem. Am Abend ist er sehr müde,<br>
+      aber er verdient gutes Geld.
+    </div>
+    <div class="question" id="question">Frage</div>
+    <div class="answers" id="answers"></div>
+    <div id="fillin" style="display:none;">
+      <input type="text" id="fillInput" placeholder="Deine Antwort">
+      <button onclick="checkFill()">Antwort prüfen</button>
+    </div>
+    <div class="explanation" id="explanation" style="display:none;"></div>
+    <div class="timer" id="timer"></div>
+    <div class="score" id="score">Punkte: 0</div>
+    <button onclick="prevQuestion()">⬅ Zurück</button>
+    <button onclick="nextQuestion()">Nächste Frage ➡</button>
+    <p><a href="chapter6.html">🔙 Zurück zu Lektion 6</a></p>
+  </div>
+
+<script>
+const quizData = [
+  // ---- 20 Multiple Choice ----
+  {type:"mc", question:"Wie sagt man ‚bicycle‘ auf Deutsch?", answers:["das Fahrrad","der Zug","das Auto","der Bus"], correct:"das Fahrrad", explain:"Fahrrad = bicycle."},
+  {type:"mc", question:"Was bedeutet ‚der Kurier‘?", answers:["courier","driver","teacher","doctor"], correct:"courier", explain:"Kurier = courier."},
+  {type:"mc", question:"Was braucht ein Fahrradkurier?", answers:["ein Fahrrad","ein Flugzeug","ein Schiff","ein Pferd"], correct:"ein Fahrrad", explain:"Er fährt mit dem Fahrrad."},
+  {type:"mc", question:"Welches Verkehrsmittel ist am schnellsten in der Stadt?", answers:["das Fahrrad","das Flugzeug","das Schiff","das Pferd"], correct:"das Fahrrad", explain:"In der Stadt ist oft das Fahrrad am schnellsten."},
+  {type:"mc", question:"‚der Helm‘ bedeutet…", answers:["helmet","hat","cap","glasses"], correct:"helmet", explain:"Helm = helmet."},
+  {type:"mc", question:"Welcher Satz ist korrekt?", answers:["Der Kurier fährt mit dem Fahrrad.","Der Kurier fliegt mit dem Fahrrad.","Der Kurier schwimmt mit dem Fahrrad.","Der Kurier rennt mit dem Fahrrad."], correct:"Der Kurier fährt mit dem Fahrrad.", explain:"Man fährt mit dem Fahrrad."},
+  {type:"mc", question:"Welches Wort passt? Der Kurier ___ Pizza.", answers:["bringt","isst","kauft","schreibt"], correct:"bringt", explain:"Er bringt Pizza."},
+  {type:"mc", question:"Was bedeutet ‚die Lieferung‘?", answers:["delivery","lesson","dinner","light"], correct:"delivery", explain:"Lieferung = delivery."},
+  {type:"mc", question:"Wann arbeitet der Kurier?", answers:["am Morgen","in der Nacht","nie","nur am Sonntag"], correct:"am Morgen", explain:"Er beginnt am Morgen."},
+  {type:"mc", question:"‚die Tasche‘ bedeutet…", answers:["bag","bicycle","helmet","wheel"], correct:"bag", explain:"Tasche = bag."},
+  {type:"mc", question:"Welches Wort passt? Ich warte ___ dem Restaurant.", answers:["vor","hinter","über","zwischen"], correct:"vor", explain:"Man wartet vor dem Restaurant."},
+  {type:"mc", question:"‚die Kreuzung‘ bedeutet…", answers:["crossroad","bridge","station","train"], correct:"crossroad", explain:"Kreuzung = crossroad."},
+  {type:"mc", question:"Was trägt der Kurier?", answers:["eine Tasche","eine Uhr","einen Hut","ein Buch"], correct:"eine Tasche", explain:"Der Kurier trägt eine Tasche."},
+  {type:"mc", question:"Welches Wort passt? Der Kurier fährt 30 ___ pro Tag.", answers:["Kilometer","Liter","Euro","Sekunden"], correct:"Kilometer", explain:"Kilometer = distance."},
+  {type:"mc", question:"‚das Paket‘ bedeutet…", answers:["package","letter","book","bike"], correct:"package", explain:"Paket = package."},
+  {type:"mc", question:"Wo fährt der Kurier?", answers:["in der Stadt","im Meer","im Wald","im Flugzeug"], correct:"in der Stadt", explain:"Kuriere fahren in der Stadt."},
+  {type:"mc", question:"‚der Kunde‘ bedeutet…", answers:["customer","driver","police","teacher"], correct:"customer", explain:"Kunde = customer."},
+  {type:"mc", question:"Was braucht der Kurier bei Regen?", answers:["eine Regenjacke","eine Badehose","eine Sonnenbrille","ein T-Shirt"], correct:"eine Regenjacke", explain:"Bei Regen braucht man eine Regenjacke."},
+  {type:"mc", question:"‚verdienen‘ bedeutet…", answers:["to earn","to run","to read","to wait"], correct:"to earn", explain:"verdienen = to earn."},
+  {type:"mc", question:"Welcher Satz ist richtig?", answers:["Der Kurier ist am Abend müde.","Der Kurier fliegt nach Berlin.","Der Kurier schwimmt ins Büro.","Der Kurier fährt ins Flugzeug."], correct:"Der Kurier ist am Abend müde.", explain:"Nach der Arbeit ist er müde."},
+
+  // ---- 20 Fill in the Blank ----
+  {type:"fill", question:"(to deliver) Der Kurier ___ Pizza.", correct:"liefert", explain:"Er liefert Pizza."},
+  {type:"fill", question:"(the bicycle) Er fährt mit ___.", correct:"dem Fahrrad", explain:"Fahrrad ist neutral → mit dem Fahrrad."},
+  {type:"fill", question:"(the helmet) Er trägt ___.", correct:"einen Helm", explain:"Helm ist maskulin → einen Helm."},
+  {type:"fill", question:"(the bag) Er hat ___ auf dem Rücken.", correct:"eine Tasche", explain:"Tasche ist feminin → eine Tasche."},
+  {type:"fill", question:"(the package) Er bringt ___.", correct:"ein Paket", explain:"Paket ist neutral → ein Paket."},
+  {type:"fill", question:"(to earn money) Er ___ gutes Geld.", correct:"verdient", explain:"verdienen = to earn."},
+  {type:"fill", question:"(the customer) Er spricht mit ___.", correct:"dem Kunden", explain:"Kunde ist maskulin → mit dem Kunden."},
+  {type:"fill", question:"(the delivery) Die ___ ist pünktlich.", correct:"Lieferung", explain:"Lieferung ist feminin → die Lieferung."},
+  {type:"fill", question:"(the street) Er fährt auf ___.", correct:"der Straße", explain:"Straße ist feminin → auf der Straße."},
+  {type:"fill", question:"(rain) Bei ___ trägt er eine Jacke.", correct:"Regen", explain:"Bei Regen."},
+  {type:"fill", question:"(the city) Er arbeitet in ___.", correct:"der Stadt", explain:"Stadt ist feminin → in der Stadt."},
+  {type:"fill", question:"(the morning) Er beginnt am ___.", correct:"Morgen", explain:"am Morgen."},
+  {type:"fill", question:"(30 kilometers) Er fährt jeden Tag ___.", correct:"30 Kilometer", explain:"30 Kilometer pro Tag."},
+  {type:"fill", question:"(to be tired) Am Abend ___ er.", correct:"ist müde", explain:"Am Abend ist er müde."},
+  {type:"fill", question:"(good money) Er verdient ___.", correct:"gutes Geld", explain:"Er verdient gutes Geld."},
+  {type:"fill", question:"(Berlin) Er arbeitet in ___.", correct:"Berlin", explain:"Berlin."},
+  {type:"fill", question:"(bad weather) Bei ___ fährt er trotzdem.", correct:"schlechtem Wetter", explain:"Bei schlechtem Wetter."},
+  {type:"fill", question:"(the job) Sein ___ ist Fahrradkurier.", correct:"Beruf", explain:"Sein Beruf ist Fahrradkurier."},
+  {type:"fill", question:"(pizza) Heute liefert er ___.", correct:"Pizza", explain:"Er liefert Pizza."},
+  {type:"fill", question:"(drinks) Er bringt auch ___.", correct:"Getränke", explain:"Er bringt Getränke."},
+
+  // ---- 10 True/False based on Passage ----
+  {type:"mc", question:"Lukas beginnt um 8 Uhr morgens.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: Er beginnt um 10 Uhr."},
+  {type:"mc", question:"Lukas bringt auch Pakete.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Er bringt Pizza, Getränke und Pakete."},
+  {type:"mc", question:"Lukas fährt oft 30 Kilometer am Tag.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Oft fährt er 30 km."},
+  {type:"mc", question:"Das Wetter ist immer gut.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Manchmal ist das Wetter schlecht."},
+  {type:"mc", question:"Am Abend ist Lukas müde.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Am Abend ist er sehr müde."},
+  {type:"mc", question:"Lukas verdient kein Geld.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: Er verdient gutes Geld."},
+  {type:"mc", question:"Lukas arbeitet in München.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: Lukas ist in Berlin."},
+  {type:"mc", question:"Lukas bringt auch Getränke.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Pizza, Getränke und Pakete."},
+  {type:"mc", question:"Lukas fährt nie bei schlechtem Wetter.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: Er fährt trotzdem."},
+  {type:"mc", question:"Lukas arbeitet als Fahrradkurier.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Sein Beruf ist Fahrradkurier."}
+];
+
+let current=0,score=0,timer,timeLeft=0;
+const qEl=document.getElementById("question");
+const aEl=document.getElementById("answers");
+const fEl=document.getElementById("fillin");
+const input=document.getElementById("fillInput");
+const tEl=document.getElementById("timer");
+const sEl=document.getElementById("score");
+const eEl=document.getElementById("explanation");
+const passage=document.getElementById("passage");
+
+function loadQuestion(){
+  const q=quizData[current];
+  qEl.innerHTML=(current+1)+". "+q.question;
+  aEl.innerHTML=""; fEl.style.display="none"; eEl.style.display="none"; eEl.innerHTML="";
+  if(current>=40){ passage.style.display="block"; } else { passage.style.display="none"; }
+  if(q.type==="mc"){
+    q.answers.forEach(ans=>{
+      const btn=document.createElement("div");
+      btn.className="answer"; btn.innerText=ans;
+      btn.onclick=()=>checkAnswer(btn,ans,q.correct,q.explain);
+      aEl.appendChild(btn);
+    });
+    resetTimer(20);
+  } else {
+    fEl.style.display="block";
+    input.value=""; input.focus();
+    resetTimer(35);
+  }
+}
+function checkAnswer(button,answer,correct,explanation){
+  clearInterval(timer); lockAnswers();
+  if(answer===correct){ button.classList.add("correct"); score+=10; }
+  else{ button.classList.add("wrong"); }
+  sEl.innerText="Punkte: "+score;
+  eEl.style.display="block"; eEl.innerHTML=explanation;
+}
+function checkFill(){
+  clearInterval(timer);
+  const q=quizData[current];
+  let ans=input.value.trim();
+  if(ans===q.correct){ score+=10; eEl.innerHTML="✅ Richtig: "+q.correct; }
+  else{ eEl.innerHTML="❌ Falsch. Richtige Antwort: "+q.correct; }
+  eEl.style.display="block"; sEl.innerText="Punkte: "+score;
+}
+function lockAnswers(){ document.querySelectorAll(".answer").forEach(b=>b.style.pointerEvents="none"); }
+function nextQuestion(){ clearInterval(timer); current++; if(current<quizData.length) loadQuestion(); else qEl.innerHTML="🎉 Quiz beendet! Punkte: "+score; }
+function prevQuestion(){ if(current>0){ current--; loadQuestion(); } }
+function resetTimer(seconds){
+  timeLeft=seconds; tEl.innerText="⏱ "+timeLeft+"s"; clearInterval(timer);
+  timer=setInterval(()=>{ timeLeft--; tEl.innerText="⏱ "+timeLeft+"s";
+    if(timeLeft<=0){ clearInterval(timer);
+      const q=quizData[current]; eEl.style.display="block"; eEl.innerHTML="⏰ Zeit abgelaufen. Richtige Antwort: "+q.correct;
+    }
+  },1000);
+}
+loadQuestion();
+</script>
+</body>
+</html>
