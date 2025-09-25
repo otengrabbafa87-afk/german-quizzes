@@ -5,32 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Quiz – Kapitel 1: Internationale Wörter</title>
 <style>
-  body {
-    margin:0; font-family:Arial,sans-serif;
+  body { margin:0; font-family:Arial,sans-serif;
     background: linear-gradient(to bottom,#000 0% 33%,#dd0000 33% 66%,#ffce00 66% 100%);
-    color:#fff; min-height:100vh;
-    display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
-  }
-  body::before{
-    content:""; position:fixed; inset:0;
+    color:#fff; min-height:100vh; display:flex; flex-direction:column; align-items:center; }
+  body::before{content:"";position:fixed;inset:0;
     background: radial-gradient(120% 120% at 50% -10%,rgba(255,255,255,.08),transparent 60%),
                 radial-gradient(120% 120% at 50% 110%,rgba(0,0,0,.25),transparent 55%);
-    z-index:0;
-  }
-  header, .quiz-box {position:relative; z-index:1;}
+    z-index:0;}
+  header,.quiz-box{position:relative;z-index:1;}
   header{text-align:center;padding:30px 20px;}
   h1{margin:0 0 10px;font-size:2em;}
-  .quiz-box{
-    background:#fff;color:#333;padding:20px;border-radius:16px;
-    box-shadow:0 6px 16px rgba(0,0,0,.3); max-width:750px;width:95%;
-    margin-bottom:40px;
-  }
+  .quiz-box{background:#fff;color:#333;padding:20px;border-radius:16px;
+    box-shadow:0 6px 16px rgba(0,0,0,.3);max-width:750px;width:95%;margin-bottom:40px;}
   .question{font-size:1.2em;margin-bottom:20px;}
   .answers{display:grid;gap:12px;}
-  .answer{
-    background:#2196f3;color:#fff;padding:12px;border-radius:10px;
-    cursor:pointer;font-weight:bold;transition:.2s;
-  }
+  .answer{background:#2196f3;color:#fff;padding:12px;border-radius:10px;
+    cursor:pointer;font-weight:bold;transition:.2s;}
   .answer:hover{transform:scale(1.03);}
   .correct{background:#4caf50!important;}
   .wrong{background:#f44336!important;}
@@ -43,18 +33,20 @@
   .back:hover{background:#bbb;}
   .timer{font-size:1.1em;color:#e91e63;margin:10px 0;}
   .score{margin-top:10px;font-size:1.2em;}
+  .passage{background:#eee;color:#000;padding:15px;border-radius:10px;margin:15px 0;}
 </style>
 </head>
 <body>
 <header>
   <h1>🌍 Quiz – Kapitel 1: Internationale Wörter</h1>
-  <p>Erkenne und benutze internationale Wörter im Deutschen.</p>
+  <p>50 Fragen: Internationale Wörter im Deutschen.</p>
 </header>
 
 <div class="quiz-box" id="quiz">
   <div class="question" id="question">Frage</div>
   <div class="answers" id="answers"></div>
   <input type="text" id="fillInput" style="display:none;width:100%;padding:10px;font-size:1em;margin-top:10px;" placeholder="Antwort hier eingeben">
+  <div class="passage" id="passage" style="display:none;"></div>
   <div class="explanation" id="explanation"></div>
   <div class="timer" id="timer">⏱ 20s</div>
   <div class="score" id="score">Punkte: 0</div>
@@ -65,16 +57,36 @@
 </div>
 
 <script>
-const quizData = [
-  // --- Multiple Choice (20) ---
-  {type:"mc", question:"Welches dieser Wörter ist ein internationales Wort?", answers:["Apfel","Telefon","Stuhl","Tisch"], correct:"Telefon", explain:"'Telefon' ist ein internationales Wort, in vielen Sprachen ähnlich."},
-  {type:"mc", question:"Was bedeutet 'Banane'?", answers:["Banana","Chair","Dog","Computer"], correct:"Banana", explain:"'Banane' ist ein internationales Wort: German → English = Banana."},
-  // ... (weitere 18 multiple choice Fragen) ...
+const passageText = "Im Supermarkt kaufen viele Leute internationale Produkte: Bananen, Kaffee, Radio, Computer, Taxi, Hotel und Internet. Diese Wörter sind fast überall auf der Welt verständlich.";
 
-  // --- Fill in (20) ---
-  {type:"fill", question:"Übersetze ins Deutsche: (Radio)", correct:"Radio", explain:"'Radio' ist ein internationales Wort, gleich in Deutsch und Englisch."},
-  {type:"fill", question:"Übersetze ins Deutsche: (Baby)", correct:"Baby", explain:"'Baby' ist identisch in Deutsch und Englisch."}
-  // ... (weitere 18 fill-in Fragen) ...
+const quizData = [
+  // --- Multiple Choice (1–20) ---
+  {type:"mc",question:"Welches Wort ist international?",answers:["Apfel","Telefon","Stuhl","Tisch"],correct:"Telefon",explain:"'Telefon' ist ein internationales Wort."},
+  {type:"mc",question:"Welches ist KEIN internationales Wort?",answers:["Banane","Computer","Apfel","Taxi"],correct:"Apfel",explain:"'Apfel' ist typisch Deutsch, nicht international."},
+  {type:"mc",question:"Was bedeutet 'Radio'?",answers:["Radio","Chair","Dog","Banana"],correct:"Radio",explain:"'Radio' ist identisch im Deutschen und Englischen."},
+  {type:"mc",question:"Welches Wort ist auch im Englischen gleich?",answers:["Haus","Baby","Brot","Stuhl"],correct:"Baby",explain:"'Baby' wird international verstanden."},
+  {type:"mc",question:"Welches Wort versteht man weltweit?",answers:["Taxi","Tisch","Apfel","Schule"],correct:"Taxi",explain:"'Taxi' ist in fast allen Sprachen gleich."},
+  // ... add 15 more MC Fragen ...
+  
+  // --- Fill in (21–40) ---
+  {type:"fill",question:"Übersetze ins Deutsche: (Banana)",correct:"Banane",explain:"'Banane' ist ein internationales Wort."},
+  {type:"fill",question:"Übersetze ins Deutsche: (Computer)",correct:"Computer",explain:"'Computer' wird gleich geschrieben."},
+  {type:"fill",question:"Übersetze ins Deutsche: (Hotel)",correct:"Hotel",explain:"'Hotel' ist ein internationales Wort."},
+  {type:"fill",question:"Übersetze ins Deutsche: (Internet)",correct:"Internet",explain:"'Internet' ist überall gleich."},
+  {type:"fill",question:"Übersetze ins Deutsche: (Taxi)",correct:"Taxi",explain:"'Taxi' ist gleich in Deutsch und Englisch."},
+  // ... add 15 more Fill Fragen ...
+
+  // --- True/False (41–50, with passage) ---
+  {type:"tf",question:"Im Text kaufen die Leute Bananen.",correct:"true",explain:"Im Text steht: 'Bananen'."},
+  {type:"tf",question:"Im Text gibt es das Wort 'Apfel'.",correct:"false",explain:"'Apfel' steht nicht im Text."},
+  {type:"tf",question:"Das Wort 'Computer' kommt im Text vor.",correct:"true",explain:"Ja, 'Computer' ist im Text."},
+  {type:"tf",question:"Die Leute kaufen auch Brot.",correct:"false",explain:"Brot ist nicht im Text."},
+  {type:"tf",question:"Das Wort 'Hotel' ist im Text.",correct:"true",explain:"Ja, 'Hotel' wird genannt."},
+  {type:"tf",question:"Das Wort 'Taxi' ist im Text.",correct:"true",explain:"Ja, 'Taxi' wird genannt."},
+  {type:"tf",question:"Das Wort 'Radio' ist im Text.",correct:"true",explain:"Ja, 'Radio' ist dabei."},
+  {type:"tf",question:"Das Wort 'Schule' ist im Text.",correct:"false",explain:"Nein, 'Schule' kommt nicht vor."},
+  {type:"tf",question:"Im Text gibt es 'Internet'.",correct:"true",explain:"Ja, 'Internet' ist im Text."},
+  {type:"tf",question:"Alle Wörter im Text sind typisch deutsch.",correct:"false",explain:"Nein, sie sind internationale Wörter."}
 ];
 
 let current=0,score=0,timer,timeLeft=20;
@@ -84,14 +96,17 @@ const tEl=document.getElementById("timer");
 const sEl=document.getElementById("score");
 const eEl=document.getElementById("explanation");
 const fIn=document.getElementById("fillInput");
+const pEl=document.getElementById("passage");
 
 function loadQuestion(){
   clearInterval(timer);
   const q=quizData[current];
   qEl.innerHTML=(current+1)+". "+q.question;
-  aEl.innerHTML=""; fIn.style.display="none"; fIn.value="";
+  aEl.innerHTML=""; fIn.style.display="none"; pEl.style.display="none"; fIn.value="";
   eEl.style.display="none"; eEl.innerHTML="";
-  if(q.type==="mc"){
+
+  if(current>=40){ pEl.style.display="block"; pEl.innerHTML=passageText; timeLeft=300; }
+  else if(q.type==="mc"){ 
     q.answers.forEach(ans=>{
       const btn=document.createElement("div");
       btn.className="answer"; btn.innerText=ans;
@@ -99,21 +114,26 @@ function loadQuestion(){
       aEl.appendChild(btn);
     });
     timeLeft=20;
-  }else{
+  } else if(q.type==="fill"){
     fIn.style.display="block";
     const submitBtn=document.createElement("button");
     submitBtn.innerText="Antwort prüfen";
     submitBtn.onclick=()=>checkFill(q.correct,q.explain);
     aEl.appendChild(submitBtn);
     timeLeft=35;
+  } else if(q.type==="tf"){
+    ["true","false"].forEach(choice=>{
+      const btn=document.createElement("div");
+      btn.className="answer"; btn.innerText=(choice==="true"?"Richtig":"Falsch");
+      btn.onclick=()=>checkAnswer(btn,choice,q.correct,q.explain);
+      aEl.appendChild(btn);
+    });
   }
+
   tEl.innerText="⏱ "+timeLeft+"s";
   timer=setInterval(()=>{
     timeLeft--; tEl.innerText="⏱ "+timeLeft+"s";
-    if(timeLeft<=0){
-      clearInterval(timer);
-      eEl.style.display="block"; eEl.innerHTML="⏰ Zeit abgelaufen. "+q.explain;
-    }
+    if(timeLeft<=0){ clearInterval(timer); eEl.style.display="block"; eEl.innerHTML="⏰ Zeit abgelaufen. "+q.explain; }
   },1000);
 }
 
@@ -129,8 +149,7 @@ function checkFill(correct,explanation){
   let answer=fIn.value.trim();
   if(answer.toLowerCase()===correct.toLowerCase()){ score+=10; eEl.innerHTML="✅ Richtig! "+explanation; }
   else{ eEl.innerHTML="❌ Falsch. Richtig: "+correct+". "+explanation; }
-  sEl.innerText="Punkte: "+score;
-  eEl.style.display="block";
+  sEl.innerText="Punkte: "+score; eEl.style.display="block";
 }
 function nextQuestion(){ if(current<quizData.length-1){ current++; loadQuestion(); } }
 function prevQuestion(){ if(current>0){ current--; loadQuestion(); } }
