@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>🔤 Kapitel 1 – Buchstabieren (50 Fragen)</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: linear-gradient(to right, #f7971e, #ffd200); text-align: center; padding: 20px; color: #333; }
+    .quiz-box { background:#fff; padding:20px; border-radius:15px; max-width:850px; margin:auto; box-shadow:0 6px 12px rgba(0,0,0,0.3);}
+    .question { font-size:20px; margin-bottom:20px; }
+    .answers { display:grid; gap:10px; }
+    .answer { padding:12px; border-radius:8px; cursor:pointer; background:#2196f3; color:#fff; transition:0.3s; }
+    .answer:hover { transform:scale(1.05); }
+    .correct { background:#4caf50 !important; }
+    .wrong { background:#f44336 !important; }
+    .score { font-size:18px; margin-top:20px; }
+    .timer { font-size:18px; margin:10px; color:#e91e63; }
+    .explanation { margin-top:12px; text-align:left; color:#333; background:#f5f5f5; padding:10px; border-radius:8px; }
+    input[type="text"] { padding:8px; font-size:16px; width:60%; }
+    button { margin-top:10px; padding:10px 20px; font-size:16px; cursor:pointer; background:#ff416c; border:none; border-radius:8px; color:#fff; }
+    button:hover { background:#ff4b2b; }
+    .text-box { background:#f0f0f0; padding:12px; border-radius:10px; margin:15px 0; text-align:left; }
+  </style>
+</head>
+<body>
+  <h1>🔤 Kapitel 1 – Buchstabieren (50 Fragen)</h1>
+  <div class="quiz-box" id="quiz">
+    <div id="passage" class="text-box" style="display:none;">
+      <b>Text:</b><br>
+      Hallo! Das ist meine Wohnung.<br>
+      Das Haus hat vier Zimmer: ein Wohnzimmer, eine Küche, ein Bad und ein Schlafzimmer.<br>
+      Das Fenster im Wohnzimmer ist groß.<br>
+      Die Tür ist neu.<br>
+      Vor dem Haus ist eine Straße.
+    </div>
+    <div class="question" id="question">Frage</div>
+    <div class="answers" id="answers"></div>
+    <div id="fillin" style="display:none;">
+      <input type="text" id="fillInput" placeholder="Deine Antwort">
+      <button onclick="checkFill()">Antwort prüfen</button>
+    </div>
+    <div class="explanation" id="explanation" style="display:none;"></div>
+    <div class="timer" id="timer"></div>
+    <div class="score" id="score">Punkte: 0</div>
+    <button onclick="prevQuestion()">⬅ Zurück</button>
+    <button onclick="nextQuestion()">Nächste Frage ➡</button>
+    <p><a href="chapter1.html">🔙 Zurück zu Lektion 1</a></p>
+  </div>
+
+<script>
+// 🔀 Shuffle helper
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+const quizData = [
+  // ---- 20 Multiple Choice ----
+  {type:"mc", question:"Wie buchstabiert man „the school“ auf Deutsch?", answers:["der S-C-H-U-L-E","die S-C-H-U-L-E","das S-C-H-U-E-L-E","ein S-C-H-O-L-E"], correct:"die S-C-H-U-L-E", explain:"Richtig: die S-C-H-U-L-E."},
+  {type:"mc", question:"Wie buchstabiert man „the table“ auf Deutsch?", answers:["die T-I-S-C-H","der T-I-S-C-H","ein T-I-S-C","das T-E-B-L-E"], correct:"der T-I-S-C-H", explain:"Richtig: der T-I-S-C-H."},
+  {type:"mc", question:"Wie buchstabiert man „the chair“ auf Deutsch?", answers:["die S-T-U-H-L-E","ein S-T-O-O-L","das S-T-U-L","der S-T-U-H-L"], correct:"der S-T-U-H-L", explain:"Richtig: der S-T-U-H-L."},
+  {type:"mc", question:"Wie buchstabiert man „the book“ auf Deutsch?", answers:["der B-O-O-K","das B-U-C-H","ein B-O-C-H","die B-U-C-H"], correct:"das B-U-C-H", explain:"Richtig: das B-U-C-H."},
+  {type:"mc", question:"Wie buchstabiert man „the house“ auf Deutsch?", answers:["die H-O-U-S-E","ein H-A-S-E","das H-A-U-S","der H-A-U-S"], correct:"das H-A-U-S", explain:"Richtig: das H-A-U-S."},
+  {type:"mc", question:"Wie buchstabiert man „the city“ auf Deutsch?", answers:["das S-T-A-D","der S-T-E-A-D","ein S-T-A-D-E","die S-T-A-D-T"], correct:"die S-T-A-D-T", explain:"Richtig: die S-T-A-D-T."},
+  {type:"mc", question:"Wie buchstabiert man „the car“ auf Deutsch?", answers:["der A-U-T-O","das A-U-T-O","die A-T-O","ein O-T-A"], correct:"das A-U-T-O", explain:"Richtig: das A-U-T-O."},
+  {type:"mc", question:"Wie buchstabiert man „the woman“ auf Deutsch?", answers:["die F-R-A-U","der F-R-A-U","das F-R-A-U-E","ein F-R-O-W"], correct:"die F-R-A-U", explain:"Richtig: die F-R-A-U."},
+  {type:"mc", question:"Wie buchstabiert man „the man“ auf Deutsch?", answers:["das M-E-N","ein M-O-N","die M-A-N-E","der M-A-N-N"], correct:"der M-A-N-N", explain:"Richtig: der M-A-N-N."},
+  {type:"mc", question:"Wie buchstabiert man „the child“ auf Deutsch?", answers:["die K-I-N-E","das K-I-N-D","der K-I-N-D","ein C-H-I-L-D"], correct:"das K-I-N-D", explain:"Richtig: das K-I-N-D."},
+  {type:"mc", question:"Wie buchstabiert man „the friend (male)“ auf Deutsch?", answers:["die F-R-E-U-N-D","ein F-R-I-E-N-D","das F-R-E-N-D","der F-R-E-U-N-D"], correct:"der F-R-E-U-N-D", explain:"Richtig: der F-R-E-U-N-D."},
+  {type:"mc", question:"Wie buchstabiert man „the friend (female)“ auf Deutsch?", answers:["der F-R-E-U-N-D-I-N","die F-R-E-U-N-D-I-N","das F-R-E-N-D-I-N","ein F-R-E-N-T-I-N"], correct:"die F-R-E-U-N-D-I-N", explain:"Richtig: die F-R-E-U-N-D-I-N."},
+  {type:"mc", question:"Wie buchstabiert man „the teacher (male)“ auf Deutsch?", answers:["der L-E-H-R-E-R","die L-E-H-R-I-N","das L-E-H-R-E-R","ein L-E-R-R"], correct:"der L-E-H-R-E-R", explain:"Richtig: der L-E-H-R-E-R."},
+  {type:"mc", question:"Wie buchstabiert man „the teacher (female)“ auf Deutsch?", answers:["der L-E-H-R-E-R","die L-E-H-R-E-R-I-N","das L-E-R-R-I-N","ein L-E-H-R-E-R-I"], correct:"die L-E-H-R-E-R-I-N", explain:"Richtig: die L-E-H-R-E-R-I-N."},
+  {type:"mc", question:"Wie buchstabiert man „the student (male)“ auf Deutsch?", answers:["die S-T-U-D-E-N-T-I-N","der S-T-U-D-E-N-T","das S-T-U-D-E-N-T","ein S-T-O-O-D"], correct:"der S-T-U-D-E-N-T", explain:"Richtig: der S-T-U-D-E-N-T."},
+  {type:"mc", question:"Wie buchstabiert man „the student (female)“ auf Deutsch?", answers:["die S-T-U-D-E-N-T-I-N","der S-T-U-D-E-N-T","das S-T-U-D-E-N-T","ein S-T-U-D-E"], correct:"die S-T-U-D-E-N-T-I-N", explain:"Richtig: die S-T-U-D-E-N-T-I-N."},
+  {type:"mc", question:"Wie buchstabiert man „the room“ auf Deutsch?", answers:["das Z-I-M-M-E-R","der Z-I-M-M-E-R","ein Z-I-M-E-R","die Z-I-M-M-E"], correct:"das Z-I-M-M-E-R", explain:"Richtig: das Z-I-M-M-E-R."},
+  {type:"mc", question:"Wie buchstabiert man „the door“ auf Deutsch?", answers:["die T-Ü-R","das T-O-R","der T-U-R","ein T-U-E-R"], correct:"die T-Ü-R", explain:"Richtig: die T-Ü-R."},
+  {type:"mc", question:"Wie buchstabiert man „the window“ auf Deutsch?", answers:["das F-E-N-S-T-E-R","der F-E-N-S-T-E-R","die F-E-N-S-T-E","ein F-E-N-S-T"], correct:"das F-E-N-S-T-E-R", explain:"Richtig: das F-E-N-S-T-E-R."},
+  {type:"mc", question:"Wie buchstabiert man „the street“ auf Deutsch?", answers:["die S-T-R-A-ẞ-E","der S-T-R-A-S-S-E","das S-T-R-A-Z-E","ein S-T-R-E-E-T"], correct:"die S-T-R-A-ẞ-E", explain:"Richtig: die S-T-R-A-ẞ-E."},
+
+  // ---- 20 Fill in ----
+  {type:"fill", question:"the school → ___", correct:"die Schule", explain:"Richtig: die Schule."},
+  {type:"fill", question:"the table → ___", correct:"der Tisch", explain:"Richtig: der Tisch."},
+  {type:"fill", question:"the chair → ___", correct:"der Stuhl", explain:"Richtig: der Stuhl."},
+  {type:"fill", question:"the book → ___", correct:"das Buch", explain:"Richtig: das Buch."},
+  {type:"fill", question:"the house → ___", correct:"das Haus", explain:"Richtig: das Haus."},
+  {type:"fill", question:"the city → ___", correct:"die Stadt", explain:"Richtig: die Stadt."},
+  {type:"fill", question:"the car → ___", correct:"das Auto", explain:"Richtig: das Auto."},
+  {type:"fill", question:"the woman → ___", correct:"die Frau", explain:"Richtig: die Frau."},
+  {type:"fill", question:"the man → ___", correct:"der Mann", explain:"Richtig: der Mann."},
+  {type:"fill", question:"the child → ___", correct:"das Kind", explain:"Richtig: das Kind."},
+  {type:"fill", question:"the friend (m) → ___", correct:"der Freund", explain:"Richtig: der Freund."},
+  {type:"fill", question:"the friend (f) → ___", correct:"die Freundin", explain:"Richtig: die Freundin."},
+  {type:"fill", question:"the teacher (m) → ___", correct:"der Lehrer", explain:"Richtig: der Lehrer."},
+  {type:"fill", question:"the teacher (f) → ___", correct:"die Lehrerin", explain:"Richtig: die Lehrerin."},
+  {type:"fill", question:"the student (m) → ___", correct:"der Student", explain:"Richtig: der Student."},
+  {type:"fill", question:"the student (f) → ___", correct:"die Studentin", explain:"Richtig: die Studentin."},
+  {type:"fill", question:"the room → ___", correct:"das Zimmer", explain:"Richtig: das Zimmer."},
+  {type:"fill", question:"the door → ___", correct:"die Tür", explain:"Richtig: die Tür."},
+  {type:"fill", question:"the window → ___", correct:"das Fenster", explain:"Richtig: das Fenster."},
+  {type:"fill", question:"the street → ___", correct:"die Straße", explain:"Richtig: die Straße."},
+
+  // ---- 10 True/False ----
+  {type:"mc", question:"Das Haus hat vier Zimmer.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: vier Zimmer."},
+  {type:"mc", question:"Es gibt eine Küche im Haus.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: eine Küche."},
+  {type:"mc", question:"Das Fenster im Wohnzimmer ist klein.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: Es ist groß."},
+  {type:"mc", question:"Es gibt ein Schlafzimmer.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: ein Schlafzimmer."},
+  {type:"mc", question:"Die Tür ist alt.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: Sie ist neu."},
+  {type:"mc", question:"Vor dem Haus ist ein Garten.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: eine Straße."},
+  {type:"mc", question:"Es gibt ein Bad.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: ein Bad."},
+  {type:"mc", question:"Das Haus hat fünf Zimmer.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: vier Zimmer."},
+  {type:"mc", question:"Vor dem Haus ist eine Straße.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: eine Straße."},
+  {type:"mc", question:"Die Wohnung gehört Lukas.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Nicht im Text erwähnt."}
+];
+
+let current=0,score=0,timer,timeLeft=0;
+const qEl=document.getElementById("question");
+const aEl=document.getElementById("answers");
+const fEl=document.getElementById("fillin");
+const input=document.getElementById("fillInput");
+const tEl=document.getElementById("timer");
+const sEl=document.getElementById("score");
+const eEl=document.getElementById("explanation");
+const passage=document.getElementById("passage");
+
+function loadQuestion(){
+  const q=quizData[current];
+  qEl.innerHTML=(current+1)+". "+q.question;
+  aEl.innerHTML=""; fEl.style.display="none"; eEl.style.display="none"; eEl.innerHTML="";
+  if(current>=40){ passage.style.display="block"; } else { passage.style.display="none"; }
+
+  if(q.type==="mc"){
+    const shuffled = shuffle([...q.answers]); // shuffle options
+    shuffled.forEach(ans=>{
+      const btn=document.createElement("div");
+      btn.className="answer"; btn.innerText=ans;
+      btn.onclick=()=>checkAnswer(btn,ans,q.correct,q.explain);
+      aEl.appendChild(btn);
+    });
+
+    if(current<20) resetTimer(20);
+    else if(current<40) resetTimer(35);
+    else resetTimer(300);
+
+  } else {
+    fEl.style.display="block";
+    input.value=""; input.focus();
+    if(current<40) resetTimer(35); else resetTimer(300);
+  }
+}
+function checkAnswer(button,answer,correct,explanation){
+  clearInterval(timer); lockAnswers();
+  if(answer===correct){ button.classList.add("correct"); score+=10; }
+  else{ button.classList.add("wrong"); }
+  sEl.innerText="Punkte: "+score;
+  eEl.style.display="block"; eEl.innerHTML=explanation;
+}
+function checkFill(){
+  clearInterval(timer);
+  const q=quizData[current];
+  let ans=input.value.trim();
+  if(ans===q.correct){ score+=10; eEl.innerHTML="✅ Richtig: "+q.correct; }
+  else{ eEl.innerHTML="❌ Falsch. Richtige Antwort: "+q.correct; }
+  eEl.style.display="block"; sEl.innerText="Punkte: "+score;
+}
+function lockAnswers(){ document.querySelectorAll(".answer").forEach(b=>b.style.pointerEvents="none"); }
+function nextQuestion(){ clearInterval(timer); current++; if(current<quizData.length) loadQuestion(); else qEl.innerHTML="🎉 Quiz beendet! Punkte: "+score; }
+function prevQuestion(){ if(current>0){ current--; loadQuestion(); } }
+function resetTimer(seconds){
+  timeLeft=seconds; tEl.innerText="⏱ "+timeLeft+"s"; clearInterval(timer);
+  timer=setInterval(()=>{ timeLeft--; tEl.innerText="⏱ "+timeLeft+"s";
+    if(timeLeft<=0){ clearInterval(timer);
+      const q=quizData[current]; eEl.style.display="block"; eEl.innerHTML="⏰ Zeit abgelaufen. Richtige Antwort: "+q.correct;
+    }
+  },1000);
+}
+loadQuestion();
+</script>
+</body>
+</html>
