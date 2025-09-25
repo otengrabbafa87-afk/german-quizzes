@@ -2,9 +2,9 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>📱 Lektion 1 – SMS & Dialoge</title>
+  <title>📱 Lektion 1 – SMS & Dialoge (50 Fragen)</title>
   <style>
-    body { font-family: Arial, sans-serif; background: linear-gradient(to right, #ff9966, #ff5e62); text-align: center; padding: 20px; color: #333; }
+    body { font-family: Arial, sans-serif; background: linear-gradient(to right, #ff6a00, #ee0979); text-align: center; padding: 20px; color: #333; }
     .quiz-box { background:#fff; padding:20px; border-radius:15px; max-width:850px; margin:auto; box-shadow:0 6px 12px rgba(0,0,0,0.3);}
     .question { font-size:20px; margin-bottom:20px; }
     .answers { display:grid; gap:10px; }
@@ -18,16 +18,13 @@
     input[type="text"] { padding:8px; font-size:16px; width:60%; }
     button { margin-top:10px; padding:10px 20px; font-size:16px; cursor:pointer; background:#ff416c; border:none; border-radius:8px; color:#fff; }
     button:hover { background:#ff4b2b; }
+    .text-box { background:#f0f0f0; padding:12px; border-radius:10px; margin:15px 0; text-align:left; }
   </style>
 </head>
 <body>
   <h1>📱 Lektion 1 – SMS & Dialoge (50 Fragen)</h1>
   <div class="quiz-box" id="quiz">
-    <div id="passage" class="text-box" style="display:none;">
-      <b>📖 Kontext:</b><br>
-      Drei Freunde schreiben sich SMS. Sie stellen sich vor, sagen ihre Namen, Herkunft, Telefonnummern und Adressen.  
-      So üben wir Vorstellen, „heißen“, „kommen aus“, und Zahlen.
-    </div>
+    <div id="passage" class="text-box" style="display:none;"></div>
     <div class="question" id="question">Frage</div>
     <div class="answers" id="answers"></div>
     <div id="fillin" style="display:none;">
@@ -44,63 +41,63 @@
 
 <script>
 const quizData = [
-  // ---------------- 20 Multiple Choice ----------------
-  {type:"mc", question:"Wer sagt: „Hallo, ich heiße Paola“?", answers:["Paola","Frank","Maria","Thomas"], correct:"Paola", explain:"Paola stellt sich mit ‚ich heiße Paola‘ vor."},
-  {type:"mc", question:"Welche Frage passt? – „___ du?“ – „Ich heiße Frank.“", answers:["Wie heißt","Wer bist","Kommst","Hast"], correct:"Wie heißt", explain:"Die richtige Frage lautet: ‚Wie heißt du?‘"},
-  {type:"mc", question:"Welche Antwort passt? – „Wie heißt du?“", answers:["Ich heiße Maria.","Ich komme aus Wien.","Es ist 8 Uhr.","Ich habe ein Auto."], correct:"Ich heiße Maria.", explain:"Man antwortet mit ‚Ich heiße…‘"},
-  {type:"mc", question:"Welche Frage passt? – „Woher kommst du?“", answers:["Ich komme aus Berlin.","Ich heiße Karl.","Es ist Dienstag.","Ich bin 20 Jahre alt."], correct:"Ich komme aus Berlin.", explain:"Antwort auf Herkunft: ‚Ich komme aus…‘"},
-  {type:"mc", question:"Welche Telefonnummer gehört zu Herrn Berger?", answers:["null sechs sechs vier – acht zwei zwei – fünf sieben null","eins zwei drei","neun neun neun","vier fünf sechs"], correct:"null sechs sechs vier – acht zwei zwei – fünf sieben null", explain:"So liest man 0664 822 570 auf Deutsch."},
-  {type:"mc", question:"Welche Antwort passt? – „Woher kommen Sie?“", answers:["Ich komme aus Österreich.","Ich heiße Tom.","Es ist 9 Uhr.","Ich habe frei."], correct:"Ich komme aus Österreich.", explain:"‚Woher kommen Sie?‘ verlangt Herkunft."},
-  {type:"mc", question:"Welche Antwort passt? – „Wie heißen Sie?“", answers:["Ich heiße Frau Müller.","Ich komme aus Rom.","Es ist Montag.","Ich wohne in Wien."], correct:"Ich heiße Frau Müller.", explain:"Antwort mit ‚Ich heiße…‘"},
-  {type:"mc", question:"Welche Aussage ist richtig?", answers:["Ich heiße Peter.","Du komme aus Berlin.","Er heißt wir.","Sie heißen Auto."], correct:"Ich heiße Peter.", explain:"Nur der erste Satz ist grammatisch korrekt."},
-  {type:"mc", question:"Welche Antwort passt? – „Kommst du aus Deutschland?“", answers:["Ja, ich komme aus Deutschland.","Nein, ich heiße Karl.","Ja, ich heiße Maria.","Nein, es ist 8 Uhr."], correct:"Ja, ich komme aus Deutschland.", explain:"Antwort bezieht sich auf Herkunft."},
-  {type:"mc", question:"Welche Form ist richtig? – „Wir ___ Anna und Paul.“", answers:["heißen","heißt","heiße","heiß"], correct:"heißen", explain:"‚Wir heißen…‘ ist richtig."},
-  {type:"mc", question:"Welche Form ist richtig? – „Er ___ aus Italien.“", answers:["kommt","kommst","kommen","komm"], correct:"kommt", explain:"‚Er kommt aus Italien.‘"},
-  {type:"mc", question:"Welche Antwort passt? – „Wie heißen Sie?“", answers:["Ich heiße Herr Schmidt.","Ich komme aus Berlin.","Heute ist Montag.","Ich bin Student."], correct:"Ich heiße Herr Schmidt.", explain:"Antwort auf Namensfrage."},
-  {type:"mc", question:"Welche Aussage ist falsch?", answers:["Du heißt Anna.","Er heiße Paul.","Wir heißen Maria und Klaus.","Ich heiße Peter."], correct:"Er heiße Paul.", explain:"Korrekt wäre: Er heißt Paul."},
-  {type:"mc", question:"Welche Frage passt zu: „Ich wohne in Wien.“", answers:["Wo wohnst du?","Wie heißt du?","Woher kommst du?","Hast du frei?"], correct:"Wo wohnst du?", explain:"Antwort bezieht sich auf Wohnort."},
+  // === Comic Teil 1: Begrüßung & Vorstellen (1–10) ===
+  {type:"mc", question:"Wer sagt: „Hallo, ich heiße Paola Ramoni“?", answers:["Frau Ramoni","Herr Berger","Frau Fischer","Herr Müller"], correct:"Frau Ramoni", explain:"Im Comic sagt Frau Ramoni: Hallo, ich heiße Paola Ramoni."},
+  {type:"mc", question:"Welche Antwort passt? – „Wie heißen Sie?“", answers:["Ich heiße Frank Berger.","Ich komme aus Berlin.","Es ist 8 Uhr.","Ich bin Student."], correct:"Ich heiße Frank Berger.", explain:"Frage nach dem Namen → Antwort mit ‚heißen‘."},
+  {type:"mc", question:"Welche Aussage ist richtig?", answers:["Ich heiße Peter.","Du komme aus Berlin.","Er heißt wir.","Sie heißen Auto."], correct:"Ich heiße Peter.", explain:"Nur ‚Ich heiße Peter‘ ist korrekt."},
+  {type:"mc", question:"Welche Antwort passt? – „Wie heißt er?“", answers:["Er heißt Lukas.","Er kommt aus Berlin.","Er ist 20 Jahre.","Er wohnt in Wien."], correct:"Er heißt Lukas.", explain:"Frage nach dem Namen → ‚heißen‘."},
+  {type:"mc", question:"Welche Antwort passt? – „Wie heißt du?“", answers:["Ich heiße Tom.","Ich komme aus Spanien.","Heute ist Freitag.","Es ist 12 Uhr."], correct:"Ich heiße Tom.", explain:"Frage nach dem Namen → Antwort mit ‚heiße‘."},
+  {type:"mc", question:"Welche Form ist richtig? – „Ich ___ Karl.“", answers:["heiße","heißt","heißen","heiß"], correct:"heiße", explain:"‚Ich heiße Karl‘ ist richtig."},
+  {type:"mc", question:"Welche Form ist richtig? – „Wir ___ Anna und Paul.“", answers:["heißen","heißt","heiße","heiß"], correct:"heißen", explain:"Wir = Plural → ‚heißen‘."},
+  {type:"mc", question:"Welche Form ist richtig? – „Ihr ___ Maria und Alex.“", answers:["heißt","heiße","heißen","heiß"], correct:"heißt", explain:"Ihr = 2. Person Plural → ‚heißt‘."},
+  {type:"mc", question:"Welche Form ist richtig? – „Er ___ Herr Meier.“", answers:["heißt","heißen","heiße","heiß"], correct:"heißt", explain:"Er = 3. Person Singular → ‚heißt‘."},
+  {type:"mc", question:"Welche Form ist richtig? – „Sie ___ Frau Fischer.“", answers:["heißt","heißen","heiße","heiß"], correct:"heißt", explain:"Sie (Einzahl) → ‚heißt‘."},
+
+  // === Comic Teil 2: Telefonnummern (11–20) ===
+  {type:"mc", question:"Welche Telefonnummer gehört zu Herrn Berger?", answers:["0664 822 570 (Null-sechs-sechs-vier, acht-zwei-zwei, fünf-sieben-null)","0664 389 911","0664 235 970","0664 221 455"], correct:"0664 822 570 (Null-sechs-sechs-vier, acht-zwei-zwei, fünf-sieben-null)", explain:"Herr Bergers Nummer ist 0664 822 570."},
+  {type:"mc", question:"Welche Telefonnummer gehört zu Frau Ramoni?", answers:["0664 389 911 (Null-sechs-sechs-vier, drei-acht-neun, neun-eins-eins)","0664 822 570","0664 235 970","0664 221 455"], correct:"0664 389 911 (Null-sechs-sechs-vier, drei-acht-neun, neun-eins-eins)", explain:"Frau Ramonis Nummer ist 0664 389 911."},
+  {type:"mc", question:"Welche Telefonnummer gehört zu Frau Fischer?", answers:["0664 235 970 (Null-sechs-sechs-vier, zwei-drei-fünf, neun-sieben-null)","0664 822 570","0664 389 911","0664 221 455"], correct:"0664 235 970 (Null-sechs-sechs-vier, zwei-drei-fünf, neun-sieben-null)", explain:"Frau Fischers Nummer ist 0664 235 970."},
+  {type:"mc", question:"Welche Telefonnummer gehört zu Herrn Müller?", answers:["0664 221 455 (Null-sechs-sechs-vier, zwei-zwei-eins, vier-fünf-fünf)","0664 822 570","0664 389 911","0664 235 970"], correct:"0664 221 455 (Null-sechs-sechs-vier, zwei-zwei-eins, vier-fünf-fünf)", explain:"Herr Müllers Nummer ist 0664 221 455."},
+  {type:"fill", question:"SMS: „Meine Nummer ist ___.“ (0664 389 911)", correct:"0664 389 911", explain:"Die richtige Telefonnummer ist 0664 389 911."},
+  {type:"fill", question:"SMS: „Meine Nummer ist ___.“ (0664 235 970)", correct:"0664 235 970", explain:"Die richtige Telefonnummer ist 0664 235 970."},
+  {type:"fill", question:"SMS: „Meine Nummer ist ___.“ (0664 822 570)", correct:"0664 822 570", explain:"Die richtige Telefonnummer ist 0664 822 570."},
+  {type:"fill", question:"SMS: „Meine Nummer ist ___.“ (0664 221 455)", correct:"0664 221 455", explain:"Die richtige Telefonnummer ist 0664 221 455."},
+  {type:"mc", question:"Welche Aussage ist richtig?", answers:["Das ist meine Telefonnummer.","Du heiße Telefonnummer.","Sie kommen Telefonnummer.","Es ist Telefonnummer."], correct:"Das ist meine Telefonnummer.", explain:"Richtiger Satzbau: Das ist meine Telefonnummer."},
+  {type:"mc", question:"Welche Antwort passt? – „Wie ist deine Telefonnummer?“", answers:["Meine Nummer ist 0664 389 911.","Ich heiße Hans.","Ich wohne in Wien.","Ich komme aus Berlin."], correct:"Meine Nummer ist 0664 389 911.", explain:"Antwort auf Telefonnummer-Frage."},
+
+  // === Comic Teil 3: Herkunft & Wohnort (21–35) ===
+  {type:"mc", question:"Welche Antwort passt? – „Kommst du aus Deutschland?“", answers:["Ja, ich komme aus Deutschland.","Nein, ich heiße Karl.","Ja, ich heiße Maria.","Nein, es ist 8 Uhr."], correct:"Ja, ich komme aus Deutschland.", explain:"Frage nach Herkunft → ‚kommen aus‘."},
   {type:"mc", question:"Welche Antwort passt? – „Woher kommst du?“", answers:["Ich komme aus Spanien.","Ich heiße Tom.","Heute ist Freitag.","Es ist 12 Uhr."], correct:"Ich komme aus Spanien.", explain:"Antwort auf Herkunftsfrage."},
-  {type:"mc", question:"Welche Form ist richtig? – „Ihr ___ aus der Schweiz.“", answers:["kommt","kommen","kommst","komme"], correct:"kommt", explain:"‚Ihr kommt…‘ ist richtig."},
-  {type:"mc", question:"Welche Antwort passt? – „Wie heißt er?“", answers:["Er heißt Lukas.","Er kommt aus Berlin.","Er ist 20 Jahre.","Er wohnt in Wien."], correct:"Er heißt Lukas.", explain:"Antwort auf Namensfrage."},
-  {type:"mc", question:"Welche Form ist richtig? – „Ich ___ Karl.“", answers:["heiße","heißt","heißen","heiß"], correct:"heiße", explain:"‚Ich heiße…‘ ist richtig."},
-  {type:"mc", question:"Welche Form ist richtig? – „Sie (Plural) ___ aus Österreich.“", answers:["kommen","kommst","kommt","komme"], correct:"kommen", explain:"‚Sie kommen…‘ ist richtig."},
-  {type:"mc", question:"Welche Frage passt? – „Ich komme aus Polen.“", answers:["Woher kommst du?","Wie heißt du?","Wo wohnst du?","Wie alt bist du?"], correct:"Woher kommst du?", explain:"Antwort bezieht sich auf Herkunft."},
+  {type:"mc", question:"Welche Form ist richtig? – „Er ___ aus Italien.“", answers:["kommt","kommst","kommen","komm"], correct:"kommt", explain:"3. Person Singular → ‚kommt‘."},
+  {type:"mc", question:"Welche Form ist richtig? – „Ihr ___ aus der Schweiz.“", answers:["kommt","kommen","kommst","komme"], correct:"kommt", explain:"Ihr → ‚kommt‘."},
+  {type:"mc", question:"Welche Form ist richtig? – „Wir ___ aus Österreich.“", answers:["kommen","kommst","komme","kommt"], correct:"kommen", explain:"Wir = Plural → ‚kommen‘."},
+  {type:"mc", question:"Welche Form ist richtig? – „Du ___ aus Wien.“", answers:["kommst","komme","kommt","kommen"], correct:"kommst", explain:"Du = 2. Person Singular → ‚kommst‘."},
+  {type:"mc", question:"Welche Antwort passt? – „Wo wohnst du?“", answers:["Ich wohne in Wien.","Ich heiße Karl.","Ich komme aus Spanien.","Heute ist Montag."], correct:"Ich wohne in Wien.", explain:"Antwort auf Wohnort-Frage."},
+  {type:"mc", question:"Welche Frage passt zu: „Ich wohne in Wien.“", answers:["Wo wohnst du?","Wie heißt du?","Woher kommst du?","Hast du frei?"], correct:"Wo wohnst du?", explain:"Antwort → ‚Ich wohne…‘."},
+  {type:"fill", question:"SMS: „Ich komme aus ___.“ (Österreich)", correct:"Österreich", explain:"Richtige Antwort: Österreich."},
+  {type:"fill", question:"SMS: „Ich komme aus ___.“ (Italien)", correct:"Italien", explain:"Richtige Antwort: Italien."},
+  {type:"fill", question:"SMS: „Ich komme aus ___.“ (Deutschland)", correct:"Deutschland", explain:"Richtige Antwort: Deutschland."},
+  {type:"fill", question:"SMS: „Ich komme aus ___.“ (Spanien)", correct:"Spanien", explain:"Richtige Antwort: Spanien."},
+  {type:"fill", question:"SMS: „Ich wohne in ___.“ (Wien)", correct:"Wien", explain:"Richtige Antwort: Wien."},
+  {type:"fill", question:"SMS: „Ich wohne in ___.“ (Berlin)", correct:"Berlin", explain:"Richtige Antwort: Berlin."},
+  {type:"fill", question:"SMS: „Ich wohne in ___.“ (Frankfurt)", correct:"Frankfurt", explain:"Richtige Antwort: Frankfurt."},
 
-  // ---------------- 20 Fill-in ----------------
-  {type:"fill", question:"Ich ___ Frank.", correct:"heiße", explain:"Ich heiße Frank."},
-  {type:"fill", question:"Wie ___ du?", correct:"heißt", explain:"Wie heißt du?"},
-  {type:"fill", question:"Er ___ Müller.", correct:"heißt", explain:"Er heißt Müller."},
-  {type:"fill", question:"Wir ___ Paola und Anna.", correct:"heißen", explain:"Wir heißen Paola und Anna."},
-  {type:"fill", question:"Sie (Plural) ___ Ramoni und Berger.", correct:"heißen", explain:"Sie heißen Ramoni und Berger."},
-  {type:"fill", question:"Du ___ Petra.", correct:"heißt", explain:"Du heißt Petra."},
-  {type:"fill", question:"Ich ___ Herr Müller.", correct:"heiße", explain:"Ich heiße Herr Müller."},
-  {type:"fill", question:"Ihr ___ Fischer und Wagner.", correct:"heißt", explain:"Ihr heißt Fischer und Wagner."},
-  {type:"fill", question:"Sie (Höflichkeitsform) ___ Frau Ramoni?", correct:"heißen", explain:"Wie heißen Sie?"},
-  {type:"fill", question:"Wir ___ Freunde.", correct:"heißen", explain:"Wir heißen Freunde."},
-
-  {type:"fill", question:"Ich ___ aus Deutschland.", correct:"komme", explain:"Ich komme aus Deutschland."},
-  {type:"fill", question:"Woher ___ du?", correct:"kommst", explain:"Woher kommst du?"},
-  {type:"fill", question:"Sie ___ aus Österreich.", correct:"kommt", explain:"Sie kommt aus Österreich."},
-  {type:"fill", question:"Wir ___ aus Korea.", correct:"kommen", explain:"Wir kommen aus Korea."},
-  {type:"fill", question:"Ihr ___ aus Italien.", correct:"kommt", explain:"Ihr kommt aus Italien."},
-  {type:"fill", question:"Er ___ aus Spanien.", correct:"kommt", explain:"Er kommt aus Spanien."},
-
-  {type:"fill", question:"Meine Telefonnummer ist ___. (zero six six four – three eight nine – nine one one)", correct:"0664 389 911", explain:"0664 389 911"},
-  {type:"fill", question:"Meine Telefonnummer ist ___. (zero six six four – two two one – four five five)", correct:"0664 221 455", explain:"0664 221 455"},
-  {type:"fill", question:"Ich wohne in der ___ Straße 5. (Garden Street)", correct:"Garten", explain:"Gartenstraße 5"},
-  {type:"fill", question:"Ich wohne in der ___ Straße 8. (School Street)", correct:"Schule", explain:"Schule Straße 8"},
-
-  // ---------------- 10 True/False ----------------
-  {type:"mc", question:"📖 Paola schreibt eine SMS an Frank: ‚Hallo, ich heiße Paola.‘", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Das ist richtig."},
-  {type:"mc", question:"📖 Frank sagt: ‚Ich komme aus Spanien.‘", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Frank kommt nicht aus Spanien."},
-  {type:"mc", question:"📖 Maria sagt: ‚Meine Telefonnummer ist 0664 221 455.‘", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Das ist korrekt."},
-  {type:"mc", question:"📖 Thomas heißt Müller.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Nicht Thomas, sondern ein anderer heißt Müller."},
-  {type:"mc", question:"📖 Alle stellen sich mit ‚ich heiße…‘ vor.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Das ist korrekt."},
-  {type:"mc", question:"📖 Jemand sagt: ‚Ich komme aus Korea.‘", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Das stimmt."},
-  {type:"mc", question:"📖 Die Telefonnummer 0664 389 911 gehört zu Paola.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Genau, Paola hat diese Nummer."},
-  {type:"mc", question:"📖 Frank heißt Anna.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Frank heißt nicht Anna."},
-  {type:"mc", question:"📖 Maria wohnt in der Gartenstraße.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Ja, Maria wohnt dort."},
-  {type:"mc", question:"📖 Niemand nennt seine Adresse.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text wird die Adresse genannt."}
+  // === True/False – kurze Lesetexte (36–50) ===
+  {type:"mc", question:"📖 Text: Anna schreibt: „Hallo, ich heiße Anna und ich wohne in Berlin.“ – Anna wohnt in Berlin.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Anna wohnt in Berlin."},
+  {type:"mc", question:"📖 Text: Anna schreibt: „Hallo, ich heiße Anna und ich wohne in Berlin.“ – Anna wohnt in Wien.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: Anna wohnt in Berlin, nicht in Wien."},
+  {type:"mc", question:"📖 Text: Peter schreibt: „Ich komme aus Spanien.“ – Peter wohnt in Spanien.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Er kommt aus Spanien, aber wohnen wird nicht erwähnt."},
+  {type:"mc", question:"📖 Text: Tom schreibt: „Ich heiße Tom und ich bin Student.“ – Tom ist Student.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text steht: Ich bin Student."},
+  {type:"mc", question:"📖 Text: Tom schreibt: „Ich heiße Tom und ich bin Student.“ – Tom ist Lehrer.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Tom sagt: Ich bin Student, nicht Lehrer."},
+  {type:"mc", question:"📖 Text: Maria schreibt: „Meine Nummer ist 0664 389 911.“ – Marias Nummer ist 0664 389 911.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Meine Nummer ist 0664 389 911."},
+  {type:"mc", question:"📖 Text: Maria schreibt: „Meine Nummer ist 0664 389 911.“ – Marias Nummer ist 0664 221 455.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Ihre Nummer ist 0664 389 911."},
+  {type:"mc", question:"📖 Text: Herr Müller schreibt: „Ich wohne in Frankfurt.“ – Herr Müller wohnt in Frankfurt.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Ich wohne in Frankfurt."},
+  {type:"mc", question:"📖 Text: Herr Müller schreibt: „Ich wohne in Frankfurt.“ – Herr Müller wohnt in Wien.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Er wohnt in Frankfurt, nicht Wien."},
+  {type:"mc", question:"📖 Text: Paola schreibt: „Ich heiße Paola und komme aus Italien.“ – Paola kommt aus Italien.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Ich komme aus Italien."},
+  {type:"mc", question:"📖 Text: Paola schreibt: „Ich heiße Paola und komme aus Italien.“ – Paola wohnt in Spanien.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: Paola kommt aus Italien."},
+  {type:"mc", question:"📖 Text: Frank schreibt: „Ich heiße Frank Berger.“ – Frank heißt Berger.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Ich heiße Frank Berger."},
+  {type:"mc", question:"📖 Text: Frank schreibt: „Ich heiße Frank Berger.“ – Frank wohnt in Berlin.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Wohnort wird nicht genannt."},
+  {type:"mc", question:"📖 Text: Anna schreibt: „Ich heiße Anna, ich bin Lehrerin.“ – Anna ist Lehrerin.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Ich bin Lehrerin."},
+  {type:"mc", question:"📖 Text: Anna schreibt: „Ich heiße Anna, ich bin Lehrerin.“ – Anna ist Studentin.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: Lehrerin, nicht Studentin."}
 ];
 
 let current=0,score=0,timer,timeLeft=0;
@@ -117,51 +114,12 @@ function loadQuestion(){
   const q=quizData[current];
   qEl.innerHTML=(current+1)+". "+q.question;
   aEl.innerHTML=""; fEl.style.display="none"; eEl.style.display="none"; eEl.innerHTML="";
-  if(current>=40){ passage.style.display="block"; } else { passage.style.display="none"; }
+  passage.style.display="none";
+
+  if(current===0){ passage.innerHTML="📱 Comic Teil 1: Begrüßung & Vorstellen"; passage.style.display="block"; }
+  if(current===10){ passage.innerHTML="📱 Comic Teil 2: Telefonnummern"; passage.style.display="block"; }
+  if(current===20){ passage.innerHTML="📱 Comic Teil 3: Herkunft & Wohnort"; passage.style.display="block"; }
+  if(current===35){ passage.innerHTML="📖 Leseverstehen: SMS-Texte"; passage.style.display="block"; }
 
   if(q.type==="mc"){
-    q.answers.forEach(ans=>{
-      const btn=document.createElement("div");
-      btn.className="answer"; btn.innerText=ans;
-      btn.onclick=()=>checkAnswer(btn,ans,q.correct,q.explain);
-      aEl.appendChild(btn);
-    });
-    if(current<20) resetTimer(20);
-    else if(current<40) resetTimer(35);
-    else resetTimer(300);
-  } else {
-    fEl.style.display="block";
-    input.value=""; input.focus();
-    if(current<40) resetTimer(35); else resetTimer(300);
-  }
-}
-function checkAnswer(button,answer,correct,explanation){
-  clearInterval(timer); lockAnswers();
-  if(answer===correct){ button.classList.add("correct"); score+=10; }
-  else{ button.classList.add("wrong"); }
-  sEl.innerText="Punkte: "+score;
-  eEl.style.display="block"; eEl.innerHTML=explanation;
-}
-function checkFill(){
-  clearInterval(timer);
-  const q=quizData[current];
-  let ans=input.value.trim();
-  if(ans===q.correct){ score+=10; eEl.innerHTML="✅ Richtig: "+q.correct; }
-  else{ eEl.innerHTML="❌ Falsch. Richtige Antwort: "+q.correct; }
-  eEl.style.display="block"; sEl.innerText="Punkte: "+score;
-}
-function lockAnswers(){ document.querySelectorAll(".answer").forEach(b=>b.style.pointerEvents="none"); }
-function nextQuestion(){ clearInterval(timer); current++; if(current<quizData.length) loadQuestion(); else qEl.innerHTML="🎉 Quiz beendet! Punkte: "+score; }
-function prevQuestion(){ if(current>0){ current--; loadQuestion(); } }
-function resetTimer(seconds){
-  timeLeft=seconds; tEl.innerText="⏱ "+timeLeft+"s"; clearInterval(timer);
-  timer=setInterval(()=>{ timeLeft--; tEl.innerText="⏱ "+timeLeft+"s";
-    if(timeLeft<=0){ clearInterval(timer);
-      const q=quizData[current]; eEl.style.display="block"; eEl.innerHTML="⏰ Zeit abgelaufen. Richtige Antwort: "+q.correct;
-    }
-  },1000);
-}
-loadQuestion();
-</script>
-</body>
-</html>
+    q.answers
