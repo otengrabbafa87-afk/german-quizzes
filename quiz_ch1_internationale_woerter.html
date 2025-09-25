@@ -1,187 +1,168 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Quiz – Kapitel 1: Internationale Wörter</title>
-<style>
-  body { margin:0; font-family:Arial,sans-serif;
-    background: linear-gradient(to bottom,#000 0% 33%,#dd0000 33% 66%,#ffce00 66% 100%);
-    color:#fff; min-height:100vh; display:flex; flex-direction:column; align-items:center; }
-  body::before{content:"";position:fixed;inset:0;
-    background: radial-gradient(120% 120% at 50% -10%,rgba(255,255,255,.08),transparent 60%),
-                radial-gradient(120% 120% at 50% 110%,rgba(0,0,0,.25),transparent 55%);
-    z-index:0;}
-  header,.quiz-box{position:relative;z-index:1;}
-  header{text-align:center;padding:30px 20px;}
-  h1{margin:0 0 10px;font-size:2em;}
-  .quiz-box{background:#fff;color:#333;padding:20px;border-radius:16px;
-    box-shadow:0 6px 16px rgba(0,0,0,.3);max-width:750px;width:95%;margin-bottom:40px;}
-  .question{font-size:1.2em;margin-bottom:20px;}
-  .answers{display:grid;gap:12px;}
-  .answer{background:#2196f3;color:#fff;padding:12px;border-radius:10px;
-    cursor:pointer;font-weight:bold;transition:.2s;}
-  .answer:hover{transform:scale(1.03);}
-  .correct{background:#4caf50!important;}
-  .wrong{background:#f44336!important;}
-  .explanation{margin-top:12px;background:#f5f5f7;color:#333;padding:12px;border-radius:10px;display:none;}
-  .controls{display:flex;justify-content:space-between;margin-top:15px;}
-  button{padding:10px 18px;border:none;border-radius:8px;cursor:pointer;font-weight:bold;}
-  .next{background:#ff416c;color:#fff;}
-  .next:hover{background:#ff4b2b;}
-  .back{background:#ccc;}
-  .back:hover{background:#bbb;}
-  .timer{font-size:1.1em;color:#e91e63;margin:10px 0;}
-  .score{margin-top:10px;font-size:1.2em;}
-  .passage{background:#eee;color:#000;padding:15px;border-radius:10px;margin:15px 0;}
-</style>
+  <meta charset="UTF-8">
+  <title>🌍 Internationale Wörter (50 Fragen)</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: linear-gradient(to right, #00c6ff, #0072ff); text-align: center; padding: 20px; color: #333; }
+    .quiz-box { background:#fff; padding:20px; border-radius:15px; max-width:850px; margin:auto; box-shadow:0 6px 12px rgba(0,0,0,0.3);}
+    .question { font-size:20px; margin-bottom:20px; }
+    .answers { display:grid; gap:10px; }
+    .answer { padding:12px; border-radius:8px; cursor:pointer; background:#2196f3; color:#fff; transition:0.3s; }
+    .answer:hover { transform:scale(1.05); }
+    .correct { background:#4caf50 !important; }
+    .wrong { background:#f44336 !important; }
+    .score { font-size:18px; margin-top:20px; }
+    .timer { font-size:18px; margin:10px; color:#e91e63; }
+    .explanation { margin-top:12px; text-align:left; color:#333; background:#f5f5f5; padding:10px; border-radius:8px; }
+    input[type="text"] { padding:8px; font-size:16px; width:60%; }
+    button { margin-top:10px; padding:10px 20px; font-size:16px; cursor:pointer; background:#ff416c; border:none; border-radius:8px; color:#fff; }
+    button:hover { background:#ff4b2b; }
+    .text-box { background:#f0f0f0; padding:12px; border-radius:10px; margin:15px 0; text-align:left; }
+  </style>
 </head>
 <body>
-<header>
-  <h1>🌍 Quiz – Kapitel 1: Internationale Wörter</h1>
-  <p>50 Fragen: Internationale Wörter im Deutschen.</p>
-</header>
-
-<div class="quiz-box" id="quiz">
-  <div class="question" id="question">Frage</div>
-  <div class="answers" id="answers"></div>
-  <input type="text" id="fillInput" style="display:none;width:100%;padding:10px;font-size:1em;margin-top:10px;" placeholder="Antwort hier eingeben">
-  <div class="passage" id="passage" style="display:none;"></div>
-  <div class="explanation" id="explanation"></div>
-  <div class="timer" id="timer">⏱ 20s</div>
-  <div class="score" id="score">Punkte: 0</div>
-  <div class="controls">
-    <button class="back" onclick="prevQuestion()">⬅ Zurück</button>
-    <button class="next" onclick="nextQuestion()">Nächste ➡</button>
+  <h1>🌍 Internationale Wörter (50 Fragen)</h1>
+  <div class="quiz-box" id="quiz">
+    <div id="passage" class="text-box" style="display:none;">
+      <b>Text:</b><br>
+      Im Supermarkt kaufen viele Leute internationale Produkte: <br>
+      die Bananen, der Kaffee, das Radio, der Computer, das Taxi, das Hotel und das Internet. <br>
+      Diese Wörter sind fast überall auf der Welt verständlich.
+    </div>
+    <div class="question" id="question">Frage</div>
+    <div class="answers" id="answers"></div>
+    <div id="fillin" style="display:none;">
+      <input type="text" id="fillInput" placeholder="Deine Antwort">
+      <button onclick="checkFill()">Antwort prüfen</button>
+    </div>
+    <div class="explanation" id="explanation" style="display:none;"></div>
+    <div class="timer" id="timer"></div>
+    <div class="score" id="score">Punkte: 0</div>
+    <button onclick="prevQuestion()">⬅ Zurück</button>
+    <button onclick="nextQuestion()">Nächste Frage ➡</button>
+    <p><a href="chapter1.html">🔙 Zurück zu Lektion 1</a></p>
   </div>
-</div>
 
 <script>
-const passageText = "Im Supermarkt kaufen viele Leute internationale Produkte: Bananen, Kaffee, Radio, Computer, Taxi, Hotel und Internet. Diese Wörter sind fast überall auf der Welt verständlich.";
-
 const quizData = [
-  // --- Multiple Choice (1–20) ---
-  {type:"mc",question:"Welches Wort ist international?",answers:["Apfel","Telefon","Stuhl","Tisch"],correct:"Telefon",explain:"'Telefon' ist ein internationales Wort."},
-  {type:"mc",question:"Welches ist KEIN internationales Wort?",answers:["Banane","Computer","Apfel","Taxi"],correct:"Apfel",explain:"'Apfel' ist typisch Deutsch, nicht international."},
-  {type:"mc",question:"Was bedeutet 'Radio'?",answers:["Radio","Chair","Dog","Banana"],correct:"Radio",explain:"'Radio' ist identisch im Deutschen und Englischen."},
-  {type:"mc",question:"Welches Wort ist auch im Englischen gleich?",answers:["Haus","Baby","Brot","Stuhl"],correct:"Baby",explain:"'Baby' wird international verstanden."},
-  {type:"mc",question:"Welches Wort versteht man weltweit?",answers:["Taxi","Tisch","Apfel","Schule"],correct:"Taxi",explain:"'Taxi' ist in fast allen Sprachen gleich."},
-  {type:"mc",question:"Welches Wort ist international?",answers:["Computer","Stuhl","Schule","Apfel"],correct:"Computer",explain:"'Computer' ist ein internationales Wort."},
-  {type:"mc",question:"Welches ist KEIN internationales Wort?",answers:["Hotel","Internet","Banane","Brot"],correct:"Brot",explain:"'Brot' ist ein typisch deutsches Wort."},
-  {type:"mc",question:"Welches Wort bedeutet auch im Englischen 'Coffee'?",answers:["Kaffee","Tisch","Haus","Auto"],correct:"Kaffee",explain:"'Kaffee' ist international verständlich."},
-  {type:"mc",question:"Welches Wort ist gleich in Englisch und Deutsch?",answers:["Telefon","Apfel","Stuhl","Buch"],correct:"Telefon",explain:"'Telefon' ist in vielen Sprachen ähnlich."},
-  {type:"mc",question:"Welches Wort benutzt man auch in Frankreich?",answers:["Hotel","Apfel","Kind","Schule"],correct:"Hotel",explain:"'Hotel' ist international gleich."},
-  {type:"mc",question:"Welches Wort ist international?",answers:["Radio","Baum","Kind","Schule"],correct:"Radio",explain:"'Radio' ist international."},
-  {type:"mc",question:"Welches Wort ist KEIN internationales Wort?",answers:["Taxi","Banane","Apfel","Computer"],correct:"Apfel",explain:"'Apfel' ist nicht international."},
-  {type:"mc",question:"Welches Wort ist ein internationales Wort?",answers:["Internet","Fenster","Brot","Apfel"],correct:"Internet",explain:"'Internet' ist international."},
-  {type:"mc",question:"Welches Wort wird in vielen Sprachen gleich geschrieben?",answers:["Baby","Kind","Haus","Baum"],correct:"Baby",explain:"'Baby' ist international."},
-  {type:"mc",question:"Welches Wort findet man auch im Englischen?",answers:["Taxi","Stuhl","Schule","Fenster"],correct:"Taxi",explain:"'Taxi' ist international."},
-  {type:"mc",question:"Welches ist KEIN internationales Wort?",answers:["Radio","Banane","Auto","Computer"],correct:"Auto",explain:"'Auto' ist deutsch."},
-  {type:"mc",question:"Welches Wort versteht man weltweit?",answers:["Hotel","Kind","Apfel","Fenster"],correct:"Hotel",explain:"'Hotel' ist international."},
-  {type:"mc",question:"Welches Wort ist international?",answers:["Internet","Apfel","Baum","Fenster"],correct:"Internet",explain:"'Internet' ist weltweit gleich."},
-  {type:"mc",question:"Welches Wort ist KEIN internationales Wort?",answers:["Kaffee","Computer","Stuhl","Banane"],correct:"Stuhl",explain:"'Stuhl' ist nicht international."},
-  {type:"mc",question:"Welches Wort ist international?",answers:["Taxi","Haus","Fenster","Buch"],correct:"Taxi",explain:"'Taxi' ist international."},
+  // ---- 20 Multiple Choice ----
+  {type:"mc", question:"Welches Wort ist international?", answers:["der Apfel","das Telefon","der Stuhl","der Tisch"], correct:"das Telefon", explain:"✅ Richtig: das Telefon (neutrum)."},
+  {type:"mc", question:"Welches ist KEIN internationales Wort?", answers:["die Banane","der Computer","der Apfel","das Taxi"], correct:"der Apfel", explain:"✅ Richtig: der Apfel (typisch Deutsch)."},
+  {type:"mc", question:"Was bedeutet 'das Radio'?", answers:["Radio","Stuhl","Hund","Banane"], correct:"Radio", explain:"✅ Richtig: das Radio (neutrum)."},
+  {type:"mc", question:"Welches Wort versteht man weltweit?", answers:["das Taxi","der Tisch","der Apfel","die Schule"], correct:"das Taxi", explain:"✅ Richtig: das Taxi (neutrum)."},
+  {type:"mc", question:"Welches Wort ist auch im Englischen gleich?", answers:["das Haus","das Baby","das Brot","der Stuhl"], correct:"das Baby", explain:"✅ Richtig: das Baby (neutrum)."},
+  {type:"mc", question:"Welches Wort passt zu 'Hotel'?", answers:["das Hotel","der Tisch","die Lampe","die Schule"], correct:"das Hotel", explain:"✅ Richtig: das Hotel (neutrum)."},
+  {type:"mc", question:"Welches Wort ist international?", answers:["der Computer","der Hund","das Fenster","die Tür"], correct:"der Computer", explain:"✅ Richtig: der Computer (maskulin)."},
+  {type:"mc", question:"Welches Wort ist KEIN internationales Wort?", answers:["das Taxi","das Internet","der Lehrer","das Hotel"], correct:"der Lehrer", explain:"✅ Richtig: der Lehrer (typisch Deutsch)."},
+  {type:"mc", question:"Was bedeutet 'das Internet'?", answers:["Internet","Fenster","Stuhl","Auto"], correct:"Internet", explain:"✅ Richtig: das Internet (neutrum)."},
+  {type:"mc", question:"Welches Wort ist international?", answers:["der Kaffee","der Tisch","die Lampe","der Apfel"], correct:"der Kaffee", explain:"✅ Richtig: der Kaffee (maskulin)."},
+  {type:"mc", question:"Welches Wort ist international?", answers:["die Banane","das Brot","der Stuhl","die Lampe"], correct:"die Banane", explain:"✅ Richtig: die Banane (feminin)."},
+  {type:"mc", question:"Welches Wort ist KEIN internationales Wort?", answers:["das Hotel","die Schule","das Taxi","das Internet"], correct:"die Schule", explain:"✅ Richtig: die Schule (typisch Deutsch)."},
+  {type:"mc", question:"Welches Wort passt: das ___ ist im Auto.", answers:["Radio","Buch","Fenster","Apfel"], correct:"Radio", explain:"✅ Richtig: das Radio (neutrum)."},
+  {type:"mc", question:"Welches Wort versteht man überall?", answers:["das Taxi","der Hund","das Fenster","die Lampe"], correct:"das Taxi", explain:"✅ Richtig: das Taxi (neutrum)."},
+  {type:"mc", question:"Welches Wort passt nicht?", answers:["das Hotel","das Internet","der Tisch","der Computer"], correct:"der Tisch", explain:"✅ Richtig: der Tisch (typisch Deutsch)."},
+  {type:"mc", question:"Welches ist international?", answers:["der Computer","die Schule","das Haus","der Apfel"], correct:"der Computer", explain:"✅ Richtig: der Computer (maskulin)."},
+  {type:"mc", question:"Welches Wort ist KEIN internationales Wort?", answers:["die Banane","das Taxi","der Stuhl","das Internet"], correct:"der Stuhl", explain:"✅ Richtig: der Stuhl (typisch Deutsch)."},
+  {type:"mc", question:"Welches Wort bedeutet 'Hotel'?", answers:["das Hotel","das Fenster","die Schule","der Tisch"], correct:"das Hotel", explain:"✅ Richtig: das Hotel (neutrum)."},
+  {type:"mc", question:"Welches Wort passt: Ich surfe im ___", answers:["Internet","Stuhl","Apfel","Tisch"], correct:"Internet", explain:"✅ Richtig: das Internet (neutrum)."},
+  {type:"mc", question:"Welches Wort ist international?", answers:["der Kaffee","die Lampe","das Brot","der Hund"], correct:"der Kaffee", explain:"✅ Richtig: der Kaffee (maskulin)."},
 
-  // --- Fill in (21–40) ---
-  {type:"fill",question:"Übersetze ins Deutsche: (Banana)",correct:"Banane",explain:"'Banane' ist international."},
-  {type:"fill",question:"Übersetze ins Deutsche: (Computer)",correct:"Computer",explain:"'Computer' ist gleich."},
-  {type:"fill",question:"Übersetze ins Deutsche: (Hotel)",correct:"Hotel",explain:"'Hotel' ist gleich."},
-  {type:"fill",question:"Übersetze ins Deutsche: (Internet)",correct:"Internet",explain:"'Internet' ist gleich."},
-  {type:"fill",question:"Übersetze ins Deutsche: (Taxi)",correct:"Taxi",explain:"'Taxi' ist gleich."},
-  {type:"fill",question:"Übersetze ins Deutsche: (Radio)",correct:"Radio",explain:"'Radio' ist gleich."},
-  {type:"fill",question:"Übersetze ins Deutsche: (Baby)",correct:"Baby",explain:"'Baby' ist gleich."},
-  {type:"fill",question:"Übersetze ins Deutsche: (Kaffee)",correct:"Kaffee",explain:"'Kaffee' ist international."},
-  {type:"fill",question:"Übersetze ins Deutsche: (Telefon)",correct:"Telefon",explain:"'Telefon' ist gleich."},
-  {type:"fill",question:"Übersetze ins Deutsche: (Banana)",correct:"Banane",explain:"'Banane' ist gleich."},
-  {type:"fill",question:"Übersetze ins Deutsche: (Radio)",correct:"Radio",explain:"'Radio' ist gleich."},
-  {type:"fill",question:"Übersetze ins Deutsche: (Taxi)",correct:"Taxi",explain:"'Taxi' ist gleich."},
-  {type:"fill",question:"Übersetze ins Deutsche: (Hotel)",correct:"Hotel",explain:"'Hotel' ist gleich."},
-  {type:"fill",question:"Übersetze ins Deutsche: (Baby)",correct:"Baby",explain:"'Baby' ist gleich."},
-  {type:"fill",question:"Übersetze ins Deutsche: (Internet)",correct:"Internet",explain:"'Internet' ist gleich."},
-  {type:"fill",question:"Übersetze ins Deutsche: (Computer)",correct:"Computer",explain:"'Computer' ist gleich."},
-  {type:"fill",question:"Übersetze ins Deutsche: (Kaffee)",correct:"Kaffee",explain:"'Kaffee' ist gleich."},
-  {type:"fill",question:"Übersetze ins Deutsche: (Telefon)",correct:"Telefon",explain:"'Telefon' ist gleich."},
-  {type:"fill",question:"Übersetze ins Deutsche: (Banana)",correct:"Banane",explain:"'Banane' ist gleich."},
-  {type:"fill",question:"Übersetze ins Deutsche: (Hotel)",correct:"Hotel",explain:"'Hotel' ist gleich."},
+  // ---- 20 Fill in ----
+  {type:"fill", question:"(Banana) Übersetze ins Deutsche:", correct:"die Banane", explain:"✅ Richtig: die Banane (feminin)."},
+  {type:"fill", question:"(Computer) Übersetze ins Deutsche:", correct:"der Computer", explain:"✅ Richtig: der Computer (maskulin)."},
+  {type:"fill", question:"(Hotel) Übersetze ins Deutsche:", correct:"das Hotel", explain:"✅ Richtig: das Hotel (neutrum)."},
+  {type:"fill", question:"(Internet) Übersetze ins Deutsche:", correct:"das Internet", explain:"✅ Richtig: das Internet (neutrum)."},
+  {type:"fill", question:"(Taxi) Übersetze ins Deutsche:", correct:"das Taxi", explain:"✅ Richtig: das Taxi (neutrum)."},
+  {type:"fill", question:"(Radio) Übersetze ins Deutsche:", correct:"das Radio", explain:"✅ Richtig: das Radio (neutrum)."},
+  {type:"fill", question:"(Baby) Übersetze ins Deutsche:", correct:"das Baby", explain:"✅ Richtig: das Baby (neutrum)."},
+  {type:"fill", question:"(Kaffee) Übersetze ins Deutsche:", correct:"der Kaffee", explain:"✅ Richtig: der Kaffee (maskulin)."},
+  {type:"fill", question:"(Bananas) Übersetze ins Deutsche:", correct:"die Bananen", explain:"✅ Richtig: die Bananen (Plural)."},
+  {type:"fill", question:"(Telephone) Übersetze ins Deutsche:", correct:"das Telefon", explain:"✅ Richtig: das Telefon (neutrum)."},
+  {type:"fill", question:"(Hotel room) Übersetze ins Deutsche:", correct:"das Hotelzimmer", explain:"✅ Richtig: das Hotelzimmer (neutrum)."},
+  {type:"fill", question:"(International word: taxi) Schreibe mit Artikel:", correct:"das Taxi", explain:"✅ Richtig: das Taxi (neutrum)."},
+  {type:"fill", question:"(Coffee) Übersetze ins Deutsche:", correct:"der Kaffee", explain:"✅ Richtig: der Kaffee (maskulin)."},
+  {type:"fill", question:"(Baby) Übersetze ins Deutsche:", correct:"das Baby", explain:"✅ Richtig: das Baby (neutrum)."},
+  {type:"fill", question:"(Radio) Übersetze ins Deutsche:", correct:"das Radio", explain:"✅ Richtig: das Radio (neutrum)."},
+  {type:"fill", question:"(Banana with article) Schreibe:", correct:"die Banane", explain:"✅ Richtig: die Banane (feminin)."},
+  {type:"fill", question:"(Computer with article) Schreibe:", correct:"der Computer", explain:"✅ Richtig: der Computer (maskulin)."},
+  {type:"fill", question:"(Hotel with article) Schreibe:", correct:"das Hotel", explain:"✅ Richtig: das Hotel (neutrum)."},
+  {type:"fill", question:"(Internet with article) Schreibe:", correct:"das Internet", explain:"✅ Richtig: das Internet (neutrum)."},
+  {type:"fill", question:"(Coffee with article) Schreibe:", correct:"der Kaffee", explain:"✅ Richtig: der Kaffee (maskulin)."},
 
-  // --- True/False (41–50) ---
-  {type:"tf",question:"Im Text kaufen die Leute Bananen.",correct:"true",explain:"Im Text steht: 'Bananen'."},
-  {type:"tf",question:"Im Text gibt es das Wort 'Apfel'.",correct:"false",explain:"'Apfel' steht nicht im Text."},
-  {type:"tf",question:"Das Wort 'Computer' kommt im Text vor.",correct:"true",explain:"Ja, 'Computer' ist im Text."},
-  {type:"tf",question:"Die Leute kaufen auch Brot.",correct:"false",explain:"Brot ist nicht im Text."},
-  {type:"tf",question:"Das Wort 'Hotel' ist im Text.",correct:"true",explain:"Ja, 'Hotel' wird genannt."},
-  {type:"tf",question:"Das Wort 'Taxi' ist im Text.",correct:"true",explain:"Ja, 'Taxi' wird genannt."},
-  {type:"tf",question:"Das Wort 'Radio' ist im Text.",correct:"true",explain:"Ja, 'Radio' ist dabei."},
-  {type:"tf",question:"Das Wort 'Schule' ist im Text.",correct:"false",explain:"Nein, 'Schule' kommt nicht vor."},
-  {type:"tf",question:"Im Text gibt es 'Internet'.",correct:"true",explain:"Ja, 'Internet' ist im Text."},
-  {type:"tf",question:"Alle Wörter im Text sind typisch deutsch.",correct:"false",explain:"Nein, es sind internationale Wörter."}
+  // ---- 10 True/False Reading ----
+  {type:"mc", question:"Im Text kaufen die Leute Bananen.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"✅ Im Text steht: die Bananen."},
+  {type:"mc", question:"Im Text gibt es das Wort 'Apfel'.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"❌ 'Apfel' steht nicht im Text."},
+  {type:"mc", question:"Das Wort 'der Computer' kommt im Text vor.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"✅ Ja, 'der Computer' ist im Text."},
+  {type:"mc", question:"Die Leute kaufen auch Brot.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"❌ Brot ist nicht im Text."},
+  {type:"mc", question:"Das Wort 'das Hotel' ist im Text.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"✅ Ja, 'das Hotel' wird genannt."},
+  {type:"mc", question:"Das Wort 'das Taxi' ist im Text.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"✅ Ja, 'das Taxi' wird genannt."},
+  {type:"mc", question:"Das Wort 'das Radio' ist im Text.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"✅ Ja, 'das Radio' ist dabei."},
+  {type:"mc", question:"Das Wort 'die Schule' ist im Text.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"❌ Nein, 'die Schule' kommt nicht vor."},
+  {type:"mc", question:"Im Text gibt es 'das Internet'.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"✅ Ja, 'das Internet' ist im Text."},
+  {type:"mc", question:"Alle Wörter im Text sind typisch deutsch.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"❌ Nein, sie sind internationale Wörter."}
 ];
 
-let current=0,score=0,timer,timeLeft=20;
+let current=0,score=0,timer,timeLeft=0;
 const qEl=document.getElementById("question");
 const aEl=document.getElementById("answers");
+const fEl=document.getElementById("fillin");
+const input=document.getElementById("fillInput");
 const tEl=document.getElementById("timer");
 const sEl=document.getElementById("score");
 const eEl=document.getElementById("explanation");
-const fIn=document.getElementById("fillInput");
-const pEl=document.getElementById("passage");
+const passage=document.getElementById("passage");
 
 function loadQuestion(){
-  clearInterval(timer);
   const q=quizData[current];
   qEl.innerHTML=(current+1)+". "+q.question;
-  aEl.innerHTML=""; fIn.style.display="none"; pEl.style.display="none"; fIn.value="";
-  eEl.style.display="none"; eEl.innerHTML="";
+  aEl.innerHTML=""; fEl.style.display="none"; eEl.style.display="none"; eEl.innerHTML="";
+  if(current>=40){ passage.style.display="block"; } else { passage.style.display="none"; }
 
-  if(current>=40){ pEl.style.display="block"; pEl.innerHTML=passageText; timeLeft=300; }
-  else if(q.type==="mc"){ 
+  if(q.type==="mc"){
     q.answers.forEach(ans=>{
       const btn=document.createElement("div");
       btn.className="answer"; btn.innerText=ans;
       btn.onclick=()=>checkAnswer(btn,ans,q.correct,q.explain);
       aEl.appendChild(btn);
     });
-    timeLeft=20;
-  } else if(q.type==="fill"){
-    fIn.style.display="block";
-    const submitBtn=document.createElement("button");
-    submitBtn.innerText="Antwort prüfen";
-    submitBtn.onclick=()=>checkFill(q.correct,q.explain);
-    aEl.appendChild(submitBtn);
-    timeLeft=35;
-  } else if(q.type==="tf"){
-    ["true","false"].forEach(choice=>{
-      const btn=document.createElement("div");
-      btn.className="answer"; btn.innerText=(choice==="true"?"Richtig":"Falsch");
-      btn.onclick=()=>checkAnswer(btn,choice,q.correct,q.explain);
-      aEl.appendChild(btn);
-    });
+
+    if(current<20) resetTimer(20);
+    else if(current<40) resetTimer(35);
+    else resetTimer(300);
+
+  } else {
+    fEl.style.display="block";
+    input.value=""; input.focus();
+    if(current<40) resetTimer(35); else resetTimer(300);
   }
-
-  tEl.innerText="⏱ "+timeLeft+"s";
-  timer=setInterval(()=>{
-    timeLeft--; tEl.innerText="⏱ "+timeLeft+"s";
-    if(timeLeft<=0){ clearInterval(timer); eEl.style.display="block"; eEl.innerHTML="⏰ Zeit abgelaufen. "+q.explain; }
-  },1000);
 }
-
 function checkAnswer(button,answer,correct,explanation){
-  clearInterval(timer);
+  clearInterval(timer); lockAnswers();
   if(answer===correct){ button.classList.add("correct"); score+=10; }
   else{ button.classList.add("wrong"); }
   sEl.innerText="Punkte: "+score;
   eEl.style.display="block"; eEl.innerHTML=explanation;
 }
-function checkFill(correct,explanation){
+function checkFill(){
   clearInterval(timer);
-  let answer=fIn.value.trim();
-  if(answer.toLowerCase()===correct.toLowerCase()){ score+=10; eEl.innerHTML="✅ Richtig! "+explanation; }
-  else{ eEl.innerHTML="❌ Falsch. Richtig: "+correct+". "+explanation; }
-  sEl.innerText="Punkte: "+score; eEl.style.display="block";
+  const q=quizData[current];
+  let ans=input.value.trim();
+  if(ans.toLowerCase()===q.correct.toLowerCase()){ score+=10; eEl.innerHTML="✅ Richtig: "+q.correct; }
+  else{ eEl.innerHTML="❌ Falsch. Richtige Antwort: "+q.correct; }
+  eEl.style.display="block"; sEl.innerText="Punkte: "+score;
 }
-function nextQuestion(){ if(current<quizData.length-1){ current++; loadQuestion(); } }
+function lockAnswers(){ document.querySelectorAll(".answer").forEach(b=>b.style.pointerEvents="none"); }
+function nextQuestion(){ clearInterval(timer); current++; if(current<quizData.length) loadQuestion(); else qEl.innerHTML="🎉 Quiz beendet! Punkte: "+score; }
 function prevQuestion(){ if(current>0){ current--; loadQuestion(); } }
-
+function resetTimer(seconds){
+  timeLeft=seconds; tEl.innerText="⏱ "+timeLeft+"s"; clearInterval(timer);
+  timer=setInterval(()=>{ timeLeft--; tEl.innerText="⏱ "+timeLeft+"s";
+    if(timeLeft<=0){ clearInterval(timer);
+      const q=quizData[current]; eEl.style.display="block"; eEl.innerHTML="⏰ Zeit abgelaufen. Richtige Antwort: "+q.correct;
+    }
+  },1000);
+}
 loadQuestion();
 </script>
 </body>
