@@ -5,15 +5,29 @@
   <title>German Quizzes by Herr Rabbi</title>
   <style>
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
-      background: linear-gradient(to right, #4facfe, #00f2fe);
-      text-align: center;
-      padding: 40px 10px;
+      background: url('german-flag.jpg') no-repeat center center fixed;
+      background-size: cover;
       color: #fff;
     }
-    h1 {
-      font-size: 2.5em;
-      margin-bottom: 10px;
+    .overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: -1;
+    }
+    header {
+      text-align: center;
+      padding: 40px 20px 20px;
+    }
+    header h1 {
+      font-size: 2.8em;
+      margin: 0 0 10px;
+    }
+    header p {
+      font-size: 1.3em;
+      margin: 0 0 20px;
     }
     h2.section {
       margin-top: 40px;
@@ -23,19 +37,19 @@
       display: inline-block;
       padding-bottom: 5px;
     }
-    p {
-      font-size: 1.2em;
-      margin-bottom: 30px;
-    }
     .quiz-card {
-      background: #fff;
+      background: rgba(255,255,255,0.95);
       color: #333;
       margin: 15px auto;
       padding: 20px;
       border-radius: 15px;
       max-width: 600px;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
       text-align: left;
+      transition: transform 0.2s;
+    }
+    .quiz-card:hover {
+      transform: scale(1.02);
     }
     .quiz-card h3 {
       margin-top: 0;
@@ -61,15 +75,58 @@
       background: #ff4b2b;
       transform: scale(1.05);
     }
+    /* WhatsApp Button */
+    .whatsapp {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #25D366;
+      color: #fff;
+      padding: 14px 20px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: 0.3s;
+    }
+    .whatsapp:hover {
+      background: #1ebe5d;
+    }
+    /* Social Media Bar */
+    .socials {
+      text-align: center;
+      margin: 30px 0;
+    }
+    .socials a {
+      margin: 0 12px;
+      font-size: 1.5em;
+      text-decoration: none;
+      color: #fff;
+      transition: 0.3s;
+    }
+    .socials a:hover {
+      color: #ffeb3b;
+    }
   </style>
 </head>
 <body>
-  <h1>🎉 German Quizzes by Herr Rabbi</h1>
-  <p>Willkommen! Wähle ein Kapitel und starte die Quizzes:</p>
+  <div class="overlay"></div>
 
-  <!-- A1 Section -->
+  <header>
+    <h1>🎉 Willkommen bei Herr Rabbi’s German Quiz Hub 🇩🇪</h1>
+    <p>Lerne Deutsch mit Spaß: Wähle dein Kapitel und starte die Übungen!</p>
+  </header>
+
+  <!-- 🔗 Social Media -->
+  <div class="socials">
+    <a href="https://www.youtube.com/channel/UCiM2ataB5960XD1gm_40olg" target="_blank">📺 YouTube</a>
+    <a href="https://facebook.com/share/WEFGweZGTDnm2yEm" target="_blank">📘 Facebook</a>
+    <a href="https://instagram.com/rabbafa?igsh=cDA4amU1dGtwa3B5" target="_blank">📸 Instagram</a>
+    <a href="https://tiktok.com/@rabbafa" target="_blank">🎵 TikTok</a>
+  </div>
+
+  <!-- ✅ Kapitel Cards -->
   <h2 class="section">A1 – Kapitel 1 bis 8</h2>
-
   <div class="quiz-card"><h3>👋🌍📞 Lektion 1 – Wie? Woher? Wann?</h3><p>Kennenlernen: sich vorstellen, Telefonnummern, Herkunft, Termine, Uhrzeit.</p><a class="quiz-link" href="chapter1.html">👉 Zum Kapitel</a></div>
   <div class="quiz-card"><h3>🎲👨‍👩‍👧🎶 Lektion 2 – Wie gut kennst du …?</h3><p>Freizeitaktivitäten, Vorlieben, Familie und persönliche Infos.</p><a class="quiz-link" href="chapter2.html">👉 Zum Kapitel</a></div>
   <div class="quiz-card"><h3>🛒🍎💬 Lektion 3 – Was ist für Sie wichtig?</h3><p>Einkaufen, Wünsche äußern, Preise, Essen und Trinken, Gewohnheiten.</p><a class="quiz-link" href="chapter3.html">👉 Zum Kapitel</a></div>
@@ -79,9 +136,7 @@
   <div class="quiz-card"><h3>🚗🚌🌦️ Lektion 7 – Wohin fahren Sie?</h3><p>Reisen, Verkehrsmittel, Zimmer reservieren, Wetter.</p><a class="quiz-link" href="chapter7.html">👉 Zum Kapitel</a></div>
   <div class="quiz-card"><h3>📰🎁🎧 Lektion 8 – Hast du schon gehört?</h3><p>Medienkonsum, Freizeitgewohnheiten, Geschenke, Farben.</p><a class="quiz-link" href="chapter8.html">👉 Zum Kapitel</a></div>
 
-  <!-- A2 Section -->
   <h2 class="section">A2 – Kapitel 9 bis 18</h2>
-
   <div class="quiz-card"><h3>📱📞😟 Lektion 9 – Warum rufst du nicht an?</h3><p>Kommunikation, Probleme, Cybermobbing.</p><a class="quiz-link" href="chapter9.html">👉 Zum Kapitel</a></div>
   <div class="quiz-card"><h3>👗🛍️💸 Lektion 10 – Passt der Rock?</h3><p>Kleidung kaufen, Mode, vergleichen, Vorlieben.</p><a class="quiz-link" href="chapter10.html">👉 Zum Kapitel</a></div>
   <div class="quiz-card"><h3>🐶🐒🦁 Lektion 11 – Gehört der Hund Ihnen?</h3><p>Zoo, Haustiere, berichten über Vergangenheit.</p><a class="quiz-link" href="chapter11.html">👉 Zum Kapitel</a></div>
@@ -93,9 +148,7 @@
   <div class="quiz-card"><h3>💻🎭📅 Lektion 17 – Wofür interessierst du dich?</h3><p>Internet, Interessen, Kultur, Termine vereinbaren.</p><a class="quiz-link" href="chapter17.html">👉 Zum Kapitel</a></div>
   <div class="quiz-card"><h3>💊🏃‍♂️🥦 Lektion 18 – Wie bleibst du gesund?</h3><p>Apotheke, Verkehrssituationen, Extremsport.</p><a class="quiz-link" href="chapter18.html">👉 Zum Kapitel</a></div>
 
-  <!-- B1 Section -->
   <h2 class="section">B1 – Kapitel 19 bis 30</h2>
-
   <div class="quiz-card"><h3>🎬🔮🤯 Lektion 19 – Was wäre, wenn …?</h3><p>Filme, Experimente, Beschreibungen.</p><a class="quiz-link" href="chapter19.html">👉 Zum Kapitel</a></div>
   <div class="quiz-card"><h3>🛒🎯🤷 Lektion 20 – Wozu brauchst du das?</h3><p>Konsum, Reklamationen, Ziele.</p><a class="quiz-link" href="chapter20.html">👉 Zum Kapitel</a></div>
   <div class="quiz-card"><h3>🍲🤔📑 Lektion 21 – Was könnte das sein?</h3><p>Essen, Informationen geben, Probleme beschreiben.</p><a class="quiz-link" href="chapter21.html">👉 Zum Kapitel</a></div>
@@ -108,6 +161,9 @@
   <div class="quiz-card"><h3>🤖🚀🌌 Lektion 28 – Wie wird die Zukunft werden?</h3><p>Leben in der Zukunft, Vorhersagen, Warnungen.</p><a class="quiz-link" href="chapter28.html">👉 Zum Kapitel</a></div>
   <div class="quiz-card"><h3>🏆💼📈 Lektion 29 – Wie hast du das geschafft?</h3><p>Erfolge, Bewerbungen, Berufe.</p><a class="quiz-link" href="chapter29.html">👉 Zum Kapitel</a></div>
   <div class="quiz-card"><h3>📚✅🎓 Lektion 30 – Abschluss & Wiederholung</h3><p>Alles zusammenfassen, große Abschlussübungen.</p><a class="quiz-link" href="chapter30.html">👉 Zum Kapitel</a></div>
+
+  <!-- WhatsApp Floating Button -->
+  <a href="https://wa.me/233556378371" class="whatsapp" target="_blank">💬 WhatsApp Chat</a>
 
 </body>
 </html>
