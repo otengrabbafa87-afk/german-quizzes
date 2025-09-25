@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>🙋 Sich vorstellen (50 Fragen)</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: linear-gradient(to right, #ff9a9e, #fad0c4); text-align: center; padding: 20px; color: #333; }
+    .quiz-box { background:#fff; padding:20px; border-radius:15px; max-width:850px; margin:auto; box-shadow:0 6px 12px rgba(0,0,0,0.3);}
+    .question { font-size:20px; margin-bottom:20px; }
+    .answers { display:grid; gap:10px; }
+    .answer { padding:12px; border-radius:8px; cursor:pointer; background:#2196f3; color:#fff; transition:0.3s; }
+    .answer:hover { transform:scale(1.05); }
+    .correct { background:#4caf50 !important; }
+    .wrong { background:#f44336 !important; }
+    .score { font-size:18px; margin-top:20px; }
+    .timer { font-size:18px; margin:10px; color:#e91e63; }
+    .explanation { margin-top:12px; text-align:left; color:#333; background:#f5f5f5; padding:10px; border-radius:8px; }
+    input[type="text"] { padding:8px; font-size:16px; width:60%; }
+    button { margin-top:10px; padding:10px 20px; font-size:16px; cursor:pointer; background:#ff416c; border:none; border-radius:8px; color:#fff; }
+    button:hover { background:#ff4b2b; }
+    .text-box { background:#f0f0f0; padding:12px; border-radius:10px; margin:15px 0; text-align:left; }
+  </style>
+</head>
+<body>
+  <h1>🙋 Sich vorstellen (50 Fragen)</h1>
+  <div class="quiz-box" id="quiz">
+    <div id="passage" class="text-box" style="display:none;">
+      <b>Text:</b><br>
+      Hallo! Ich heiße Maria und ich bin 25 Jahre alt.<br>
+      Ich komme aus Spanien und wohne jetzt in Berlin.<br>
+      Ich bin Studentin an der Universität.<br>
+      Meine Hobbys sind Lesen und Schwimmen.<br>
+      Ich habe eine Schwester, sie heißt Anna.<br>
+      Wir telefonieren oft und treffen uns am Wochenende.
+    </div>
+    <div class="question" id="question">Frage</div>
+    <div class="answers" id="answers"></div>
+    <div id="fillin" style="display:none;">
+      <input type="text" id="fillInput" placeholder="Deine Antwort">
+      <button onclick="checkFill()">Antwort prüfen</button>
+    </div>
+    <div class="explanation" id="explanation" style="display:none;"></div>
+    <div class="timer" id="timer"></div>
+    <div class="score" id="score">Punkte: 0</div>
+    <button onclick="prevQuestion()">⬅ Zurück</button>
+    <button onclick="nextQuestion()">Nächste Frage ➡</button>
+    <p><a href="chapter1.html">🔙 Zurück zu Lektion 1</a></p>
+  </div>
+
+<script>
+const quizData = [
+  // ---- 20 Multiple Choice ----
+  {type:"mc", question:"Wie sagt man auf Deutsch? (My name is Peter)", answers:["Ich bin Peter","Ich heiße Peter","Mein bin Peter","Ich habe Peter"], correct:"Ich heiße Peter", explain:"✅ Richtig: Ich heiße Peter."},
+  {type:"mc", question:"Was passt? (Hello, my name is Anna.)", answers:["Hallo, ich heiße Anna.","Hallo, ich habe Anna.","Hallo, ich bin heiße Anna.","Hallo, ich habe bin Anna."], correct:"Hallo, ich heiße Anna.", explain:"✅ Richtig: Hallo, ich heiße Anna."},
+  {type:"mc", question:"Welches ist korrekt? (I am a teacher.)", answers:["Ich heiße Lehrer.","Ich bin Lehrer.","Ich habe Lehrer.","Ich Lehrer bin."], correct:"Ich bin Lehrer.", explain:"✅ Richtig: Ich bin Lehrer (maskulin)."},
+  {type:"mc", question:"Was ist richtig? (I live in Berlin.)", answers:["Ich wohne in Berlin.","Ich wohnt in Berlin.","Ich bin in Berlin.","Ich wohne nach Berlin."], correct:"Ich wohne in Berlin.", explain:"✅ Richtig: Ich wohne in Berlin."},
+  {type:"mc", question:"Was passt? (Where are you from?)", answers:["Wie alt bist du?","Woher kommst du?","Wo bist du?","Wer bist du?"], correct:"Woher kommst du?", explain:"✅ Richtig: Woher kommst du?"},
+  {type:"mc", question:"Was antwortet man auf: 'Woher kommst du?'", answers:["Ich wohne Berlin.","Ich heiße Berlin.","Ich komme aus Berlin.","Ich bin Berlin."], correct:"Ich komme aus Berlin.", explain:"✅ Richtig: Ich komme aus Berlin."},
+  {type:"mc", question:"Welches ist korrekt? (I am 20 years old.)", answers:["Ich bin 20 Jahre.","Ich habe 20 Jahre alt.","Ich bin 20 Jahre alt.","Ich heiße 20 Jahre."], correct:"Ich bin 20 Jahre alt.", explain:"✅ Richtig: Ich bin 20 Jahre alt."},
+  {type:"mc", question:"Was passt? (This is my friend.)", answers:["Das ist mein Freund.","Das ist ich Freund.","Das ist meiner Freund.","Das ist mir Freund."], correct:"Das ist mein Freund.", explain:"✅ Richtig: Das ist mein Freund (maskulin)."},
+  {type:"mc", question:"Welches Pronomen für 'Anna'? (She)", answers:["Er","Sie","Es","Wir"], correct:"Sie", explain:"✅ Richtig: Anna → sie."},
+  {type:"mc", question:"Wie sagt man? (I am a student.)", answers:["Ich heiße Student.","Ich habe Student.","Ich bin Student.","Ich Student bin."], correct:"Ich bin Student.", explain:"✅ Richtig: Ich bin Student (maskulin)."},
+  {type:"mc", question:"Welche Frage passt? (How old are you?)", answers:["Wie alt bist du?","Wo bist du?","Wie heißt du?","Woher kommst du?"], correct:"Wie alt bist du?", explain:"✅ Richtig: Wie alt bist du?"},
+  {type:"mc", question:"Was passt? (I live in Germany.)", answers:["Ich wohne in Deutschland.","Ich wohne nach Deutschland.","Ich bin Deutschland.","Ich komme bei Deutschland."], correct:"Ich wohne in Deutschland.", explain:"✅ Richtig: Ich wohne in Deutschland."},
+  {type:"mc", question:"Welches ist korrekt? (This is my mother.)", answers:["Das ist meine Mutter.","Das ist mein Mutter.","Das ist meiner Mutter.","Das ist mir Mutter."], correct:"Das ist meine Mutter.", explain:"✅ Richtig: die Mutter (feminin)."},
+  {type:"mc", question:"Wie antwortet man auf: 'Wie heißt du?'", answers:["Ich heiße Peter.","Ich bin 25.","Ich wohne in Berlin.","Ich komme aus Spanien."], correct:"Ich heiße Peter.", explain:"✅ Richtig: Ich heiße Peter."},
+  {type:"mc", question:"Was passt? (We are friends.)", answers:["Wir sind Freunde.","Wir habe Freunde.","Wir Freunde bin.","Wir ist Freunde."], correct:"Wir sind Freunde.", explain:"✅ Richtig: Wir sind Freunde (Plural)."},
+  {type:"mc", question:"Was passt? (This is my sister.)", answers:["Das ist meine Schwester.","Das ist mein Schwester.","Das ist mir Schwester.","Das ist meiner Schwester."], correct:"Das ist meine Schwester.", explain:"✅ Richtig: die Schwester (feminin)."},
+  {type:"mc", question:"Was ist korrekt? (Do you live in Berlin?)", answers:["Wohnst du in Berlin?","Wohnt du in Berlin?","Bist du Berlin?","Hast du Berlin?"], correct:"Wohnst du in Berlin?", explain:"✅ Richtig: Wohnst du in Berlin?"},
+  {type:"mc", question:"Welche Antwort passt? 'Wohnst du in Köln?'", answers:["Nein, ich wohne in Hamburg.","Ja, ich heiße Hamburg.","Nein, ich komme Berlin.","Ja, ich bin Hamburg."], correct:"Nein, ich wohne in Hamburg.", explain:"✅ Richtig: Nein, ich wohne in Hamburg."},
+  {type:"mc", question:"Was passt? (This is my brother.)", answers:["Das ist mein Bruder.","Das ist meine Bruder.","Das ist mir Bruder.","Das ist meiner Bruder."], correct:"Das ist mein Bruder.", explain:"✅ Richtig: der Bruder (maskulin)."},
+  {type:"mc", question:"Wie sagt man? (My hobby is reading.)", answers:["Mein Hobby ist Lesen.","Ich habe Hobby Lesen.","Ich bin Hobby Lesen.","Mein Hobby bin Lesen."], correct:"Mein Hobby ist Lesen.", explain:"✅ Richtig: Mein Hobby ist Lesen."},
+
+  // ---- 20 Fill in ----
+  {type:"fill", question:"Übersetze: (My name is Anna)", correct:"Ich heiße Anna", explain:"✅ Richtig: Ich heiße Anna."},
+  {type:"fill", question:"Übersetze: (I live in Berlin)", correct:"Ich wohne in Berlin", explain:"✅ Richtig: Ich wohne in Berlin."},
+  {type:"fill", question:"Übersetze: (I am 25 years old)", correct:"Ich bin 25 Jahre alt", explain:"✅ Richtig: Ich bin 25 Jahre alt."},
+  {type:"fill", question:"Übersetze: (I come from Spain)", correct:"Ich komme aus Spanien", explain:"✅ Richtig: Ich komme aus Spanien."},
+  {type:"fill", question:"Übersetze: (This is my father)", correct:"Das ist mein Vater", explain:"✅ Richtig: der Vater (maskulin)."},
+  {type:"fill", question:"Übersetze: (This is my mother)", correct:"Das ist meine Mutter", explain:"✅ Richtig: die Mutter (feminin)."},
+  {type:"fill", question:"Übersetze: (This is my friend)", correct:"Das ist mein Freund", explain:"✅ Richtig: der Freund (maskulin)."},
+  {type:"fill", question:"Übersetze: (This is my sister)", correct:"Das ist meine Schwester", explain:"✅ Richtig: die Schwester (feminin)."},
+  {type:"fill", question:"Übersetze: (I am a student)", correct:"Ich bin Student", explain:"✅ Richtig: Ich bin Student (maskulin)."},
+  {type:"fill", question:"Übersetze: (We are friends)", correct:"Wir sind Freunde", explain:"✅ Richtig: Wir sind Freunde (Plural)."},
+  {type:"fill", question:"Übersetze: (My hobby is swimming)", correct:"Mein Hobby ist Schwimmen", explain:"✅ Richtig: Mein Hobby ist Schwimmen."},
+  {type:"fill", question:"Übersetze: (She is my sister)", correct:"Sie ist meine Schwester", explain:"✅ Richtig: Sie ist meine Schwester."},
+  {type:"fill", question:"Übersetze: (He is my brother)", correct:"Er ist mein Bruder", explain:"✅ Richtig: Er ist mein Bruder."},
+  {type:"fill", question:"Übersetze: (I am from Ghana)", correct:"Ich komme aus Ghana", explain:"✅ Richtig: Ich komme aus Ghana."},
+  {type:"fill", question:"Übersetze: (Do you live in Munich?)", correct:"Wohnst du in München?", explain:"✅ Richtig: Wohnst du in München?"},
+  {type:"fill", question:"Übersetze: (I am a teacher)", correct:"Ich bin Lehrer", explain:"✅ Richtig: Ich bin Lehrer (maskulin)."},
+  {type:"fill", question:"Übersetze: (She is a doctor)", correct:"Sie ist Ärztin", explain:"✅ Richtig: Sie ist Ärztin (feminin)."},
+  {type:"fill", question:"Übersetze: (He is a student)", correct:"Er ist Student", explain:"✅ Richtig: Er ist Student (maskulin)."},
+  {type:"fill", question:"Übersetze: (We live in Germany)", correct:"Wir wohnen in Deutschland", explain:"✅ Richtig: Wir wohnen in Deutschland."},
+  {type:"fill", question:"Übersetze: (I am 19 years old)", correct:"Ich bin 19 Jahre alt", explain:"✅ Richtig: Ich bin 19 Jahre alt."},
+
+  // ---- 10 True/False ----
+  {type:"mc", question:"Maria ist 25 Jahre alt.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"✅ Im Text: Maria ist 25 Jahre alt."},
+  {type:"mc", question:"Maria wohnt in Spanien.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"❌ Im Text: Maria kommt aus Spanien, wohnt in Berlin."},
+  {type:"mc", question:"Maria ist Studentin.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"✅ Im Text: Maria ist Studentin."},
+  {type:"mc", question:"Marias Hobbys sind Tanzen und Singen.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"❌ Im Text: Hobbys sind Lesen und Schwimmen."},
+  {type:"mc", question:"Maria hat eine Schwester.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"✅ Im Text: Sie hat eine Schwester."},
+  {type:"mc", question:"Die Schwester heißt Anna.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"✅ Im Text: Sie heißt Anna."},
+  {type:"mc", question:"Maria telefoniert nie mit ihrer Schwester.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"❌ Im Text: Sie telefonieren oft."},
+  {type:"mc", question:"Sie treffen sich am Wochenende.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"✅ Im Text: Sie treffen sich am Wochenende."},
+  {type:"mc", question:"Maria wohnt in München.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"❌ Im Text: Maria wohnt in Berlin."},
+  {type:"mc", question:"Maria ist verheiratet.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"❌ Nicht im Text erwähnt."}
+];
+
+let current=0,score=0,timer,timeLeft=0;
+const qEl=document.getElementById("question");
+const aEl=document.getElementById("answers");
+const fEl=document.getElementById("fillin");
+const input=document.getElementById("fillInput");
+const tEl=document.getElementById("timer");
+const sEl=document.getElementById("score");
+const eEl=document.getElementById("explanation");
+const passage=document.getElementById("passage");
+
+function loadQuestion(){
+  const q=quizData[current];
+  qEl.innerHTML=(current+1)+". "+q.question;
+  aEl.innerHTML=""; fEl.style.display="none"; eEl.style.display="none"; eEl.innerHTML="";
+  if(current>=40){ passage.style.display="block"; } else { passage.style.display="none"; }
+
+  if(q.type==="mc"){
+    q.answers.forEach(ans=>{
+      const btn=document.createElement("div");
+      btn.className="answer"; btn.innerText=ans;
+      btn.onclick=()=>checkAnswer(btn,ans,q.correct,q.explain);
+      aEl.appendChild(btn);
+    });
+    if(current<20) resetTimer(20);
+    else if(current<40) resetTimer(35);
+    else resetTimer(300);
+  } else {
+    fEl.style.display="block"; input.value=""; input.focus();
+    if(current<40) resetTimer(35); else resetTimer(300);
+  }
+}
+function checkAnswer(button,answer,correct,explanation){
+  clearInterval(timer); lockAnswers();
+  if(answer===correct){ button.classList.add("correct"); score+=10; }
+  else{ button.classList.add("wrong"); }
+  sEl.innerText="Punkte: "+score;
+  eEl.style.display="block"; eEl.innerHTML=explanation;
+}
+function checkFill(){
+  clearInterval(timer);
+  const q=quizData[current];
+  let ans=input.value.trim();
+  if(ans.toLowerCase()===q.correct.toLowerCase()){ score+=10; eEl.innerHTML="✅ Richtig: "+q.correct; }
+  else{ eEl.innerHTML="❌ Falsch. Richtige Antwort: "+q.correct; }
+  eEl.style.display="block"; sEl.innerText="Punkte: "+score;
+}
+function lockAnswers(){ document.querySelectorAll(".answer").forEach(b=>b.style.pointerEvents="none"); }
+function nextQuestion(){ clearInterval(timer); current++; if(current<quizData.length) loadQuestion(); else qEl.innerHTML="🎉 Quiz beendet! Punkte: "+score; }
+function prevQuestion(){ if(current>0){ current--; loadQuestion(); } }
+function resetTimer(seconds){
+  timeLeft=seconds; tEl.innerText="⏱ "+timeLeft+"s"; clearInterval(timer);
+  timer=setInterval(()=>{ timeLeft--; tEl.innerText="⏱ "+timeLeft+"s";
+    if(timeLeft<=0){ clearInterval(timer);
+      const q=quizData[current]; eEl.style.display="block"; eEl.innerHTML="⏰ Zeit abgelaufen. Richtige Antwort: "+q.correct;
+    }
+  },1000);
+}
+loadQuestion();
+</script>
+</body>
+</html>
