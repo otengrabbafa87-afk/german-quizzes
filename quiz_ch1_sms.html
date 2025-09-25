@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>📱 SMS & Dialoge (50 Fragen)</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: linear-gradient(to right, #f7971e, #ffd200); text-align: center; padding: 20px; color: #333; }
+    .quiz-box { background:#fff; padding:20px; border-radius:15px; max-width:850px; margin:auto; box-shadow:0 6px 12px rgba(0,0,0,0.3);}
+    .question { font-size:20px; margin-bottom:20px; }
+    .answers { display:grid; gap:10px; }
+    .answer { padding:12px; border-radius:8px; cursor:pointer; background:#2196f3; color:#fff; transition:0.3s; }
+    .answer:hover { transform:scale(1.05); }
+    .correct { background:#4caf50 !important; }
+    .wrong { background:#f44336 !important; }
+    .score { font-size:18px; margin-top:20px; }
+    .timer { font-size:18px; margin:10px; color:#e91e63; }
+    .explanation { margin-top:12px; text-align:left; color:#333; background:#f5f5f5; padding:10px; border-radius:8px; }
+    input[type="text"] { padding:8px; font-size:16px; width:60%; }
+    button { margin-top:10px; padding:10px 20px; font-size:16px; cursor:pointer; background:#ff416c; border:none; border-radius:8px; color:#fff; }
+    button:hover { background:#ff4b2b; }
+    .text-box { background:#f0f0f0; padding:12px; border-radius:10px; margin:15px 0; text-align:left; }
+  </style>
+</head>
+<body>
+  <h1>📱 SMS & Dialoge (50 Fragen)</h1>
+  <div class="quiz-box" id="quiz">
+    <div id="passage" class="text-box" style="display:none;">
+      <b>SMS-Dialog:</b><br>
+      Frau Ramoni schreibt eine SMS an Herrn Berger: „Hallo, wie heißt du?“<br>
+      Herr Berger antwortet: „Ich heiße Frank. Und wie heißen Sie?“<br>
+      Frau Ramoni schreibt: „Ich heiße Paola. Freut mich.“<br>
+      Herr Berger antwortet: „Freut mich auch.“
+    </div>
+    <div class="question" id="question">Frage</div>
+    <div class="answers" id="answers"></div>
+    <div id="fillin" style="display:none;">
+      <input type="text" id="fillInput" placeholder="Deine Antwort">
+      <button onclick="checkFill()">Antwort prüfen</button>
+    </div>
+    <div class="explanation" id="explanation" style="display:none;"></div>
+    <div class="timer" id="timer"></div>
+    <div class="score" id="score">Punkte: 0</div>
+    <button onclick="prevQuestion()">⬅ Zurück</button>
+    <button onclick="nextQuestion()">Nächste Frage ➡</button>
+    <p><a href="chapter1.html">🔙 Zurück zu Lektion 1</a></p>
+  </div>
+
+<script>
+const quizData = [
+  // ---- 20 Multiple Choice ----
+  {type:"mc", question:"Wer sagt: „Hallo, ich heiße Paola Ramoni“?", answers:["Frau Ramoni","Herr Berger","Frau Fischer","Herr Müller"], correct:"Frau Ramoni", explain:"Paola Ramoni stellt sich mit diesem Satz vor."},
+  {type:"mc", question:"Wer sagt: „Ich heiße Frank Berger“?", answers:["Herr Müller","Frau Ramoni","Herr Berger","Frau Fischer"], correct:"Herr Berger", explain:"Frank Berger stellt sich vor."},
+  {type:"mc", question:"Welche Telefonnummer gehört zu Frau Gramann?", answers:["0664 822 570","0664 389 911","0646 239 944"], correct:"0646 239 944", explain:"Im Buch ist 0646 239 944 Frau Gramanns Nummer."},
+  {type:"mc", question:"Welche Telefonnummer gehört zu Herrn Richter?", answers:["0664 822 570","0664 389 911","0646 239 944"], correct:"0664 822 570", explain:"0664 822 570 = Herr Richter."},
+  {type:"mc", question:"Welche Telefonnummer gehört zu Christoph und Anna?", answers:["0664 389 911","0664 822 570","0646 239 944"], correct:"0664 389 911", explain:"0664 389 911 = Christoph und Anna."},
+  {type:"mc", question:"Was sagt man am Telefon?", answers:["Wie heißen Sie?","Hallo!","Woher kommst du?","Ich bin Student."], correct:"Hallo!", explain:"Am Telefon sagt man zuerst Hallo."},
+  {type:"mc", question:"Wer sagt: „Entschuldigung, wie heißen Sie?“", answers:["Frau Fischer","Herr Müller","Herr Berger","Frau Ramoni"], correct:"Herr Müller", explain:"Herr Müller stellt diese Frage."},
+  {type:"mc", question:"Welche Antwort passt: „Wie heißen Sie?“", answers:["Ich heiße Frank.","Mir geht es gut.","Ich komme aus Berlin.","Ich bin Student."], correct:"Ich heiße Frank.", explain:"Auf ‚Wie heißen Sie?‘ antwortet man mit dem Namen."},
+  {type:"mc", question:"Welche Antwort passt: „Woher kommst du?“", answers:["Ich heiße Maria.","Ich komme aus Korea.","Ich bin Lehrer.","Mir geht es gut."], correct:"Ich komme aus Korea.", explain:"Auf ‚Woher kommst du?‘ sagt man Herkunft."},
+  {type:"mc", question:"Welche Antwort passt: „Wie geht’s?“", answers:["Mir geht es gut.","Ich heiße Tom.","Ich komme aus Wien.","Ich bin Student."], correct:"Mir geht es gut.", explain:"Frage nach Befinden → Mir geht es gut."},
+  {type:"mc", question:"Wer sagt: „Das ist meine Telefonnummer.“", answers:["Herr Berger","Frau Fischer","Frau Ramoni","Herr Müller"], correct:"Herr Berger", explain:"Herr Berger gibt seine Nummer an."},
+  {type:"mc", question:"Welche Antwort passt: „Freut mich.“", answers:["Freut mich auch.","Ich komme aus Berlin.","Ich heiße Maria.","Mir geht es gut."], correct:"Freut mich auch.", explain:"Man erwidert mit ‚Freut mich auch‘."},
+  {type:"mc", question:"Wer sagt: „Hallo, ich heiße Petra Fischer“?", answers:["Herr Müller","Herr Berger","Frau Fischer","Frau Ramoni"], correct:"Frau Fischer", explain:"Petra Fischer stellt sich so vor."},
+  {type:"mc", question:"Welche Frage passt zu: „Ich heiße Andrea“?", answers:["Wie heißt du?","Wo wohnst du?","Woher kommst du?","Wie geht’s?"], correct:"Wie heißt du?", explain:"Frage nach dem Namen."},
+  {type:"mc", question:"Welche Frage passt zu: „Ich komme aus China“?", answers:["Wie heißt du?","Woher kommst du?","Wie geht’s?","Wohnst du hier?"], correct:"Woher kommst du?", explain:"Antwort passt zu Herkunft."},
+  {type:"mc", question:"Welche Antwort passt: „Wie heißen Sie?“", answers:["Ich heiße Paola.","Ich komme aus Berlin.","Mir geht es gut.","Ich bin Student."], correct:"Ich heiße Paola.", explain:"Antwort mit Namen."},
+  {type:"mc", question:"Welche Antwort passt: „Wo wohnen Sie?“", answers:["Ich wohne in Wien.","Ich heiße Tom.","Mir geht es gut.","Ich bin Student."], correct:"Ich wohne in Wien.", explain:"Antwort mit Wohnort."},
+  {type:"mc", question:"Was sagt man beim Abschied?", answers:["Auf Wiedersehen!","Wie geht’s?","Ich heiße Tom.","Ich komme aus Korea."], correct:"Auf Wiedersehen!", explain:"Beim Abschied sagt man ‚Auf Wiedersehen!‘"},
+  {type:"mc", question:"Wer sagt: „Die SMS kommt aus Korea“?", answers:["Herr Müller","Herr Berger","Frau Fischer","Frau Ramoni"], correct:"Herr Berger", explain:"Herr Berger sagt: Die SMS kommt aus Korea."},
+
+  // ---- 20 Fill in ----
+  {type:"fill", question:"(Hallo! Ich heiße Paul.) Schreibe den Satz.", correct:"Hallo! Ich heiße Paul.", explain:"Begrüßung + Name."},
+  {type:"fill", question:"(Ich heiße Anna.) Ergänze.", correct:"Ich heiße Anna.", explain:"Antwort auf ‚Wie heißt du?‘"},
+  {type:"fill", question:"(Meine Telefonnummer: 0664 822 570)", correct:"Meine Telefonnummer ist 0664 822 570.", explain:"Telefonnummer richtig angeben."},
+  {type:"fill", question:"(Woher kommst du? – Ich, Deutschland)", correct:"Ich komme aus Deutschland.", explain:"Herkunft mit ‚kommen aus‘."},
+  {type:"fill", question:"(Wo wohnen Sie? – Ich, Wien)", correct:"Ich wohne in Wien.", explain:"Wohnort mit ‚wohnen‘."},
+  {type:"fill", question:"(Freut mich.) Ergänze den Dialog: ‚Ich heiße Tom.‘ – …", correct:"Freut mich.", explain:"Standardantwort im Dialog."},
+  {type:"fill", question:"(Ich bin Student.) Ergänze.", correct:"Ich bin Student.", explain:"Antwort auf Beruf."},
+  {type:"fill", question:"(Guten Tag, ich heiße …) Ergänze mit Maria.", correct:"Guten Tag, ich heiße Maria.", explain:"Vorstellung mit Namen."},
+  {type:"fill", question:"(Wie heißt du? – … Hans)", correct:"Ich heiße Hans.", explain:"Antwort mit Namen."},
+  {type:"fill", question:"(Ich komme aus Korea.) Ergänze.", correct:"Ich komme aus Korea.", explain:"Antwort auf Herkunft."},
+  {type:"fill", question:"(Meine Telefonnummer ist … 0646 239 944)", correct:"Meine Telefonnummer ist 0646 239 944.", explain:"Telefonnummer richtig schreiben."},
+  {type:"fill", question:"(Auf Wiedersehen!) Schreibe den Abschiedsgruß.", correct:"Auf Wiedersehen!", explain:"Standardabschied."},
+  {type:"fill", question:"(Hallo, ich heiße … – Paola)", correct:"Hallo, ich heiße Paola.", explain:"Begrüßung + Name."},
+  {type:"fill", question:"(Wie heißen Sie? – Ich heiße … Frank)", correct:"Ich heiße Frank.", explain:"Vorstellung im formellen Kontext."},
+  {type:"fill", question:"(Woher kommen Sie? – Ich komme aus … Brasilien)", correct:"Ich komme aus Brasilien.", explain:"Herkunft mit ‚kommen aus‘."},
+  {type:"fill", question:"(Ich wohne in Berlin.) Ergänze.", correct:"Ich wohne in Berlin.", explain:"Antwort auf Wohnort."},
+  {type:"fill", question:"(Ich bin Lehrerin.) Ergänze.", correct:"Ich bin Lehrerin.", explain:"Beruf angeben."},
+  {type:"fill", question:"(Wie geht’s? – Mir geht es gut.)", correct:"Mir geht es gut.", explain:"Antwort auf Befinden."},
+  {type:"fill", question:"(Ich heiße Petra Fischer.)", correct:"Ich heiße Petra Fischer.", explain:"Vorstellung vollständig."},
+  {type:"fill", question:"(Ich wohne in Frankfurt.)", correct:"Ich wohne in Frankfurt.", explain:"Antwort mit Stadt."},
+
+  // ---- 10 True/False Reading ----
+  {type:"mc", question:"Frau Ramoni schreibt eine SMS an Herrn Berger.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Frau Ramoni schreibt zuerst."},
+  {type:"mc", question:"Herr Berger heißt Peter.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Er heißt Frank, nicht Peter."},
+  {type:"mc", question:"Frau Ramoni heißt Paola.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Ich heiße Paola."},
+  {type:"mc", question:"Herr Berger und Frau Ramoni gehen ins Kino.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text steht nur SMS, kein Kino."},
+  {type:"mc", question:"Herr Berger antwortet: ‚Ich heiße Frank.‘", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Genau dieser Satz steht im Text."},
+  {type:"mc", question:"Frau Ramoni kommt aus Wien.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Das steht nicht im Text."},
+  {type:"mc", question:"Beide sagen ‚Freut mich‘.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Am Ende sagen beide: Freut mich."},
+  {type:"mc", question:"Herr Berger schreibt zuerst.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Zuerst schreibt Frau Ramoni."},
+  {type:"mc", question:"Die SMS ist ein Dialog.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Es ist ein SMS-Dialog."},
+  {type:"mc", question:"Der Dialog ist formell.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"‚Wie heißen Sie?‘ → formell."}
+];
+
+let current=0,score=0,timer,timeLeft=0;
+const qEl=document.getElementById("question");
+const aEl=document.getElementById("answers");
+const fEl=document.getElementById("fillin");
+const input=document.getElementById("fillInput");
+const tEl=document.getElementById("timer");
+const sEl=document.getElementById("score");
+const eEl=document.getElementById("explanation");
+const passage=document.getElementById("passage");
+
+function loadQuestion(){
+  const q=quizData[current];
+  qEl.innerHTML=(current+1)+". "+q.question;
+  aEl.innerHTML=""; fEl.style.display="none"; eEl.style.display="none"; eEl.innerHTML="";
+  if(current>=40){ passage.style.display="block"; } else { passage.style.display="none"; }
+
+  if(q.type==="mc"){
+    q.answers.forEach(ans=>{
+      const btn=document.createElement("div");
+      btn.className="answer"; btn.innerText=ans;
+      btn.onclick=()=>checkAnswer(btn,ans,q.correct,q.explain);
+      aEl.appendChild(btn);
+    });
+    if(current<20) resetTimer(20);
+    else if(current<40) resetTimer(35);
+    else resetTimer(300);
+  } else {
+    fEl.style.display="block";
+    input.value=""; input.focus();
+    if(current<40) resetTimer(35); else resetTimer(300);
+  }
+}
+function checkAnswer(button,answer,correct,explanation){
+  clearInterval(timer); lockAnswers();
+  if(answer===correct){ button.classList.add("correct"); score+=10; }
+  else{ button.classList.add("wrong"); }
+  sEl.innerText="Punkte: "+score;
+  eEl.style.display="block"; eEl.innerHTML=explanation;
+}
+function checkFill(){
+  clearInterval(timer);
+  const q=quizData[current];
+  let ans=input.value.trim();
+  if(ans===q.correct){ score+=10; eEl.innerHTML="✅ Richtig: "+q.correct; }
+  else{ eEl.innerHTML="❌ Falsch. Richtige Antwort: "+q.correct; }
+  eEl.style.display="block"; sEl.innerText="Punkte: "+score;
+}
+function lockAnswers(){ document.querySelectorAll(".answer").forEach(b=>b.style.pointerEvents="none"); }
+function nextQuestion(){ clearInterval(timer); current++; if(current<quizData.length) loadQuestion(); else qEl.innerHTML="🎉 Quiz beendet! Punkte: "+score; }
+function prevQuestion(){ if(current>0){ current--; loadQuestion(); } }
+function resetTimer(seconds){
+  timeLeft=seconds; tEl.innerText="⏱ "+timeLeft+"s"; clearInterval(timer);
+  timer=setInterval(()=>{ timeLeft--; tEl.innerText="⏱ "+timeLeft+"s";
+    if(timeLeft<=0){ clearInterval(timer);
+      const q=quizData[current]; eEl.style.display="block"; eEl.innerHTML="⏰ Zeit abgelaufen. Richtige Antwort: "+q.correct;
+    }
+  },1000);
+}
+loadQuestion();
+</script>
+</body>
+</html>
