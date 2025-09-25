@@ -25,11 +25,10 @@
   <h1>📱 SMS & Dialoge (50 Fragen)</h1>
   <div class="quiz-box" id="quiz">
     <div id="passage" class="text-box" style="display:none;">
-      <b>SMS-Dialog:</b><br>
+      <b>Dialog:</b><br>
       Frau Ramoni schreibt eine SMS an Herrn Berger: „Hallo, wie heißt du?“<br>
-      Herr Berger antwortet: „Ich heiße Frank. Und wie heißen Sie?“<br>
-      Frau Ramoni schreibt: „Ich heiße Paola. Freut mich.“<br>
-      Herr Berger antwortet: „Freut mich auch.“
+      Herr Berger antwortet: „Ich heiße Frank. Und wie heißt du?“<br>
+      Frau Ramoni: „Ich heiße Paola.“
     </div>
     <div class="question" id="question">Frage</div>
     <div class="answers" id="answers"></div>
@@ -47,60 +46,36 @@
 
 <script>
 const quizData = [
-  // ---- 20 Multiple Choice ----
-  {type:"mc", question:"Wer sagt: „Hallo, ich heiße Paola Ramoni“?", answers:["Frau Ramoni","Herr Berger","Frau Fischer","Herr Müller"], correct:"Frau Ramoni", explain:"Paola Ramoni stellt sich mit diesem Satz vor."},
-  {type:"mc", question:"Wer sagt: „Ich heiße Frank Berger“?", answers:["Herr Müller","Frau Ramoni","Herr Berger","Frau Fischer"], correct:"Herr Berger", explain:"Frank Berger stellt sich vor."},
-  {type:"mc", question:"Welche Telefonnummer gehört zu Frau Gramann?", answers:["0664 822 570","0664 389 911","0646 239 944"], correct:"0646 239 944", explain:"Im Buch ist 0646 239 944 Frau Gramanns Nummer."},
-  {type:"mc", question:"Welche Telefonnummer gehört zu Herrn Richter?", answers:["0664 822 570","0664 389 911","0646 239 944"], correct:"0664 822 570", explain:"0664 822 570 = Herr Richter."},
-  {type:"mc", question:"Welche Telefonnummer gehört zu Christoph und Anna?", answers:["0664 389 911","0664 822 570","0646 239 944"], correct:"0664 389 911", explain:"0664 389 911 = Christoph und Anna."},
-  {type:"mc", question:"Was sagt man am Telefon?", answers:["Wie heißen Sie?","Hallo!","Woher kommst du?","Ich bin Student."], correct:"Hallo!", explain:"Am Telefon sagt man zuerst Hallo."},
-  {type:"mc", question:"Wer sagt: „Entschuldigung, wie heißen Sie?“", answers:["Frau Fischer","Herr Müller","Herr Berger","Frau Ramoni"], correct:"Herr Müller", explain:"Herr Müller stellt diese Frage."},
-  {type:"mc", question:"Welche Antwort passt: „Wie heißen Sie?“", answers:["Ich heiße Frank.","Mir geht es gut.","Ich komme aus Berlin.","Ich bin Student."], correct:"Ich heiße Frank.", explain:"Auf ‚Wie heißen Sie?‘ antwortet man mit dem Namen."},
-  {type:"mc", question:"Welche Antwort passt: „Woher kommst du?“", answers:["Ich heiße Maria.","Ich komme aus Korea.","Ich bin Lehrer.","Mir geht es gut."], correct:"Ich komme aus Korea.", explain:"Auf ‚Woher kommst du?‘ sagt man Herkunft."},
-  {type:"mc", question:"Welche Antwort passt: „Wie geht’s?“", answers:["Mir geht es gut.","Ich heiße Tom.","Ich komme aus Wien.","Ich bin Student."], correct:"Mir geht es gut.", explain:"Frage nach Befinden → Mir geht es gut."},
-  {type:"mc", question:"Wer sagt: „Das ist meine Telefonnummer.“", answers:["Herr Berger","Frau Fischer","Frau Ramoni","Herr Müller"], correct:"Herr Berger", explain:"Herr Berger gibt seine Nummer an."},
-  {type:"mc", question:"Welche Antwort passt: „Freut mich.“", answers:["Freut mich auch.","Ich komme aus Berlin.","Ich heiße Maria.","Mir geht es gut."], correct:"Freut mich auch.", explain:"Man erwidert mit ‚Freut mich auch‘."},
-  {type:"mc", question:"Wer sagt: „Hallo, ich heiße Petra Fischer“?", answers:["Herr Müller","Herr Berger","Frau Fischer","Frau Ramoni"], correct:"Frau Fischer", explain:"Petra Fischer stellt sich so vor."},
-  {type:"mc", question:"Welche Frage passt zu: „Ich heiße Andrea“?", answers:["Wie heißt du?","Wo wohnst du?","Woher kommst du?","Wie geht’s?"], correct:"Wie heißt du?", explain:"Frage nach dem Namen."},
-  {type:"mc", question:"Welche Frage passt zu: „Ich komme aus China“?", answers:["Wie heißt du?","Woher kommst du?","Wie geht’s?","Wohnst du hier?"], correct:"Woher kommst du?", explain:"Antwort passt zu Herkunft."},
-  {type:"mc", question:"Welche Antwort passt: „Wie heißen Sie?“", answers:["Ich heiße Paola.","Ich komme aus Berlin.","Mir geht es gut.","Ich bin Student."], correct:"Ich heiße Paola.", explain:"Antwort mit Namen."},
-  {type:"mc", question:"Welche Antwort passt: „Wo wohnen Sie?“", answers:["Ich wohne in Wien.","Ich heiße Tom.","Mir geht es gut.","Ich bin Student."], correct:"Ich wohne in Wien.", explain:"Antwort mit Wohnort."},
-  {type:"mc", question:"Was sagt man beim Abschied?", answers:["Auf Wiedersehen!","Wie geht’s?","Ich heiße Tom.","Ich komme aus Korea."], correct:"Auf Wiedersehen!", explain:"Beim Abschied sagt man ‚Auf Wiedersehen!‘"},
-  {type:"mc", question:"Wer sagt: „Die SMS kommt aus Korea“?", answers:["Herr Müller","Herr Berger","Frau Fischer","Frau Ramoni"], correct:"Herr Berger", explain:"Herr Berger sagt: Die SMS kommt aus Korea."},
+  // --- 20 Multiple Choice ---
+  {type:"mc", question:"Wer sagt: „Hallo, ich heiße Paola Ramoni“?", answers:["Frau Ramoni","Herr Berger","Frau Fischer","Herr Müller"], correct:"Frau Ramoni", explain:"Paola stellt sich vor: ‚Hallo, ich heiße Paola Ramoni.‘"},
+  {type:"mc", question:"Welche Telefonnummer gehört zu Herrn Berger?", answers:["0664 822 570","0664 389 911","0664 235 970","0664 221 455"], correct:"0664 822 570", explain:"Herr Berger: ‚Das ist Jakob… 0664 822 570.‘"},
+  {type:"mc", question:"Was sagt man am Telefon?", answers:["Entschuldigung, wie heißen Sie?","Ich komme aus Korea.","Ich bin Student."], correct:"Entschuldigung, wie heißen Sie?", explain:"Typische erste Frage am Telefon."},
+  {type:"mc", question:"Welche Antwort passt? ‚Woher kommst du?‘", answers:["Ich komme aus Deutschland.","Er heißt Paul.","Es ist 10 Uhr."], correct:"Ich komme aus Deutschland.", explain:"Frage nach Herkunft → Antwort: Ich komme aus ..."},
+  {type:"mc", question:"Welche Antwort passt? ‚Wie spät ist es?‘", answers:["Es ist 9 Uhr.","Ich heiße Frank.","Ich komme aus Wien."], correct:"Es ist 9 Uhr.", explain:"Frage nach Uhrzeit → Antwort: Es ist ..."},
+  {type:"mc", question:"Wer sagt: ‚Das ist meine Telefonnummer‘?", answers:["Herr Berger","Frau Fischer","Frau Ramoni"], correct:"Herr Berger", explain:"Im Dialog: Herr Berger gibt seine Telefonnummer an."},
+  {type:"mc", question:"Welche Antwort passt? ‚Freut mich.‘", answers:["Freut mich.","Es ist Montag.","Ich heiße Frank."], correct:"Freut mich.", explain:"Typische Reaktion beim Vorstellen."},
+  {type:"mc", question:"Wer sagt: ‚Hallo, ich heiße Frau Fischer‘?", answers:["Frau Fischer","Herr Berger","Herr Müller"], correct:"Frau Fischer", explain:"Sie stellt sich selbst vor."},
+  {type:"mc", question:"Welche Frage passt zu ‚Ich heiße Andrea‘?", answers:["Wie heißen Sie?","Woher kommst du?","Wie spät ist es?"], correct:"Wie heißen Sie?", explain:"Frage nach dem Namen."},
+  {type:"mc", question:"Welche Antwort passt zu ‚Wie heißen Sie?‘", answers:["Ich heiße Paola.","Ich komme aus Berlin.","Es ist 8 Uhr."], correct:"Ich heiße Paola.", explain:"Antwort mit Name."},
+  
+  // --- 20 Fill-in ---
+  {type:"fill", question:"(Ich heiße Anna.) Ergänze: ___", correct:"Ich heiße Anna.", explain:"Antwort auf ‚Wie heißt du?‘"},
+  {type:"fill", question:"(Meine Telefonnummer: 0664 822 570.) Ergänze: ___", correct:"Meine Telefonnummer ist 0664 822 570.", explain:"Typische Antwort am Telefon."},
+  {type:"fill", question:"(Woher kommst du? – Ich, Deutschland) Ergänze: ___", correct:"Ich komme aus Deutschland.", explain:"Antwort: Ich komme aus ..."},
+  {type:"fill", question:"(Ich bin Student.) Ergänze: ___", correct:"Ich bin Student.", explain:"Antwort auf die Frage nach Beruf."},
+  {type:"fill", question:"(Heute ist Montag.) Ergänze: ___", correct:"Heute ist Montag.", explain:"Antwort zur Wochentagsfrage."},
+  {type:"fill", question:"(Ich wohne in Wien.) Ergänze: ___", correct:"Ich wohne in Wien.", explain:"Antwort auf Wohnort."},
+  {type:"fill", question:"(Hallo, ich heiße Frank.) Ergänze: ___", correct:"Hallo, ich heiße Frank.", explain:"Vorstellung im Dialog."},
+  {type:"fill", question:"(Es ist 8 Uhr.) Ergänze: ___", correct:"Es ist 8 Uhr.", explain:"Antwort auf Uhrzeit."},
+  {type:"fill", question:"(Ich komme aus Korea.) Ergänze: ___", correct:"Ich komme aus Korea.", explain:"Antwort auf Herkunft."},
+  {type:"fill", question:"(Wie heißen Sie? – Ich heiße Paul.) Ergänze: ___", correct:"Ich heiße Paul.", explain:"Antwort auf Frage nach Name."},
 
-  // ---- 20 Fill in ----
-  {type:"fill", question:"(Hallo! Ich heiße Paul.) Schreibe den Satz.", correct:"Hallo! Ich heiße Paul.", explain:"Begrüßung + Name."},
-  {type:"fill", question:"(Ich heiße Anna.) Ergänze.", correct:"Ich heiße Anna.", explain:"Antwort auf ‚Wie heißt du?‘"},
-  {type:"fill", question:"(Meine Telefonnummer: 0664 822 570)", correct:"Meine Telefonnummer ist 0664 822 570.", explain:"Telefonnummer richtig angeben."},
-  {type:"fill", question:"(Woher kommst du? – Ich, Deutschland)", correct:"Ich komme aus Deutschland.", explain:"Herkunft mit ‚kommen aus‘."},
-  {type:"fill", question:"(Wo wohnen Sie? – Ich, Wien)", correct:"Ich wohne in Wien.", explain:"Wohnort mit ‚wohnen‘."},
-  {type:"fill", question:"(Freut mich.) Ergänze den Dialog: ‚Ich heiße Tom.‘ – …", correct:"Freut mich.", explain:"Standardantwort im Dialog."},
-  {type:"fill", question:"(Ich bin Student.) Ergänze.", correct:"Ich bin Student.", explain:"Antwort auf Beruf."},
-  {type:"fill", question:"(Guten Tag, ich heiße …) Ergänze mit Maria.", correct:"Guten Tag, ich heiße Maria.", explain:"Vorstellung mit Namen."},
-  {type:"fill", question:"(Wie heißt du? – … Hans)", correct:"Ich heiße Hans.", explain:"Antwort mit Namen."},
-  {type:"fill", question:"(Ich komme aus Korea.) Ergänze.", correct:"Ich komme aus Korea.", explain:"Antwort auf Herkunft."},
-  {type:"fill", question:"(Meine Telefonnummer ist … 0646 239 944)", correct:"Meine Telefonnummer ist 0646 239 944.", explain:"Telefonnummer richtig schreiben."},
-  {type:"fill", question:"(Auf Wiedersehen!) Schreibe den Abschiedsgruß.", correct:"Auf Wiedersehen!", explain:"Standardabschied."},
-  {type:"fill", question:"(Hallo, ich heiße … – Paola)", correct:"Hallo, ich heiße Paola.", explain:"Begrüßung + Name."},
-  {type:"fill", question:"(Wie heißen Sie? – Ich heiße … Frank)", correct:"Ich heiße Frank.", explain:"Vorstellung im formellen Kontext."},
-  {type:"fill", question:"(Woher kommen Sie? – Ich komme aus … Brasilien)", correct:"Ich komme aus Brasilien.", explain:"Herkunft mit ‚kommen aus‘."},
-  {type:"fill", question:"(Ich wohne in Berlin.) Ergänze.", correct:"Ich wohne in Berlin.", explain:"Antwort auf Wohnort."},
-  {type:"fill", question:"(Ich bin Lehrerin.) Ergänze.", correct:"Ich bin Lehrerin.", explain:"Beruf angeben."},
-  {type:"fill", question:"(Wie geht’s? – Mir geht es gut.)", correct:"Mir geht es gut.", explain:"Antwort auf Befinden."},
-  {type:"fill", question:"(Ich heiße Petra Fischer.)", correct:"Ich heiße Petra Fischer.", explain:"Vorstellung vollständig."},
-  {type:"fill", question:"(Ich wohne in Frankfurt.)", correct:"Ich wohne in Frankfurt.", explain:"Antwort mit Stadt."},
-
-  // ---- 10 True/False Reading ----
-  {type:"mc", question:"Frau Ramoni schreibt eine SMS an Herrn Berger.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Frau Ramoni schreibt zuerst."},
-  {type:"mc", question:"Herr Berger heißt Peter.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Er heißt Frank, nicht Peter."},
-  {type:"mc", question:"Frau Ramoni heißt Paola.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Ich heiße Paola."},
-  {type:"mc", question:"Herr Berger und Frau Ramoni gehen ins Kino.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text steht nur SMS, kein Kino."},
-  {type:"mc", question:"Herr Berger antwortet: ‚Ich heiße Frank.‘", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Genau dieser Satz steht im Text."},
-  {type:"mc", question:"Frau Ramoni kommt aus Wien.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Das steht nicht im Text."},
-  {type:"mc", question:"Beide sagen ‚Freut mich‘.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Am Ende sagen beide: Freut mich."},
-  {type:"mc", question:"Herr Berger schreibt zuerst.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Zuerst schreibt Frau Ramoni."},
-  {type:"mc", question:"Die SMS ist ein Dialog.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Es ist ein SMS-Dialog."},
-  {type:"mc", question:"Der Dialog ist formell.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"‚Wie heißen Sie?‘ → formell."}
+  // --- 10 True/False Reading ---
+  {type:"mc", question:"Frau Ramoni heißt Paola.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Dialog: ‚Hallo, ich heiße Paola Ramoni.‘"},
+  {type:"mc", question:"Herr Berger heißt Jakob.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Dialog: ‚Ich heiße Frank Berger.‘"},
+  {type:"mc", question:"Frau Fischer stellt sich auch vor.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Comic stellt sie sich vor: ‚Hallo, ich heiße Frau Fischer.‘"},
+  {type:"mc", question:"Die SMS kommt aus Deutschland.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Comic: ‚Die SMS kommt aus Korea? Nein, sie kommt aus Deutschland.‘"},
+  {type:"mc", question:"Herr Müller sagt seine Telefonnummer.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Nur Herr Berger nennt seine Telefonnummer."}
 ];
 
 let current=0,score=0,timer,timeLeft=0;
