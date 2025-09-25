@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lektion 1 – Wie? Woher? Wann? | Quiz-Hub</title>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background:
+      linear-gradient(to bottom,
+        #000 0% 33.333%,
+        #dd0000 33.333% 66.666%,
+        #ffce00 66.666% 100%);
+    background-attachment: fixed;
+    color: #fff;
+    min-height: 100vh;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(120% 120% at 50% -10%, rgba(255,255,255,.08), transparent 60%),
+      radial-gradient(120% 120% at 50% 110%, rgba(0,0,0,.25), transparent 55%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 0; }
+  header, .wrap, .grid, .card, .toolbar, .socials, .whatsapp { position: relative; z-index: 1; }
+  header { text-align: center; padding: 40px 20px 20px; }
+  header h1 { font-size: 2.5em; margin: 0 0 10px; }
+  .subtitle { font-size: 1.2em; opacity: 0.9; }
+
+  .socials { text-align: center; margin: 20px 0; }
+  .socials a { margin: 0 12px; font-size: 1.5em; text-decoration: none; color: #fff; transition: 0.3s; }
+  .socials a:hover { color: #ffeb3b; }
+
+  .toolbar { text-align: center; margin: 20px; }
+  .btn {
+    background: #fff; color: #ff416c; border: none;
+    border-radius: 999px; padding: 10px 18px;
+    font-weight: 700; text-decoration: none;
+    box-shadow: 0 6px 14px rgba(0,0,0,.2);
+  }
+  .btn:hover { transform: translateY(-2px); }
+
+  .wrap { width: min(1100px, 92vw); margin: 20px auto 40px; }
+  .grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+
+  .card {
+    background: rgba(255,255,255,0.95);
+    color: #333; border-radius: 16px;
+    padding: 18px; box-shadow: 0 6px 16px rgba(0,0,0,.3);
+    display: flex; flex-direction: column;
+    transition: 0.2s;
+  }
+  .card:hover { transform: scale(1.02); }
+  .card h2 { margin: 0 0 10px; color: #ff416c; }
+  .card p { margin: 0 0 14px; color: #444; }
+  .start {
+    align-self: flex-start; margin-top: auto;
+    background: #ff416c; color: #fff;
+    padding: 10px 14px; border-radius: 10px;
+    text-decoration: none; font-weight: 700;
+    transition: 0.3s;
+  }
+  .start:hover { background: #ff4b2b; }
+
+  /* Modal popup */
+  .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; display: flex; align-items: center; justify-content: center; }
+  .modal-content {
+    background: #fff; color: #333;
+    padding: 25px; border-radius: 14px;
+    max-width: 600px; width: 90%;
+    text-align: left; position: relative;
+  }
+  .modal-content h2 { margin-top: 0; color: #ff416c; }
+  .modal-content ul { list-style: none; padding: 0; }
+  .modal-content li { margin: 10px 0; font-size: 1.1em; }
+  .close {
+    position: absolute; top: 10px; right: 15px;
+    font-size: 1.5em; cursor: pointer; color: #888;
+  }
+  .close:hover { color: #000; }
+
+  /* WhatsApp Floating Button */
+  .whatsapp {
+    position: fixed; bottom: 20px; right: 20px;
+    background: #25D366; color: #fff;
+    padding: 14px 20px; border-radius: 50px;
+    text-decoration: none; font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    transition: 0.3s;
+  }
+  .whatsapp:hover { background: #1ebe5d; }
+</style>
+</head>
+<body>
+  <div class="overlay"></div>
+
+  <header>
+    <h1>👋🌍📞 Lektion 1 – Wie? Woher? Wann?</h1>
+    <div class="subtitle">Vorstellen, Herkunft, Uhrzeit, Tage, Telefonnummern.</div>
+  </header>
+
+  <!-- 🔗 Social Media -->
+  <div class="socials">
+    <a href="https://www.youtube.com/channel/UCiM2ataB5960XD1gm_40olg" target="_blank">📺 YouTube</a>
+    <a href="https://facebook.com/share/WEFGweZGTDnm2yEm" target="_blank">📘 Facebook</a>
+    <a href="https://instagram.com/rabbafa?igsh=cDA4amU1dGtwa3B5" target="_blank">📸 Instagram</a>
+    <a href="https://tiktok.com/@rabbafa" target="_blank">🎵 TikTok</a>
+  </div>
+
+  <div class="toolbar">
+    <a href="index.html" class="btn">⬅ Zurück zur Startseite</a>
+  </div>
+
+  <main class="wrap">
+    <div class="grid">
+      <!-- Lernziele card -->
+      <article class="card">
+        <h2>📘 Lernziele</h2>
+        <p>Die Ziele dieses Kapitels ansehen.</p>
+        <a class="start" href="#" onclick="openModal()">👉 Anzeigen</a>
+      </article>
+
+      <!-- Subtopic cards -->
+      <article class="card"><h2>🌍 Internationale Wörter</h2><p>Film, Telefon, Banane, Baby, Radio …</p><a class="start" href="quiz_ch1_internationale_woerter.html">👉 Starten</a></article>
+      <article class="card"><h2>🙋 Sich vorstellen</h2><p>Guten Tag, ich heiße … / Wer sind Sie?</p><a class="start" href="quiz_ch1_vorstellen.html">👉 Starten</a></article>
+      <article class="card"><h2>📱 SMS & Dialoge</h2><p>Telefonnummern, Namen, erste Gespräche.</p><a class="start" href="quiz_ch1_sms.html">👉 Starten</a></article>
+      <article class="card"><h2>🏠 Herkunft</h2><p>Woher kommst du? Wo wohnen Sie?</p><a class="start" href="quiz_ch1_herkunft.html">👉 Starten</a></article>
+      <article class="card"><h2>⏰ Uhrzeit</h2><p>Wie spät ist es? Tageszeiten nennen.</p><a class="start" href="quiz_ch1_uhrzeit.html">👉 Starten</a></article>
+      <article class="card"><h2>📅 Wochentage</h2><p>Montag bis Sonntag – Pläne machen.</p><a class="start" href="quiz_ch1_wochentage.html">👉 Starten</a></article>
+      <article class="card"><h2>🗓️ Freizeit & frei haben</h2><p>Wann hast du frei? – Termine planen.</p><a class="start" href="quiz_ch1_frei.html">👉 Starten</a></article>
+      <article class="card"><h2>✏️ Buchstabieren</h2><p>Wie schreibt man das? A–B–C.</p><a class="start" href="quiz_ch1_buchstabieren.html">👉 Starten</a></article>
+      <article class="card"><h2>📦 Was ist das?</h2><p>Alltagsgegenstände erkennen & benennen.</p><a class="start" href="quiz_ch1_was_ist_das.html">👉 Starten</a></article>
+      <article class="card"><h2>🚫 Kein/Keine</h2><p>Negationen üben: „Das ist kein Tisch.“</p><a class="start" href="quiz_ch1_kein.html">👉 Starten</a></article>
+      <article class="card"><h2>📖 Grammatik</h2><p>Verben: sein, haben, heißen, kommen …</p><a class="start" href="quiz_ch1_grammatik.html">👉 Starten</a></article>
+      <article class="card"><h2>💬 Redemittel</h2><p>Vorstellen, Fragen stellen, Uhrzeit sagen.</p><a class="start" href="quiz_ch1_redemittel.html">👉 Starten</a></article>
+    </div>
+  </main>
+
+  <!-- Modal with Lernziele -->
+  <div id="lernzieleModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2>📘 Lernziele – Kapitel 1</h2>
+      <ul>
+        <li>➡ Sich vorstellen (Name, Herkunft, Beruf).</li>
+        <li>➡ Fragen nach Uhrzeit und Datum stellen.</li>
+        <li>➡ Wochentage und Tageszeiten nennen.</li>
+        <li>➡ Telefonnummern und Adressen verstehen/geben.</li>
+        <li>➡ Einfache Alltagsdialoge führen.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- WhatsApp Floating Button -->
+  <a href="https://wa.me/233556378371" class="whatsapp" target="_blank">💬 WhatsApp Chat</a>
+
+<script>
+function openModal(){ document.getElementById("lernzieleModal").style.display="flex"; }
+function closeModal(){ document.getElementById("lernzieleModal").style.display="none"; }
+window.onclick = function(event) {
+  let modal = document.getElementById("lernzieleModal");
+  if (event.target == modal) modal.style.display = "none";
+}
+</script>
+</body>
+</html>
