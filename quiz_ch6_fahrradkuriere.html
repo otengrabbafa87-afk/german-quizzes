@@ -47,9 +47,60 @@
 
 <script>
 const quizData = [
-  // (keep Q1–40 + Q41–50 content exactly as before – shortened here for space)
+  // ---- 20 Multiple Choice ----
   {type:"mc", question:"Wie sagt man ‚bicycle‘ auf Deutsch?", answers:["das Fahrrad","der Zug","das Auto","der Bus"], correct:"das Fahrrad", explain:"Fahrrad = bicycle."},
-  // ... (all other Q2–40 here unchanged) ...
+  {type:"mc", question:"Was bedeutet ‚der Kurier‘?", answers:["courier","driver","teacher","doctor"], correct:"courier", explain:"Kurier = courier."},
+  {type:"mc", question:"Was braucht ein Fahrradkurier?", answers:["ein Fahrrad","ein Flugzeug","ein Schiff","ein Pferd"], correct:"ein Fahrrad", explain:"Er fährt mit dem Fahrrad."},
+  {type:"mc", question:"Welches Verkehrsmittel ist am schnellsten in der Stadt?", answers:["das Fahrrad","das Flugzeug","das Schiff","das Pferd"], correct:"das Fahrrad", explain:"In der Stadt ist oft das Fahrrad am schnellsten."},
+  {type:"mc", question:"‚der Helm‘ bedeutet…", answers:["helmet","hat","cap","glasses"], correct:"helmet", explain:"Helm = helmet."},
+  {type:"mc", question:"Welcher Satz ist korrekt?", answers:["Der Kurier fährt mit dem Fahrrad.","Der Kurier fliegt mit dem Fahrrad.","Der Kurier schwimmt mit dem Fahrrad.","Der Kurier rennt mit dem Fahrrad."], correct:"Der Kurier fährt mit dem Fahrrad.", explain:"Man fährt mit dem Fahrrad."},
+  {type:"mc", question:"Welches Wort passt? Der Kurier ___ Pizza.", answers:["bringt","isst","kauft","schreibt"], correct:"bringt", explain:"Er bringt Pizza."},
+  {type:"mc", question:"Was bedeutet ‚die Lieferung‘?", answers:["delivery","lesson","dinner","light"], correct:"delivery", explain:"Lieferung = delivery."},
+  {type:"mc", question:"Wann arbeitet der Kurier?", answers:["am Morgen","in der Nacht","nie","nur am Sonntag"], correct:"am Morgen", explain:"Er beginnt am Morgen."},
+  {type:"mc", question:"‚die Tasche‘ bedeutet…", answers:["bag","bicycle","helmet","wheel"], correct:"bag", explain:"Tasche = bag."},
+  {type:"mc", question:"Welches Wort passt? Ich warte ___ dem Restaurant.", answers:["vor","hinter","über","zwischen"], correct:"vor", explain:"Man wartet vor dem Restaurant."},
+  {type:"mc", question:"‚die Kreuzung‘ bedeutet…", answers:["crossroad","bridge","station","train"], correct:"crossroad", explain:"Kreuzung = crossroad."},
+  {type:"mc", question:"Was trägt der Kurier?", answers:["eine Tasche","eine Uhr","einen Hut","ein Buch"], correct:"eine Tasche", explain:"Der Kurier trägt eine Tasche."},
+  {type:"mc", question:"Welches Wort passt? Der Kurier fährt 30 ___ pro Tag.", answers:["Kilometer","Liter","Euro","Sekunden"], correct:"Kilometer", explain:"Kilometer = distance."},
+  {type:"mc", question:"‚das Paket‘ bedeutet…", answers:["package","letter","book","bike"], correct:"package", explain:"Paket = package."},
+  {type:"mc", question:"Wo fährt der Kurier?", answers:["in der Stadt","im Meer","im Wald","im Flugzeug"], correct:"in der Stadt", explain:"Kuriere fahren in der Stadt."},
+  {type:"mc", question:"‚der Kunde‘ bedeutet…", answers:["customer","driver","police","teacher"], correct:"customer", explain:"Kunde = customer."},
+  {type:"mc", question:"Was braucht der Kurier bei Regen?", answers:["eine Regenjacke","eine Badehose","eine Sonnenbrille","ein T-Shirt"], correct:"eine Regenjacke", explain:"Bei Regen braucht man eine Regenjacke."},
+  {type:"mc", question:"‚verdienen‘ bedeutet…", answers:["to earn","to run","to read","to wait"], correct:"to earn", explain:"verdienen = to earn."},
+  {type:"mc", question:"Welcher Satz ist richtig?", answers:["Der Kurier ist am Abend müde.","Der Kurier fliegt nach Berlin.","Der Kurier schwimmt ins Büro.","Der Kurier fährt ins Flugzeug."], correct:"Der Kurier ist am Abend müde.", explain:"Nach der Arbeit ist er müde."},
+
+  // ---- 20 Fill in ----
+  {type:"fill", question:"(to deliver) Der Kurier ___ Pizza.", correct:"liefert", explain:"Er liefert Pizza."},
+  {type:"fill", question:"(the bicycle) Er fährt mit ___.", correct:"dem Fahrrad", explain:"Fahrrad ist neutral → mit dem Fahrrad."},
+  {type:"fill", question:"(the helmet) Er trägt ___.", correct:"einen Helm", explain:"Helm ist maskulin → einen Helm."},
+  {type:"fill", question:"(the bag) Er hat ___ auf dem Rücken.", correct:"eine Tasche", explain:"Tasche ist feminin → eine Tasche."},
+  {type:"fill", question:"(the package) Er bringt ___.", correct:"ein Paket", explain:"Paket ist neutral → ein Paket."},
+  {type:"fill", question:"(to earn money) Er ___ gutes Geld.", correct:"verdient", explain:"verdienen = to earn."},
+  {type:"fill", question:"(the customer) Er spricht mit ___.", correct:"dem Kunden", explain:"Kunde ist maskulin → mit dem Kunden."},
+  {type:"fill", question:"(the delivery) Die ___ ist pünktlich.", correct:"Lieferung", explain:"Lieferung ist feminin → die Lieferung."},
+  {type:"fill", question:"(the street) Er fährt auf ___.", correct:"der Straße", explain:"Straße ist feminin → auf der Straße."},
+  {type:"fill", question:"(rain) Bei ___ trägt er eine Jacke.", correct:"Regen", explain:"Bei Regen."},
+  {type:"fill", question:"(the city) Er arbeitet in ___.", correct:"der Stadt", explain:"Stadt ist feminin → in der Stadt."},
+  {type:"fill", question:"(the morning) Er beginnt am ___.", correct:"Morgen", explain:"am Morgen."},
+  {type:"fill", question:"(30 kilometers) Er fährt jeden Tag ___.", correct:"30 Kilometer", explain:"30 Kilometer pro Tag."},
+  {type:"fill", question:"(to be tired) Am Abend ___ er.", correct:"ist müde", explain:"Am Abend ist er müde."},
+  {type:"fill", question:"(good money) Er verdient ___.", correct:"gutes Geld", explain:"Er verdient gutes Geld."},
+  {type:"fill", question:"(Berlin) Er arbeitet in ___.", correct:"Berlin", explain:"Berlin."},
+  {type:"fill", question:"(bad weather) Bei ___ fährt er trotzdem.", correct:"schlechtem Wetter", explain:"Bei schlechtem Wetter."},
+  {type:"fill", question:"(the job) Sein ___ ist Fahrradkurier.", correct:"Beruf", explain:"Sein Beruf ist Fahrradkurier."},
+  {type:"fill", question:"(pizza) Heute liefert er ___.", correct:"Pizza", explain:"Er liefert Pizza."},
+  {type:"fill", question:"(drinks) Er bringt auch ___.", correct:"Getränke", explain:"Er bringt Getränke."},
+
+  // ---- 10 True/False ----
+  {type:"mc", question:"Lukas beginnt um 8 Uhr morgens.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: Er beginnt um 10 Uhr."},
+  {type:"mc", question:"Lukas bringt auch Pakete.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Er bringt Pizza, Getränke und Pakete."},
+  {type:"mc", question:"Lukas fährt oft 30 Kilometer am Tag.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Oft fährt er 30 km."},
+  {type:"mc", question:"Das Wetter ist immer gut.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Manchmal ist das Wetter schlecht."},
+  {type:"mc", question:"Am Abend ist Lukas müde.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Am Abend ist er sehr müde."},
+  {type:"mc", question:"Lukas verdient kein Geld.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: Er verdient gutes Geld."},
+  {type:"mc", question:"Lukas arbeitet in München.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: Lukas ist in Berlin."},
+  {type:"mc", question:"Lukas bringt auch Getränke.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Pizza, Getränke und Pakete."},
+  {type:"mc", question:"Lukas fährt nie bei schlechtem Wetter.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: Er fährt trotzdem."},
   {type:"mc", question:"Lukas arbeitet als Fahrradkurier.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Sein Beruf ist Fahrradkurier."}
 ];
 
@@ -77,9 +128,9 @@ function loadQuestion(){
       aEl.appendChild(btn);
     });
 
-    if(current<20) resetTimer(20);        // Multiple Choice
-    else if(current<40) resetTimer(35);   // Fill-in
-    else resetTimer(300);                 // Reading comp (Q41–50 → 5 mins)
+    if(current<20) resetTimer(20);
+    else if(current<40) resetTimer(35);
+    else resetTimer(300);
 
   } else {
     fEl.style.display="block";
