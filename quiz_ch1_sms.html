@@ -48,6 +48,15 @@
   </div>
 
 <script>
+// 🔀 Shuffle helper
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
 const quizData = [
   // ---- 20 Multiple Choice ----
   {type:"mc", question:"Wer sagt: „Hallo, ich ......... Paola Ramoni“?", answers:["heiße","Frau Ramoni","hieße","heißest"], correct:"heiße", explain:"Richtig: Ich heiße Paola Ramoni."},
@@ -123,7 +132,8 @@ function loadQuestion(){
   if(current>=40){ passage.style.display="block"; } else { passage.style.display="none"; }
 
   if(q.type==="mc"){
-    q.answers.forEach(ans=>{
+    const shuffled = shuffle([...q.answers]); // 🔀 shuffle answers
+    shuffled.forEach(ans=>{
       const btn=document.createElement("div");
       btn.className="answer"; btn.innerText=ans;
       btn.onclick=()=>checkAnswer(btn,ans,q.correct,q.explain);
