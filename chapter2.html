@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lektion 2 – Freunde, Familie & Beruf | Quiz-Hub</title>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background:
+      linear-gradient(to bottom,
+        #0066cc 0% 33.333%,
+        #009966 33.333% 66.666%,
+        #ffcc00 66.666% 100%);
+    background-attachment: fixed;
+    color: #fff;
+    min-height: 100vh;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(120% 120% at 50% -10%, rgba(255,255,255,.08), transparent 60%),
+      radial-gradient(120% 120% at 50% 110%, rgba(0,0,0,.25), transparent 55%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 0; }
+  header, .wrap, .grid, .card, .toolbar, .socials, .whatsapp { position: relative; z-index: 1; }
+  header { text-align: center; padding: 40px 20px 20px; }
+  header h1 { font-size: 2.5em; margin: 0 0 10px; }
+  .subtitle { font-size: 1.2em; opacity: 0.9; }
+
+  .toolbar { text-align: center; margin: 20px; }
+  .btn {
+    background: #fff; color: #ff416c; border: none;
+    border-radius: 999px; padding: 10px 18px;
+    font-weight: 700; text-decoration: none;
+    box-shadow: 0 6px 14px rgba(0,0,0,.2);
+  }
+  .btn:hover { transform: translateY(-2px); }
+
+  .wrap { width: min(1100px, 92vw); margin: 20px auto 40px; }
+  .grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+
+  .card {
+    background: rgba(255,255,255,0.95);
+    color: #333; border-radius: 16px;
+    padding: 18px; box-shadow: 0 6px 16px rgba(0,0,0,.3);
+    display: flex; flex-direction: column;
+    transition: 0.2s;
+  }
+  .card:hover { transform: scale(1.02); }
+  .card h2 { margin: 0 0 10px; color: #0066cc; }
+  .card p { margin: 0 0 14px; color: #444; }
+  .start {
+    align-self: flex-start; margin-top: auto;
+    background: #0066cc; color: #fff;
+    padding: 10px 14px; border-radius: 10px;
+    text-decoration: none; font-weight: 700;
+    transition: 0.3s;
+  }
+  .start:hover { background: #004d99; }
+
+  /* Modal popup */
+  .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; display: flex; align-items: center; justify-content: center; }
+  .modal-content {
+    background: #fff; color: #333;
+    padding: 25px; border-radius: 14px;
+    max-width: 600px; width: 90%;
+    text-align: left; position: relative;
+  }
+  .modal-content h2 { margin-top: 0; color: #0066cc; }
+  .modal-content ul { list-style: none; padding: 0; }
+  .modal-content li { margin: 10px 0; font-size: 1.1em; }
+  .close {
+    position: absolute; top: 10px; right: 15px;
+    font-size: 1.5em; cursor: pointer; color: #888;
+  }
+  .close:hover { color: #000; }
+</style>
+</head>
+<body>
+  <div class="overlay"></div>
+
+  <header>
+    <h1>👨‍👩‍👧‍👦💼🎬 Lektion 2 – Freunde, Familie & Beruf</h1>
+    <div class="subtitle">Bekannte, Hobbys, Familie, Jobs und Berufe.</div>
+  </header>
+
+  <div class="toolbar">
+    <a href="index.html" class="btn">⬅ Zurück zur Startseite</a>
+  </div>
+
+  <main class="wrap">
+    <div class="grid">
+      <!-- Lernziele card -->
+      <article class="card">
+        <h2>📘 Lernziele</h2>
+        <p>Die Ziele dieses Kapitels ansehen.</p>
+        <a class="start" href="#" onclick="openModal()">👉 Anzeigen</a>
+      </article>
+
+      <!-- Subtopic cards -->
+      <article class="card"><h2>🌍 Bekannte</h2><p>Kennen Sie …? Wie gut kennen Sie …?</p><a class="start" href="quiz_ch2_bekannte.html">👉 Starten</a></article>
+      <article class="card"><h2>📺 Fernsehquiz</h2><p>„Du und ich“ – Musik, Schauspieler, Comics …</p><a class="start" href="quiz_ch2_fernsehquiz.html">👉 Starten</a></article>
+      <article class="card"><h2>🎾 Gern / nicht gern</h2><p>Kochen, tanzen, schwimmen – Vorlieben üben.</p><a class="start" href="quiz_ch2_gern.html">👉 Starten</a></article>
+      <article class="card"><h2>⭐ Adjektive & finden</h2><p>Toll, interessant, langweilig …</p><a class="start" href="quiz_ch2_adjektive.html">👉 Starten</a></article>
+      <article class="card"><h2>🎥 Lieblings …</h2><p>Lieblingsfilm, Lieblingsmusik, Lieblingsbuch …</p><a class="start" href="quiz_ch2_lieblings.html">👉 Starten</a></article>
+      <article class="card"><h2>👪 Weltfamilien</h2><p>Texte verstehen: Adia, Karoline, Joseph.</p><a class="start" href="quiz_ch2_weltfamilien.html">👉 Starten</a></article>
+      <article class="card"><h2>🚢 Jobs</h2><p>Kreuzfahrtschiff: Was finden Sie gut/schlecht?</p><a class="start" href="quiz_ch2_jobs.html">👉 Starten</a></article>
+      <article class="card"><h2>👨‍🔧 Team Amadea</h2><p>Personen, Herkunft, Berufe, Geburtsjahre.</p><a class="start" href="quiz_ch2_team.html">👉 Starten</a></article>
+      <article class="card"><h2>🎂 Geburt</h2><p>Zahlen, Jahreszahlen, Geburtsdaten.</p><a class="start" href="quiz_ch2_geburt.html">👉 Starten</a></article>
+      <article class="card"><h2>👨‍👩‍👧 Tims Familie</h2><p>Stammbaum, Verwandtschaft, wer ist wer?</p><a class="start" href="quiz_ch2_familie.html">👉 Starten</a></article>
+      <article class="card"><h2>📖 Grammatik</h2><p>Verben -d/-t, Pluralformen, Possessivartikel.</p><a class="start" href="quiz_ch2_grammatik.html">👉 Starten</a></article>
+      <article class="card"><h2>💬 Redemittel</h2><p>Über Familie, Vorlieben & Beruf sprechen.</p><a class="start" href="quiz_ch2_redemittel.html">👉 Starten</a></article>
+    </div>
+  </main>
+
+  <!-- Modal with Lernziele -->
+  <div id="lernzieleModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2>📘 Lernziele – Kapitel 2</h2>
+      <ul>
+        <li>➡ Über Hobbys und Vorlieben sprechen.</li>
+        <li>➡ Fragen nach Familie, Beruf und Herkunft stellen.</li>
+        <li>➡ Jahreszahlen und Geburtsdaten verstehen.</li>
+        <li>➡ Berufe erkennen und zuordnen.</li>
+        <li>➡ Einfache Texte lesen und verstehen.</li>
+      </ul>
+    </div>
+  </div>
+
+<script>
+function openModal(){ document.getElementById("lernzieleModal").style.display="flex"; }
+function closeModal(){ document.getElementById("lernzieleModal").style.display="none"; }
+window.onclick = function(event) {
+  let modal = document.getElementById("lernzieleModal");
+  if (event.target == modal) modal.style.display = "none";
+}
+</script>
+</body>
+</html>
