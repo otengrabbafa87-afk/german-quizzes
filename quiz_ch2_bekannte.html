@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Kapitel 2 – Bekannte in … | Quiz</title>
+  <title>👥 Kapitel 2 – Bekannte Leute (50 Fragen)</title>
   <style>
     body { font-family: Arial, sans-serif; background: linear-gradient(to right, #ff9966, #ff5e62); text-align: center; padding: 20px; color: #333; }
     .quiz-box { background:#fff; padding:20px; border-radius:15px; max-width:850px; margin:auto; box-shadow:0 6px 12px rgba(0,0,0,0.3);}
@@ -18,14 +18,19 @@
     input[type="text"] { padding:8px; font-size:16px; width:60%; }
     button { margin-top:10px; padding:10px 20px; font-size:16px; cursor:pointer; background:#ff416c; border:none; border-radius:8px; color:#fff; }
     button:hover { background:#ff4b2b; }
-    .nav { margin-top:20px; }
-    .btn { display:inline-block; margin:5px; padding:10px 15px; background:#333; color:#fff; text-decoration:none; border-radius:8px; }
-    .btn:hover { background:#000; }
+    .text-box { background:#f0f0f0; padding:12px; border-radius:10px; margin:15px 0; text-align:left; }
   </style>
 </head>
 <body>
-  <h1>Kapitel 2 – Bekannte in …</h1>
+  <h1>👥 Kapitel 2 – Bekannte Leute (50 Fragen)</h1>
   <div class="quiz-box" id="quiz">
+    <div id="passage" class="text-box" style="display:none;">
+      <b>Text:</b><br>
+      Das ist Anna. Sie ist Studentin aus Deutschland.<br>
+      Ihr Freund Paul ist Ingenieur.<br>
+      Anna spielt gern Klavier, Paul liest gern Bücher.<br>
+      Am Wochenende gehen sie zusammen spazieren.<br>
+    </div>
     <div class="question" id="question">Frage</div>
     <div class="answers" id="answers"></div>
     <div id="fillin" style="display:none;">
@@ -37,14 +42,11 @@
     <div class="score" id="score">Punkte: 0</div>
     <button onclick="prevQuestion()">⬅ Zurück</button>
     <button onclick="nextQuestion()">Nächste Frage ➡</button>
-    <div class="nav">
-      <a href="chapter2.html" class="btn">⬅ Zurück zu Kapitel 2</a>
-      <a href="quiz_ch2_fernsehquiz.html" class="btn">➡ Nächstes Quiz</a>
-    </div>
+    <p><a href="chapter2.html">🔙 Zurück zu Lektion 2</a></p>
+    <p><a href="quiz_ch2_berufe.html">⏭ Weiter: Berufe</a></p>
   </div>
 
 <script>
-// Shuffle helper
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -54,25 +56,61 @@ function shuffle(array) {
 }
 
 const quizData = [
-  {type:"mc", question:"Kennen Sie Personen im Ausland? – Wie gut kennen Sie Astrid?", 
-   answers:["sehr gut","nicht gut","gar nicht","nur ein bisschen"], 
-   correct:"sehr gut", explain:"Im Text: Susanne kennt Astrid sehr gut."},
+  // ---- 20 Multiple Choice ----
+  {type:"mc", question:"Wer ist das? – „Das ist ___ Freund.“", answers:["sie","er","dein","mein"], correct:"mein", explain:"Richtig: Das ist mein Freund."},
+  {type:"mc", question:"Welche Antwort passt? – „Das ist meine Mutter.“", answers:["Vater","Mutter","Bruder","Schwester"], correct:"Mutter", explain:"Das ist meine Mutter."},
+  {type:"mc", question:"Wie heißt der Bruder von Anna?", answers:["Peter","Paul","Hans","Karl"], correct:"Paul", explain:"Richtig: Paul ist ihr Bruder."},
+  {type:"mc", question:"Wer ist die Schwester von Maria?", answers:["Clara","Sofia","Anna","Lisa"], correct:"Lisa", explain:"Richtig: Lisa ist ihre Schwester."},
+  {type:"mc", question:"Das ist Peter. ___ ist Student.", answers:["Er","Sie","Wir","Ihr"], correct:"Er", explain:"Peter → Er."},
+  {type:"mc", question:"Das ist meine Tante. ___ heißt Eva.", answers:["Du","Sie","Es","Wir"], correct:"Sie", explain:"Meine Tante → Sie."},
+  {type:"mc", question:"Welche Antwort passt? – „Ist das dein Vater?“", answers:["Ja, das ist mein Vater.","Nein, das ist meine Mutter.","Nein, das ist mein Bruder.","Ja, das ist mein Onkel."], correct:"Ja, das ist mein Vater.", explain:"Korrekt: mein Vater."},
+  {type:"mc", question:"Welche Antwort passt? – „Hast du Geschwister?“", answers:["Ja, ich habe einen Bruder.","Nein, ich habe keine.","Ich habe eine Schwester.","Alle Antworten sind möglich."], correct:"Alle Antworten sind möglich.", explain:"Alle können passen."},
+  {type:"mc", question:"Das ist meine Oma. ___ ist alt.", answers:["Sie","Er","Es","Du"], correct:"Sie", explain:"Oma → Sie."},
+  {type:"mc", question:"Das ist mein Opa. ___ ist freundlich.", answers:["Wir","Es","Er","Sie"], correct:"Er", explain:"Opa → Er."},
+  {type:"mc", question:"Das sind meine Eltern. ___ wohnen in Berlin.", answers:["Sie","Es","Wir","Ihr"], correct:"Sie", explain:"Eltern (Plural) → Sie."},
+  {type:"mc", question:"Anna und Paul sind Geschwister. ___ kommen aus Wien.", answers:["Sie","Ihr","Wir","Es"], correct:"Sie", explain:"Plural → Sie kommen."},
+  {type:"mc", question:"Welche Antwort passt? – „Hast du eine Schwester?“", answers:["Ja, ich habe keine.","Ja, ich habe eine.","Nein, ich habe eine.","Nein, ich habe keine."], correct:"Ja, ich habe eine.", explain:"Positive Antwort mit eine."},
+  {type:"mc", question:"Welche Antwort passt? – „Das ist mein Onkel.“", answers:["Sie ist nett.","Er ist nett.","Wir sind nett.","Du bist nett."], correct:"Er ist nett.", explain:"Onkel → Er."},
+  {type:"mc", question:"Das ist meine Cousine. ___ spielt Klavier.", answers:["Sie","Wir","Es","Er"], correct:"Sie", explain:"Cousine → Sie."},
+  {type:"mc", question:"Das ist mein Bruder. ___ heißt Thomas.", answers:["Sie","Wir","Er","Ihr"], correct:"Er", explain:"Bruder → Er."},
+  {type:"mc", question:"Das ist mein Kind. ___ ist klein.", answers:["Es","Wir","Er","Sie"], correct:"Es", explain:"Kind → Es."},
+  {type:"mc", question:"Das sind meine Großeltern. ___ wohnen in München.", answers:["Wir","Sie","Es","Ihr"], correct:"Sie", explain:"Plural → Sie."},
+  {type:"mc", question:"Das ist mein Freund. ___ studiert Medizin.", answers:["Er","Wir","Es","Sie"], correct:"Er", explain:"Freund → Er."},
+  {type:"mc", question:"Das ist meine Freundin. ___ kommt aus Italien.", answers:["Er","Es","Sie","Wir"], correct:"Sie", explain:"Freundin → Sie."},
 
-  {type:"mc", question:"Wo ist Susanne jetzt?", 
-   answers:["In Rio de Janeiro","In Berlin","In Lissabon","In Wien"], 
-   correct:"In Brasilien, in Rio de Janeiro", explain:"Im Buch: Susanne ist jetzt in Brasilien, in Rio de Janeiro."},
+  // ---- 20 Fill in ----
+  {type:"fill", question:"(my brother) Das ist ___.", correct:"mein Bruder", explain:"Das ist mein Bruder."},
+  {type:"fill", question:"(her sister) Das ist ___.", correct:"ihre Schwester", explain:"Das ist ihre Schwester."},
+  {type:"fill", question:"(our parents) Das sind ___.", correct:"unsere Eltern", explain:"Das sind unsere Eltern."},
+  {type:"fill", question:"(his father) Das ist ___.", correct:"sein Vater", explain:"Das ist sein Vater."},
+  {type:"fill", question:"(your mother, singular) Ist das ___?", correct:"deine Mutter", explain:"Ist das deine Mutter?"},
+  {type:"fill", question:"(our cousin) Das ist ___.", correct:"unser Cousin", explain:"Das ist unser Cousin."},
+  {type:"fill", question:"(their uncle) Das ist ___.", correct:"ihr Onkel", explain:"Das ist ihr Onkel."},
+  {type:"fill", question:"(my aunt) Das ist ___.", correct:"meine Tante", explain:"Das ist meine Tante."},
+  {type:"fill", question:"(your grandfather, plural you) Das ist ___?", correct:"euer Großvater", explain:"Ist das euer Großvater?"},
+  {type:"fill", question:"(our grandmother) Das ist ___.", correct:"unsere Großmutter", explain:"Das ist unsere Großmutter."},
+  {type:"fill", question:"(his child) Das ist ___.", correct:"sein Kind", explain:"Das ist sein Kind."},
+  {type:"fill", question:"(her children) Das sind ___.", correct:"ihre Kinder", explain:"Das sind ihre Kinder."},
+  {type:"fill", question:"(my friend, female) Das ist ___.", correct:"meine Freundin", explain:"Das ist meine Freundin."},
+  {type:"fill", question:"(our friend, male) Das ist ___.", correct:"unser Freund", explain:"Das ist unser Freund."},
+  {type:"fill", question:"(their daughter) Das ist ___.", correct:"ihre Tochter", explain:"Das ist ihre Tochter."},
+  {type:"fill", question:"(your son, polite) Das ist ___?", correct:"Ihr Sohn", explain:"Ist das Ihr Sohn?"},
+  {type:"fill", question:"(his wife) Das ist ___.", correct:"seine Frau", explain:"Das ist seine Frau."},
+  {type:"fill", question:"(her husband) Das ist ___.", correct:"ihr Mann", explain:"Das ist ihr Mann."},
+  {type:"fill", question:"(our family) Das ist ___.", correct:"unsere Familie", explain:"Das ist unsere Familie."},
+  {type:"fill", question:"(my cousin, female) Das ist ___.", correct:"meine Cousine", explain:"Das ist meine Cousine."},
 
-  {type:"mc", question:"Wo ist Astrid?", 
-   answers:["In Zürich","In Berlin","In Lissabon","In München"], 
-   correct:"In Lissabon", explain:"Astrid ist in Lissabon."},
-
-  {type:"mc", question:"Wie kommunizieren Susanne und Astrid?", 
-   answers:["Per Telefon und SMS","Per Briefe","Gar nicht","Nur per WhatsApp"], 
-   correct:"Per Telefon und E-Mails", explain:"Sie telefonieren oder mailen."},
-
-  {type:"fill", question:"Susanne ist jetzt in ___ (Brasilien).", correct:"Brasilien", explain:"Im Text: Susanne ist in Brasilien."},
-  {type:"fill", question:"Astrid ist in ___ (Lissabon).", correct:"Lissabon", explain:"Im Text: Astrid ist in Lissabon."},
-  {type:"fill", question:"Susanne und Astrid ___ (telefonieren / schreiben E-Mails).", correct:"telefonieren", explain:"Sie telefonieren und schreiben E-Mails."}
+  // ---- 10 True/False ----
+  {type:"mc", question:"Anna ist Studentin.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Anna ist Studentin."},
+  {type:"mc", question:"Paul ist Arzt.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: Paul ist Ingenieur."},
+  {type:"mc", question:"Anna spielt gern Klavier.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Anna spielt gern Klavier."},
+  {type:"mc", question:"Paul spielt gern Fußball.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: Paul liest gern Bücher."},
+  {type:"mc", question:"Am Wochenende gehen Anna und Paul spazieren.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Sie gehen spazieren."},
+  {type:"mc", question:"Anna wohnt allein.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: Sie wohnt mit Paul."},
+  {type:"mc", question:"Paul kommt aus Deutschland.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Paul kommt aus Deutschland."},
+  {type:"mc", question:"Anna kommt aus Frankreich.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: Sie kommt aus Deutschland."},
+  {type:"mc", question:"Anna und Paul wohnen zusammen.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Sie wohnen zusammen."},
+  {type:"mc", question:"Anna und Paul gehen nie spazieren.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: Sie gehen am Wochenende spazieren."}
 ];
 
 let current=0,score=0,timer,timeLeft=0;
@@ -83,28 +121,31 @@ const input=document.getElementById("fillInput");
 const tEl=document.getElementById("timer");
 const sEl=document.getElementById("score");
 const eEl=document.getElementById("explanation");
+const passage=document.getElementById("passage");
 
 function loadQuestion(){
   const q=quizData[current];
   qEl.innerHTML=(current+1)+". "+q.question;
   aEl.innerHTML=""; fEl.style.display="none"; eEl.style.display="none"; eEl.innerHTML="";
+  if(current>=40){ passage.style.display="block"; } else { passage.style.display="none"; }
 
   if(q.type==="mc"){
-    const shuffled=shuffle([...q.answers]);
+    const shuffled = shuffle([...q.answers]);
     shuffled.forEach(ans=>{
       const btn=document.createElement("div");
       btn.className="answer"; btn.innerText=ans;
       btn.onclick=()=>checkAnswer(btn,ans,q.correct,q.explain);
       aEl.appendChild(btn);
     });
-    resetTimer(25);
+    if(current<20) resetTimer(20);
+    else if(current<40) resetTimer(35);
+    else resetTimer(300);
   } else {
     fEl.style.display="block";
     input.value=""; input.focus();
-    resetTimer(35);
+    if(current<40) resetTimer(35); else resetTimer(300);
   }
 }
-
 function checkAnswer(button,answer,correct,explanation){
   clearInterval(timer); lockAnswers();
   if(answer===correct){ button.classList.add("correct"); score+=10; }
@@ -116,7 +157,7 @@ function checkFill(){
   clearInterval(timer);
   const q=quizData[current];
   let ans=input.value.trim();
-  if(ans.toLowerCase()===q.correct.toLowerCase()){ score+=10; eEl.innerHTML="✅ Richtig: "+q.correct; }
+  if(ans===q.correct){ score+=10; eEl.innerHTML="✅ Richtig: "+q.correct; }
   else{ eEl.innerHTML="❌ Falsch. Richtige Antwort: "+q.correct; }
   eEl.style.display="block"; sEl.innerText="Punkte: "+score;
 }
