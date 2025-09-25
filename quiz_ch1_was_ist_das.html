@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>📘 Kapitel 1 – Was ist das? (50 Fragen)</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: linear-gradient(to right, #43cea2, #185a9d); text-align: center; padding: 20px; color: #333; }
+    .quiz-box { background:#fff; padding:20px; border-radius:15px; max-width:850px; margin:auto; box-shadow:0 6px 12px rgba(0,0,0,0.3);}
+    .question { font-size:20px; margin-bottom:20px; }
+    .answers { display:grid; gap:10px; }
+    .answer { padding:12px; border-radius:8px; cursor:pointer; background:#2196f3; color:#fff; transition:0.3s; }
+    .answer:hover { transform:scale(1.05); }
+    .correct { background:#4caf50 !important; }
+    .wrong { background:#f44336 !important; }
+    .score { font-size:18px; margin-top:20px; }
+    .timer { font-size:18px; margin:10px; color:#e91e63; }
+    .explanation { margin-top:12px; text-align:left; color:#333; background:#f5f5f5; padding:10px; border-radius:8px; }
+    input[type="text"] { padding:8px; font-size:16px; width:60%; }
+    button { margin-top:10px; padding:10px 20px; font-size:16px; cursor:pointer; background:#ff416c; border:none; border-radius:8px; color:#fff; }
+    button:hover { background:#ff4b2b; }
+    .text-box { background:#f0f0f0; padding:12px; border-radius:10px; margin:15px 0; text-align:left; }
+  </style>
+</head>
+<body>
+  <h1>📘 Kapitel 1 – Was ist das? (50 Fragen)</h1>
+  <div class="quiz-box" id="quiz">
+    <div id="passage" class="text-box" style="display:none;">
+      <b>Text:</b><br>
+      Anna zeigt auf einen Tisch: „Das ist der Stuhl.“<br>
+      Peter sagt: „Das ist die Lampe.“ (aber er zeigt auf das Fenster).<br>
+      Maria sagt: „Das ist der Computer.“<br>
+      Ali sagt: „Das ist die Uhr.“ (aber er zeigt auf das Auto).<br>
+      Lena sagt: „Das ist die Schule.“<br>
+    </div>
+    <div class="question" id="question">Frage</div>
+    <div class="answers" id="answers"></div>
+    <div id="fillin" style="display:none;">
+      <input type="text" id="fillInput" placeholder="Deine Antwort">
+      <button onclick="checkFill()">Antwort prüfen</button>
+    </div>
+    <div class="explanation" id="explanation" style="display:none;"></div>
+    <div class="timer" id="timer"></div>
+    <div class="score" id="score">Punkte: 0</div>
+    <button onclick="prevQuestion()">⬅ Zurück</button>
+    <button onclick="nextQuestion()">Nächste Frage ➡</button>
+    <p><a href="chapter1.html">🔙 Zurück zu Lektion 1</a></p>
+  </div>
+
+<script>
+// 🔀 Shuffle helper
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+const quizData = [
+  // ---- 20 Multiple Choice ----
+  {type:"mc", question:"Was ist das? 🪑", answers:["der Tisch","der Stuhl","die Lampe","das Buch"], correct:"der Stuhl", explain:"Das ist der Stuhl."},
+  {type:"mc", question:"Was ist das? 📖", answers:["das Fenster","das Buch","die Schule","der Computer"], correct:"das Buch", explain:"Das ist das Buch."},
+  {type:"mc", question:"Was ist das? 🍎", answers:["die Blume","der Apfel","das Auto","der Freund"], correct:"der Apfel", explain:"Das ist der Apfel."},
+  {type:"mc", question:"Was ist das? 🪟", answers:["das Fenster","die Uhr","der Tisch","das Handy"], correct:"das Fenster", explain:"Das ist das Fenster."},
+  {type:"mc", question:"Was ist das? 💡", answers:["die Uhr","die Lampe","das Heft","der Apfel"], correct:"die Lampe", explain:"Das ist die Lampe."},
+  {type:"mc", question:"Was ist das? 🏠", answers:["das Haus","der Stuhl","die Schule","die Blume"], correct:"das Haus", explain:"Das ist das Haus."},
+  {type:"mc", question:"Was ist das? 📱", answers:["das Handy","die Lampe","der Lehrer","der Apfel"], correct:"das Handy", explain:"Das ist das Handy."},
+  {type:"mc", question:"Was ist das? ⏰", answers:["die Uhr","der Tisch","das Fenster","der Computer"], correct:"die Uhr", explain:"Das ist die Uhr."},
+  {type:"mc", question:"Was ist das? 🖥️", answers:["der Computer","das Auto","die Tür","die Schule"], correct:"der Computer", explain:"Das ist der Computer."},
+  {type:"mc", question:"Was ist das? 📰", answers:["die Zeitung","der Freund","das Haus","das Handy"], correct:"die Zeitung", explain:"Das ist die Zeitung."},
+  {type:"mc", question:"Was ist das? 🪑", answers:["der Tisch","der Stuhl","die Blume","das Auto"], correct:"der Tisch", explain:"Das ist der Tisch."},
+  {type:"mc", question:"Was ist das? 🪻", answers:["die Blume","die Lampe","das Buch","der Stuhl"], correct:"die Blume", explain:"Das ist die Blume."},
+  {type:"mc", question:"Was ist das? 🚪", answers:["die Tür","die Uhr","das Haus","das Auto"], correct:"die Tür", explain:"Das ist die Tür."},
+  {type:"mc", question:"Was ist das? 📝", answers:["das Heft","der Computer","die Zeitung","der Lehrer"], correct:"das Heft", explain:"Das ist das Heft."},
+  {type:"mc", question:"Was ist das? 👨‍🏫", answers:["der Freund","der Lehrer","der Tisch","das Haus"], correct:"der Lehrer", explain:"Das ist der Lehrer."},
+  {type:"mc", question:"Was ist das? 🍫", answers:["die Schokolade","der Apfel","das Buch","die Lampe"], correct:"die Schokolade", explain:"Das ist die Schokolade."},
+  {type:"mc", question:"Was ist das? 🚗", answers:["das Auto","die Schule","der Stuhl","die Tür"], correct:"das Auto", explain:"Das ist das Auto."},
+  {type:"mc", question:"Was ist das? 🏫", answers:["die Schule","das Heft","das Haus","der Tisch"], correct:"die Schule", explain:"Das ist die Schule."},
+  {type:"mc", question:"Was ist das? 👬", answers:["der Freund","der Lehrer","das Auto","die Zeitung"], correct:"der Freund", explain:"Das ist der Freund."},
+  {type:"mc", question:"Was ist das? 💧", answers:["das Wasser","die Blume","der Computer","die Uhr"], correct:"das Wasser", explain:"Das ist das Wasser."},
+
+  // ---- 21–40 Fill-in ----
+  {type:"fill", question:"(the chair) → Das ist ___ .", correct:"der Stuhl", explain:"Das ist der Stuhl."},
+  {type:"fill", question:"(the book) → Das ist ___ .", correct:"das Buch", explain:"Das ist das Buch."},
+  {type:"fill", question:"(the apple) → Das ist ___ .", correct:"der Apfel", explain:"Das ist der Apfel."},
+  {type:"fill", question:"(the window) → Das ist ___ .", correct:"das Fenster", explain:"Das ist das Fenster."},
+  {type:"fill", question:"(the lamp) → Das ist ___ .", correct:"die Lampe", explain:"Das ist die Lampe."},
+  {type:"fill", question:"(the house) → Das ist ___ .", correct:"das Haus", explain:"Das ist das Haus."},
+  {type:"fill", question:"(the mobile phone) → Das ist ___ .", correct:"das Handy", explain:"Das ist das Handy."},
+  {type:"fill", question:"(the clock) → Das ist ___ .", correct:"die Uhr", explain:"Das ist die Uhr."},
+  {type:"fill", question:"(the computer) → Das ist ___ .", correct:"der Computer", explain:"Das ist der Computer."},
+  {type:"fill", question:"(the newspaper) → Das ist ___ .", correct:"die Zeitung", explain:"Das ist die Zeitung."},
+  {type:"fill", question:"(the table) → Das ist ___ .", correct:"der Tisch", explain:"Das ist der Tisch."},
+  {type:"fill", question:"(the flower) → Das ist ___ .", correct:"die Blume", explain:"Das ist die Blume."},
+  {type:"fill", question:"(the door) → Das ist ___ .", correct:"die Tür", explain:"Das ist die Tür."},
+  {type:"fill", question:"(the notebook) → Das ist ___ .", correct:"das Heft", explain:"Das ist das Heft."},
+  {type:"fill", question:"(the teacher) → Das ist ___ .", correct:"der Lehrer", explain:"Das ist der Lehrer."},
+  {type:"fill", question:"(the chocolate) → Das ist ___ .", correct:"die Schokolade", explain:"Das ist die Schokolade."},
+  {type:"fill", question:"(the car) → Das ist ___ .", correct:"das Auto", explain:"Das ist das Auto."},
+  {type:"fill", question:"(the school) → Das ist ___ .", correct:"die Schule", explain:"Das ist die Schule."},
+  {type:"fill", question:"(the friend) → Das ist ___ .", correct:"der Freund", explain:"Das ist der Freund."},
+  {type:"fill", question:"(the water) → Das ist ___ .", correct:"das Wasser", explain:"Das ist das Wasser."},
+
+  // ---- 41–50 True/False ----
+  {type:"mc", question:"Anna zeigt auf einen Tisch und sagt: „Das ist der Stuhl.“", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Falsch: Es ist der Tisch, nicht der Stuhl."},
+  {type:"mc", question:"Peter sagt: „Das ist die Lampe.“ und zeigt auf das Fenster.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Falsch: Er zeigt auf das Fenster."},
+  {type:"mc", question:"Maria sagt: „Das ist der Computer.“", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Richtig: Maria nennt es korrekt."},
+  {type:"mc", question:"Ali zeigt auf das Auto und sagt: „Das ist die Uhr.“", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Falsch: Er zeigt auf das Auto, sagt aber Uhr."},
+  {type:"mc", question:"Lena sagt: „Das ist die Schule.“", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Richtig: Sie nennt es korrekt."},
+  {type:"mc", question:"Der Tisch wurde richtig benannt.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Anna hat falsch gesagt: Stuhl statt Tisch."},
+  {type:"mc", question:"Das Fenster wurde richtig benannt.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Peter hat falsch gesagt: Lampe statt Fenster."},
+  {type:"mc", question:"Der Computer wurde richtig benannt.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Maria hat korrekt gesagt: Computer."},
+  {type:"mc", question:"Das Auto wurde richtig benannt.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Ali hat gesagt: Uhr, aber gezeigt auf Auto."},
+  {type:"mc", question:"Die Schule wurde richtig benannt.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Lena hat korrekt gesagt: Schule."}
+];
+
+let current=0,score=0,timer,timeLeft=0;
+const qEl=document.getElementById("question");
+const aEl=document.getElementById("answers");
+const fEl=document.getElementById("fillin");
+const input=document.getElementById("fillInput");
+const tEl=document.getElementById("timer");
+const sEl=document.getElementById("score");
+const eEl=document.getElementById("explanation");
+const passage=document.getElementById("passage");
+
+function loadQuestion(){
+  const q=quizData[current];
+  qEl.innerHTML=(current+1)+". "+q.question;
+  aEl.innerHTML=""; fEl.style.display="none"; eEl.style.display="none"; eEl.innerHTML="";
+  if(current>=40){ passage.style.display="block"; } else { passage.style.display="none"; }
+
+  if(q.type==="mc"){
+    const shuffled = shuffle([...q.answers]); // 🔀 shuffle answers
+    shuffled.forEach(ans=>{
+      const btn=document.createElement("div");
+      btn.className="answer"; btn.innerText=ans;
+      btn.onclick=()=>checkAnswer(btn,ans,q.correct,q.explain);
+      aEl.appendChild(btn);
+    });
+
+    if(current<20) resetTimer(20);
+    else if(current<40) resetTimer(35);
+    else resetTimer(300);
+
+  } else {
+    fEl.style.display="block";
+    input.value=""; input.focus();
+    if(current<40) resetTimer(35); else resetTimer(300);
+  }
+}
+function checkAnswer(button,answer,correct,explanation){
+  clearInterval(timer); lockAnswers();
+  if(answer===correct){ button.classList.add("correct"); score+=10; }
+  else{ button.classList.add("wrong"); }
+  sEl.innerText="Punkte: "+score;
+  eEl.style.display="block"; eEl.innerHTML=explanation;
+}
+function checkFill(){
+  clearInterval(timer);
+  const q=quizData[current];
+  let ans=input.value.trim();
+  if(ans===q.correct){ score+=10; eEl.innerHTML="✅ Richtig: "+q.correct; }
+  else{ eEl.innerHTML="❌ Falsch. Richtige Antwort: "+q.correct; }
+  eEl.style.display="block"; sEl.innerText="Punkte: "+score;
+}
+function lockAnswers(){ document.querySelectorAll(".answer").forEach(b=>b.style.pointerEvents="none"); }
+function nextQuestion(){ clearInterval(timer); current++; if(current<quizData.length) loadQuestion(); else qEl.innerHTML="🎉 Quiz beendet! Punkte: "+score; }
+function prevQuestion(){ if(current>0){ current--; loadQuestion(); } }
+function resetTimer(seconds){
+  timeLeft=seconds; tEl.innerText="⏱ "+timeLeft+"s"; clearInterval(timer);
+  timer=setInterval(()=>{ timeLeft--; tEl.innerText="⏱ "+timeLeft+"s";
+    if(timeLeft<=0){ clearInterval(timer);
+      const q=quizData[current]; eEl.style.display="block"; eEl.innerHTML="⏰ Zeit abgelaufen. Richtige Antwort: "+q.correct;
+    }
+  },1000);
+}
+loadQuestion();
+</script>
+</body>
+</html>
