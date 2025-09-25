@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>🗣️ Kapitel 1 – Redemittel Quiz (50 Fragen)</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: linear-gradient(to right, #FFEFBA, #FFFFFF); text-align: center; padding: 20px; color: #333; }
+    .quiz-box { background:#fff; padding:20px; border-radius:15px; max-width:850px; margin:auto; box-shadow:0 6px 12px rgba(0,0,0,0.3);}
+    .question { font-size:20px; margin-bottom:20px; }
+    .answers { display:grid; gap:10px; }
+    .answer { padding:12px; border-radius:8px; cursor:pointer; background:#2196f3; color:#fff; transition:0.3s; }
+    .answer:hover { transform:scale(1.05); }
+    .correct { background:#4caf50 !important; }
+    .wrong { background:#f44336 !important; }
+    .score { font-size:18px; margin-top:20px; }
+    .timer { font-size:18px; margin:10px; color:#e91e63; }
+    .explanation { margin-top:12px; text-align:left; color:#333; background:#f5f5f5; padding:10px; border-radius:8px; }
+    input[type="text"] { padding:8px; font-size:16px; width:60%; }
+    button { margin-top:10px; padding:10px 20px; font-size:16px; cursor:pointer; background:#ff416c; border:none; border-radius:8px; color:#fff; }
+    button:hover { background:#ff4b2b; }
+    .text-box { background:#f0f0f0; padding:12px; border-radius:10px; margin:15px 0; text-align:left; }
+  </style>
+</head>
+<body>
+  <h1>🗣️ Kapitel 1 – Redemittel Quiz (50 Fragen)</h1>
+  <div class="quiz-box" id="quiz">
+    <div id="passage" class="text-box" style="display:none;">
+      <b>Text:</b><br>
+      Anna trifft Paul am Montagmorgen.<br>
+      Anna: „Guten Morgen, Paul! Wie geht’s?“ (Good morning, Paul! How are you?)<br>
+      Paul: „Gut, danke. Und dir?“ (Good, thanks. And you?)<br>
+      Anna: „Auch gut. Danke. Ich habe heute frei.“ (Also fine. Thanks. I have the day off.)<br>
+      Paul: „Schön! Bis später!“ (Nice! See you later!)
+    </div>
+    <div class="question" id="question">Frage</div>
+    <div class="answers" id="answers"></div>
+    <div id="fillin" style="display:none;">
+      <input type="text" id="fillInput" placeholder="Deine Antwort">
+      <button onclick="checkFill()">Antwort prüfen</button>
+    </div>
+    <div class="explanation" id="explanation" style="display:none;"></div>
+    <div class="timer" id="timer"></div>
+    <div class="score" id="score">Punkte: 0</div>
+    <button onclick="prevQuestion()">⬅ Zurück</button>
+    <button onclick="nextQuestion()">Nächste Frage ➡</button>
+    <p><a href="chapter1.html">🔙 Zurück zu Lektion 1</a></p>
+  </div>
+
+<script>
+// 🔀 Shuffle helper
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+const quizData = [
+  // ---- 20 Multiple Choice ----
+  {type:"mc", question:"„Guten Morgen!“ (Good morning) – Welche Antwort passt?", answers:["Guten Morgen!","Gute Nacht!","Tschüss!","Danke!"], correct:"Guten Morgen!", explain:"Antwort: Guten Morgen!"},
+  {type:"mc", question:"„Wie geht’s?“ (How are you?) – Welche Antwort passt?", answers:["Gut, danke.","Nein, ich heiße Peter.","Ich komme aus Wien.","Es ist 7 Uhr."], correct:"Gut, danke.", explain:"Antwort: Gut, danke."},
+  {type:"mc", question:"„Entschuldigung, …“ (Excuse me, …) – Was passt?", answers:["Können Sie das wiederholen?","Ich heiße Anna.","Ich wohne in Berlin.","Mir geht’s gut."], correct:"Können Sie das wiederholen?", explain:"Antwort: Können Sie das wiederholen?"},
+  {type:"mc", question:"„Danke schön!“ (Thank you very much) – Welche Antwort passt?", answers:["Bitte schön!","Guten Tag!","Auf Wiedersehen!","Ich bin Maria."], correct:"Bitte schön!", explain:"Antwort: Bitte schön!"},
+  {type:"mc", question:"„Bis bald!“ (See you soon) bedeutet …", answers:["Auf Wiedersehen bald.","Guten Morgen.","Gute Nacht.","Danke."], correct:"Auf Wiedersehen bald.", explain:"Antwort: Auf Wiedersehen bald."},
+  {type:"mc", question:"„Auf Wiedersehen!“ (Goodbye) – Welche Antwort passt?", answers:["Auf Wiedersehen!","Guten Abend!","Danke!","Wie heißen Sie?"], correct:"Auf Wiedersehen!", explain:"Antwort: Auf Wiedersehen!"},
+  {type:"mc", question:"„Gute Nacht!“ (Good night) – Welche Antwort passt?", answers:["Gute Nacht!","Guten Morgen!","Bis später!","Danke schön!"], correct:"Gute Nacht!", explain:"Antwort: Gute Nacht!"},
+  {type:"mc", question:"„Hallo!“ (Hello/Hi) – Welche Antwort passt?", answers:["Hallo!","Gute Nacht!","Danke.","Tschüss!"], correct:"Hallo!", explain:"Antwort: Hallo!"},
+  {type:"mc", question:"„Bis später!“ (See you later) – Welche Antwort passt?", answers:["Bis später!","Guten Morgen!","Danke!","Auf Wiedersehen!"], correct:"Bis später!", explain:"Antwort: Bis später!"},
+  {type:"mc", question:"„Wie heißen Sie?“ (What is your name? formal) – Welche Antwort passt?", answers:["Ich heiße Frank.","Ich komme aus Wien.","Es ist 8 Uhr.","Ich bin Lehrer."], correct:"Ich heiße Frank.", explain:"Antwort: Ich heiße Frank."},
+  {type:"mc", question:"„Wie heißt du?“ (What’s your name? informal) – Welche Antwort passt?", answers:["Ich heiße Anna.","Es ist 9 Uhr.","Ich wohne in Berlin.","Danke schön!"], correct:"Ich heiße Anna.", explain:"Antwort: Ich heiße Anna."},
+  {type:"mc", question:"„Woher kommst du?“ (Where are you from?) – Welche Antwort passt?", answers:["Ich komme aus Spanien.","Heute ist Freitag.","Es ist 12 Uhr.","Ich heiße Peter."], correct:"Ich komme aus Spanien.", explain:"Antwort: Ich komme aus Spanien."},
+  {type:"mc", question:"„Wie geht es Ihnen?“ (How are you? polite) – Welche Antwort passt?", answers:["Sehr gut, danke.","Ich heiße Maria.","Ich wohne in Wien.","Es ist Montag."], correct:"Sehr gut, danke.", explain:"Antwort: Sehr gut, danke."},
+  {type:"mc", question:"„Tschüss!“ (Bye) – Welche Antwort passt?", answers:["Tschüss!","Guten Tag!","Danke schön!","Ich heiße Paul."], correct:"Tschüss!", explain:"Antwort: Tschüss!"},
+  {type:"mc", question:"„Guten Abend!“ (Good evening) – Welche Antwort passt?", answers:["Guten Abend!","Gute Nacht!","Bis morgen!","Danke schön!"], correct:"Guten Abend!", explain:"Antwort: Guten Abend!"},
+  {type:"mc", question:"„Bis morgen!“ (See you tomorrow) – Welche Antwort passt?", answers:["Bis morgen!","Guten Tag!","Gute Nacht!","Hallo!"], correct:"Bis morgen!", explain:"Antwort: Bis morgen!"},
+  {type:"mc", question:"„Mir geht’s gut.“ (I am fine) – Welche Frage passt?", answers:["Wie geht’s?","Wie heißt du?","Wo wohnst du?","Woher kommst du?"], correct:"Wie geht’s?", explain:"Antwort: Wie geht’s?"},
+  {type:"mc", question:"„Ich heiße Maria.“ (My name is Maria) – Welche Frage passt?", answers:["Wie heißt du?","Woher kommst du?","Wie geht’s?","Was machst du?"], correct:"Wie heißt du?", explain:"Antwort: Wie heißt du?"},
+  {type:"mc", question:"„Ich komme aus Wien.“ (I come from Vienna) – Welche Frage passt?", answers:["Woher kommst du?","Wie heißt du?","Wie geht’s?","Was machst du?"], correct:"Woher kommst du?", explain:"Antwort: Woher kommst du?"},
+  {type:"mc", question:"„Auf Wiedersehen!“ (Goodbye) – Welche Antwort passt?", answers:["Auf Wiedersehen!","Guten Morgen!","Danke schön!","Bis später!"], correct:"Auf Wiedersehen!", explain:"Antwort: Auf Wiedersehen!"},
+
+  // ---- 20 Fill in ----
+  {type:"fill", question:"(Good morning) ___ Morgen!", correct:"Guten", explain:"Antwort: Guten Morgen"},
+  {type:"fill", question:"(Good night) ___ Nacht!", correct:"Gute", explain:"Antwort: Gute Nacht"},
+  {type:"fill", question:"(Good evening) Guten ___!", correct:"Abend", explain:"Antwort: Guten Abend"},
+  {type:"fill", question:"(See you tomorrow) Bis ___!", correct:"morgen", explain:"Antwort: Bis morgen"},
+  {type:"fill", question:"(See you later) Bis ___!", correct:"später", explain:"Antwort: Bis später"},
+  {type:"fill", question:"(Excuse me) ___ Sie!", correct:"Entschuldigen", explain:"Antwort: Entschuldigen Sie!"},
+  {type:"fill", question:"(Thank you) ___!", correct:"Danke", explain:"Antwort: Danke!"},
+  {type:"fill", question:"(You’re welcome) ___ schön!", correct:"Bitte", explain:"Antwort: Bitte schön"},
+  {type:"fill", question:"(Goodbye) Auf ___!", correct:"Wiedersehen", explain:"Antwort: Auf Wiedersehen"},
+  {type:"fill", question:"(Hello/Hi) ___!", correct:"Hallo", explain:"Antwort: Hallo!"},
+  {type:"fill", question:"(How are you?) Wie ___ es dir?", correct:"geht", explain:"Antwort: Wie geht es dir?"},
+  {type:"fill", question:"(Very good) Sehr ___", correct:"gut", explain:"Antwort: Sehr gut"},
+  {type:"fill", question:"(Not good) Nicht so ___", correct:"gut", explain:"Antwort: Nicht so gut"},
+  {type:"fill", question:"(My name is …) Ich ___ …", correct:"heiße", explain:"Antwort: Ich heiße …"},
+  {type:"fill", question:"(What is your name?) Wie ___ du?", correct:"heißt", explain:"Antwort: Wie heißt du?"},
+  {type:"fill", question:"(Where are you from?) Woher ___ du?", correct:"kommst", explain:"Antwort: Woher kommst du?"},
+  {type:"fill", question:"(I am fine) Mir geht es ___", correct:"gut", explain:"Antwort: Mir geht es gut"},
+  {type:"fill", question:"(See you soon) Bis ___!", correct:"bald", explain:"Antwort: Bis bald"},
+  {type:"fill", question:"(Good day) Guten ___!", correct:"Tag", explain:"Antwort: Guten Tag"},
+  {type:"fill", question:"(Goodbye – formal) Auf ___!", correct:"Wiedersehen", explain:"Antwort: Auf Wiedersehen"},
+
+  // ---- 10 True/False Reading ----
+  {type:"mc", question:"Anna trifft Paul am Montagmorgen. (Anna meets Paul on Monday morning)", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Montagmorgen"},
+  {type:"mc", question:"Paul sagt: „Guten Abend!“ (Paul says: Good evening)", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: Paul sagt Guten Morgen"},
+  {type:"mc", question:"Anna fragt: „Wie geht’s?“ (Anna asks: How are you?)", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Anna fragt Wie geht’s?"},
+  {type:"mc", question:"Paul sagt: „Mir geht’s schlecht.“ (Paul says: I’m not well)", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: Paul sagt Gut, danke."},
+  {type:"mc", question:"Anna hat heute frei. (Anna has the day off today)", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Ich habe heute frei."},
+  {type:"mc", question:"Paul sagt: „Schön! Bis später!“ (Paul says: Nice! See you later!)", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Schön! Bis später!"},
+  {type:"mc", question:"Anna sagt: „Gute Nacht, Paul.“ (Anna says: Good night, Paul)", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: Anna sagt Guten Morgen"},
+  {type:"mc", question:"Paul fragt: „Wo wohnst du?“ (Paul asks: Where do you live?)", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: Paul fragt nicht Wo wohnst du"},
+  {type:"mc", question:"Anna sagt auch: „Danke.“ (Anna also says: Thank you)", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Anna sagt Danke."},
+  {type:"mc", question:"Am Ende sagt Paul: „Bis später!“ (At the end Paul says: See you later!)", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Paul sagt Bis später!"}
+];
+
+let current=0,score=0,timer,timeLeft=0;
+const qEl=document.getElementById("question");
+const aEl=document.getElementById("answers");
+const fEl=document.getElementById("fillin");
+const input=document.getElementById("fillInput");
+const tEl=document.getElementById("timer");
+const sEl=document.getElementById("score");
+const eEl=document.getElementById("explanation");
+const passage=document.getElementById("passage");
+
+function loadQuestion(){
+  const q=quizData[current];
+  qEl.innerHTML=(current+1)+". "+q.question;
+  aEl.innerHTML=""; fEl.style.display="none"; eEl.style.display="none"; eEl.innerHTML="";
+  if(current>=40){ passage.style.display="block"; } else { passage.style.display="none"; }
+
+  if(q.type==="mc"){
+    const shuffled = shuffle([...q.answers]); 
+    shuffled.forEach(ans=>{
+      const btn=document.createElement("div");
+      btn.className="answer"; btn.innerText=ans;
+      btn.onclick=()=>checkAnswer(btn,ans,q.correct,q.explain);
+      aEl.appendChild(btn);
+    });
+
+    if(current<20) resetTimer(20);
+    else if(current<40) resetTimer(35);
+    else resetTimer(300);
+
+  } else {
+    fEl.style.display="block";
+    input.value=""; input.focus();
+    if(current<40) resetTimer(35); else resetTimer(300);
+  }
+}
+function checkAnswer(button,answer,correct,explanation){
+  clearInterval(timer); lockAnswers();
+  if(answer===correct){ button.classList.add("correct"); score+=10; }
+  else{ button.classList.add("wrong"); }
+  sEl.innerText="Punkte: "+score;
+  eEl.style.display="block"; eEl.innerHTML=explanation;
+}
+function checkFill(){
+  clearInterval(timer);
+  const q=quizData[current];
+  let ans=input.value.trim();
+  if(ans===q.correct){ score+=10; eEl.innerHTML="✅ Richtig: "+q.correct; }
+  else{ eEl.innerHTML="❌ Falsch. Richtige Antwort: "+q.correct; }
+  eEl.style.display="block"; sEl.innerText="Punkte: "+score;
+}
+function lockAnswers(){ document.querySelectorAll(".answer").forEach(b=>b.style.pointerEvents="none"); }
+function nextQuestion(){ clearInterval(timer); current++; if(current<quizData.length) loadQuestion(); else qEl.innerHTML="🎉 Quiz beendet! Punkte: "+score; }
+function prevQuestion(){ if(current>0){ current--; loadQuestion(); } }
+function resetTimer(seconds){
+  timeLeft=seconds; tEl.innerText="⏱ "+timeLeft+"s"; clearInterval(timer);
+  timer=setInterval(()=>{ timeLeft--; tEl.innerText="⏱ "+timeLeft+"s";
+    if(timeLeft<=0){ clearInterval(timer);
+      const q=quizData[current]; eEl.style.display="block"; eEl.innerHTML="⏰ Zeit abgelaufen. Richtige Antwort: "+q.correct;
+    }
+  },1000);
+}
+loadQuestion();
+</script>
+</body>
+</html>
