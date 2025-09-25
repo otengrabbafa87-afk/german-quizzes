@@ -2,9 +2,9 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>⏰ Kapitel 1 – Uhrzeit Quiz (50 Fragen)</title>
+  <title>⏰ Kapitel 1 – Uhrzeit (50 Fragen)</title>
   <style>
-    body { font-family: Arial, sans-serif; background: linear-gradient(to right, #FFEFBA, #FFFFFF); text-align: center; padding: 20px; color: #333; }
+    body { font-family: Arial, sans-serif; background: linear-gradient(to right, #ffecd2, #fcb69f); text-align: center; padding: 20px; color: #333; }
     .quiz-box { background:#fff; padding:20px; border-radius:15px; max-width:850px; margin:auto; box-shadow:0 6px 12px rgba(0,0,0,0.3);}
     .question { font-size:20px; margin-bottom:20px; }
     .answers { display:grid; gap:10px; }
@@ -22,16 +22,15 @@
   </style>
 </head>
 <body>
-  <h1>⏰ Kapitel 1 – Uhrzeit Quiz (50 Fragen)</h1>
+  <h1>⏰ Kapitel 1 – Uhrzeit (50 Fragen)</h1>
   <div class="quiz-box" id="quiz">
     <div id="passage" class="text-box" style="display:none;">
       <b>Text:</b><br>
-      Heute ist Samstag.<br>
-      Am Morgen um neun Uhr frühstückt Anna.<br>
-      Um zwölf Uhr trifft sie ihre Freunde zum Mittagessen.<br>
-      Am Nachmittag um fünfzehn Uhr geht sie einkaufen.<br>
-      Am Abend um neunzehn Uhr sieht sie einen Film.<br>
-      Um zweiundzwanzig Uhr geht sie schlafen.
+      Heute ist Montag. Der Kurs beginnt um 8:00 Uhr.<br>
+      Um 10:00 Uhr ist Pause. Die Pause dauert 20 Minuten.<br>
+      Am Nachmittag, um 14:30 Uhr, haben wir eine Übung.<br>
+      Am Abend um 18:00 Uhr gehe ich nach Hause.<br>
+      Um 20:00 Uhr sehe ich fern und um 23:00 Uhr gehe ich ins Bett.
     </div>
     <div class="question" id="question">Frage</div>
     <div class="answers" id="answers"></div>
@@ -64,7 +63,7 @@ const quizData = [
   {type:"mc", question:"12:15 – Welche Antwort ist richtig?", answers:shuffle(["Es ist halb eins.","Es ist viertel vor zwölf.","Es ist Viertel nach zwölf.","Es ist viertel eins."]), correct:"Es ist Viertel nach zwölf.", explain:"12:15 = Viertel nach zwölf."},
   {type:"mc", question:"15:45 – Welche Antwort ist richtig?", answers:shuffle(["Es ist Viertel nach vier.","Es ist Viertel vor vier.","Es ist halb fünf.","Es ist vier Uhr."]), correct:"Es ist Viertel vor vier.", explain:"15:45 = Viertel vor vier."},
   {type:"mc", question:"18:10 – Welche Antwort ist richtig?", answers:shuffle(["Es ist zehn vor sechs.","Es ist zehn nach sechs.","Es ist halb sechs.","Es ist fünf nach halb sieben."]), correct:"Es ist zehn nach sechs.", explain:"18:10 = zehn nach sechs."},
-  {type:"mc", question:"20:30 – Welche Antwort ist richtig?", answers:shuffle(["Es ist halb neun abends.","Es ist halb acht.","Es ist viertel nach acht.","Es ist halb zehn."]), correct:"Es ist halb neun abends.", explain:"20:30 = halb neun abends."},
+  {type:"mc", question:"20:30 – Welche Antwort ist richtig?", answers:shuffle(["Es ist halb neun abends.","Es ist halb acht.","Es ist viertel nach acht.","Es ist halb zehn."]), correct:"Es ist halb neun abends.", explain:"20:30 = halb neun."},
   {type:"mc", question:"13:00 – Welche Antwort ist richtig?", answers:shuffle(["Es ist zwölf Uhr.","Es ist zwei Uhr.","Es ist ein Uhr.","Es ist halb zwei."]), correct:"Es ist ein Uhr.", explain:"13:00 = ein Uhr."},
   {type:"mc", question:"22:50 – Welche Antwort ist richtig?", answers:shuffle(["Es ist zehn nach zehn.","Es ist halb elf.","Es ist zehn vor elf.","Es ist elf Uhr."]), correct:"Es ist zehn vor elf.", explain:"22:50 = zehn vor elf."},
   {type:"mc", question:"11:30 – Welche Antwort ist richtig?", answers:shuffle(["Es ist viertel nach elf.","Es ist elf Uhr.","Es ist halb zwölf.","Es ist halb elf."]), correct:"Es ist halb zwölf.", explain:"11:30 = halb zwölf."},
@@ -75,44 +74,44 @@ const quizData = [
   {type:"mc", question:"19:05 – Welche Antwort ist richtig?", answers:shuffle(["Es ist fünf nach sieben.","Es ist fünf vor sieben.","Es ist halb acht.","Es ist sieben Uhr dreißig."]), correct:"Es ist fünf nach sieben.", explain:"19:05 = fünf nach sieben."},
   {type:"mc", question:"08:40 – Welche Antwort ist richtig?", answers:shuffle(["Es ist zwanzig nach acht.","Es ist viertel vor acht.","Es ist zwanzig vor neun.","Es ist neun Uhr zehn."]), correct:"Es ist zwanzig vor neun.", explain:"08:40 = zwanzig vor neun."},
   {type:"mc", question:"00:00 – Welche Antwort ist richtig?", answers:shuffle(["Es ist zwölf Uhr.","Es ist Mitternacht.","Es ist Mittag.","Es ist null Uhr mittags."]), correct:"Es ist Mitternacht.", explain:"00:00 = Mitternacht."},
-  {type:"mc", question:"12:00 – Welche Antwort ist richtig?", answers:shuffle(["Es ist Mitternacht.","Es ist zwölf Uhr.","Es ist null Uhr.","Es ist halb eins."]), correct:"Es ist zwölf Uhr.", explain:"12:00 = zwölf Uhr mittags."},
+  {type:"mc", question:"12:00 – Welche Antwort ist richtig?", answers:shuffle(["Es ist Mitternacht.","Es ist zwölf Uhr.","Es ist null Uhr.","Es ist halb eins."]), correct:"Es ist zwölf Uhr.", explain:"12:00 = zwölf Uhr."},
   {type:"mc", question:"16:35 – Welche Antwort ist richtig?", answers:shuffle(["Es ist fünf vor halb fünf.","Es ist fünf nach halb fünf.","Es ist halb fünf.","Es ist fünfunddreißig vor fünf."]), correct:"Es ist fünf nach halb fünf.", explain:"16:35 = fünf nach halb fünf."},
-  {type:"mc", question:"„Wann beginnt der Kurs?“", answers:shuffle(["Heute ist Dienstag.","Er dauert zwei Stunden.","Ich komme aus Berlin.","Um acht Uhr."]), correct:"Um acht Uhr.", explain:"Antwort: Um acht Uhr."},
-  {type:"mc", question:"„Wann hast du Zeit?“", answers:shuffle(["Ich wohne in Wien.","Ich bin Student.","Am Montag um drei Uhr.","Ich heiße Peter."]), correct:"Am Montag um drei Uhr.", explain:"Antwort: Am Montag um drei Uhr."},
+  {type:"mc", question:"Wann beginnt der Kurs?", answers:shuffle(["Heute ist Dienstag.","Er dauert zwei Stunden.","Ich komme aus Berlin.","Um acht Uhr."]), correct:"Um acht Uhr.", explain:"Frage = Uhrzeit → Um acht Uhr."},
+  {type:"mc", question:"Wann hast du Zeit?", answers:shuffle(["Ich wohne in Wien.","Ich bin Student.","Am Montag um drei Uhr.","Ich heiße Peter."]), correct:"Am Montag um drei Uhr.", explain:"Frage = Termin → Am Montag um drei Uhr."},
 
-  // ---- 20 Fill-in ----
-  {type:"fill", question:"(It is seven o’clock) Es ist ___ Uhr.", correct:"sieben", explain:"Es ist sieben Uhr."},
-  {type:"fill", question:"(It is half past nine) Es ist ___ Uhr ___ .", correct:"halb zehn", explain:"Es ist halb zehn."},
-  {type:"fill", question:"(It is quarter past twelve) Es ist ___ ___ zwölf.", correct:"Viertel nach", explain:"Es ist Viertel nach zwölf."},
-  {type:"fill", question:"(It is quarter to four) Es ist ___ ___ vier.", correct:"Viertel vor", explain:"Es ist Viertel vor vier."},
-  {type:"fill", question:"(It is ten past six) Es ist ___ nach ___.", correct:"zehn sechs", explain:"Es ist zehn nach sechs."},
-  {type:"fill", question:"(It is half past eight in the evening) Es ist ___ neun ___ .", correct:"halb abends", explain:"Es ist halb neun abends."},
-  {type:"fill", question:"(It is one o’clock) Es ist ___ Uhr.", correct:"eins", explain:"Es ist ein Uhr."},
-  {type:"fill", question:"(It is ten to eleven) Es ist ___ vor ___.", correct:"zehn elf", explain:"Es ist zehn vor elf."},
-  {type:"fill", question:"(It is half past eleven) Es ist ___ zwölf.", correct:"halb", explain:"Es ist halb zwölf."},
-  {type:"fill", question:"(It is quarter past five) Es ist ___ nach ___.", correct:"Viertel fünf", explain:"Es ist Viertel nach fünf."},
-  {type:"fill", question:"(It is eleven at night) Es ist ___ Uhr ___.", correct:"elf nachts", explain:"Es ist elf Uhr nachts."},
-  {type:"fill", question:"(It is twenty past two) Es ist ___ nach ___.", correct:"zwanzig zwei", explain:"Es ist zwanzig nach zwei."},
-  {type:"fill", question:"(It is quarter to five) Es ist ___ vor ___.", correct:"Viertel fünf", explain:"Es ist Viertel vor fünf."},
-  {type:"fill", question:"(It is five past seven) Es ist ___ nach ___.", correct:"fünf sieben", explain:"Es ist fünf nach sieben."},
-  {type:"fill", question:"(It is twenty to nine) Es ist ___ vor ___.", correct:"zwanzig neun", explain:"Es ist zwanzig vor neun."},
-  {type:"fill", question:"(It is midnight) Es ist ___.", correct:"Mitternacht", explain:"Es ist Mitternacht."},
-  {type:"fill", question:"(It is noon) Es ist ___.", correct:"zwölf Uhr", explain:"Es ist zwölf Uhr."},
-  {type:"fill", question:"(It is five past half past four) Es ist ___ nach halb fünf.", correct:"fünf", explain:"Es ist fünf nach halb fünf."},
-  {type:"fill", question:"(The course begins at eight) Der Kurs beginnt um ___.", correct:"acht Uhr", explain:"Der Kurs beginnt um acht Uhr."},
-  {type:"fill", question:"(I have time on Monday at three) Ich habe Zeit am Montag um ___.", correct:"drei Uhr", explain:"Am Montag um drei Uhr."},
+  // ---- 20 Fill in ----
+  {type:"fill", question:"7:00 → Es ist ___ Uhr.", correct:"sieben", explain:"Es ist sieben Uhr."},
+  {type:"fill", question:"9:30 → Es ist ___.", correct:"halb zehn", explain:"9:30 = halb zehn."},
+  {type:"fill", question:"12:15 → Es ist ___.", correct:"Viertel nach zwölf", explain:"12:15 = Viertel nach zwölf."},
+  {type:"fill", question:"15:45 → Es ist ___.", correct:"Viertel vor vier", explain:"15:45 = Viertel vor vier."},
+  {type:"fill", question:"18:10 → Es ist ___.", correct:"zehn nach sechs", explain:"18:10 = zehn nach sechs."},
+  {type:"fill", question:"20:30 → Es ist ___.", correct:"halb neun", explain:"20:30 = halb neun."},
+  {type:"fill", question:"13:00 → Es ist ___ Uhr.", correct:"ein", explain:"13:00 = ein Uhr."},
+  {type:"fill", question:"22:50 → Es ist ___.", correct:"zehn vor elf", explain:"22:50 = zehn vor elf."},
+  {type:"fill", question:"11:30 → Es ist ___.", correct:"halb zwölf", explain:"11:30 = halb zwölf."},
+  {type:"fill", question:"05:15 → Es ist ___.", correct:"Viertel nach fünf", explain:"05:15 = Viertel nach fünf."},
+  {type:"fill", question:"23:00 → Es ist ___ Uhr.", correct:"elf", explain:"23:00 = elf Uhr nachts."},
+  {type:"fill", question:"14:20 → Es ist ___ nach zwei.", correct:"zwanzig", explain:"14:20 = zwanzig nach zwei."},
+  {type:"fill", question:"04:45 → Es ist ___.", correct:"Viertel vor fünf", explain:"04:45 = Viertel vor fünf."},
+  {type:"fill", question:"19:05 → Es ist ___ nach sieben.", correct:"fünf", explain:"19:05 = fünf nach sieben."},
+  {type:"fill", question:"08:40 → Es ist ___ vor neun.", correct:"zwanzig", explain:"08:40 = zwanzig vor neun."},
+  {type:"fill", question:"00:00 → Es ist ___ .", correct:"Mitternacht", explain:"00:00 = Mitternacht."},
+  {type:"fill", question:"12:00 → Es ist ___ Uhr.", correct:"zwölf", explain:"12:00 = zwölf Uhr."},
+  {type:"fill", question:"16:35 → Es ist ___ nach halb fünf.", correct:"fünf", explain:"16:35 = fünf nach halb fünf."},
+  {type:"fill", question:"Wann beginnt der Kurs? → Um ___ Uhr.", correct:"acht", explain:"Kurs = 8:00."},
+  {type:"fill", question:"Wann hast du Zeit? → Am Montag um ___ Uhr.", correct:"drei", explain:"Zeit = 3:00 Uhr."},
 
   // ---- 10 True/False Reading ----
-  {type:"mc", question:"Anna frühstückt um neun Uhr.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Am Morgen um neun Uhr frühstückt Anna."},
-  {type:"mc", question:"Anna trifft ihre Freunde um zehn Uhr.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: Um zwölf Uhr trifft sie ihre Freunde."},
-  {type:"mc", question:"Am Nachmittag geht Anna um fünfzehn Uhr einkaufen.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Am Nachmittag um fünfzehn Uhr geht sie einkaufen."},
-  {type:"mc", question:"Anna sieht um siebzehn Uhr einen Film.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: Um neunzehn Uhr sieht sie einen Film."},
-  {type:"mc", question:"Anna geht um zweiundzwanzig Uhr schlafen.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Um zweiundzwanzig Uhr geht sie schlafen."},
-  {type:"mc", question:"Anna wohnt in Berlin.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text steht nichts zu Berlin, sondern nur Aktivitäten."},
-  {type:"mc", question:"Am Mittag isst Anna mit ihren Freunden.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Um zwölf Uhr trifft sie ihre Freunde zum Mittagessen."},
-  {type:"mc", question:"Anna arbeitet am Nachmittag.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: Sie geht einkaufen, nicht arbeiten."},
-  {type:"mc", question:"Anna sieht abends einen Film.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Am Abend um neunzehn Uhr sieht sie einen Film."},
-  {type:"mc", question:"Anna geht um elf Uhr schlafen.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: Sie geht um zweiundzwanzig Uhr schlafen."}
+  {type:"mc", question:"Der Kurs beginnt um 8:00 Uhr.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Der Kurs beginnt um 8:00."},
+  {type:"mc", question:"Die Pause dauert 30 Minuten.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: Die Pause dauert 20 Minuten."},
+  {type:"mc", question:"Die Pause ist um 10:00 Uhr.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Um 10:00 Uhr ist Pause."},
+  {type:"mc", question:"Am Nachmittag ist um 14:30 Uhr eine Übung.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Um 14:30 Uhr Übung."},
+  {type:"mc", question:"Ich gehe um 20:00 Uhr nach Hause.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: Nach Hause = 18:00 Uhr."},
+  {type:"mc", question:"Ich sehe um 20:00 Uhr fern.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: 20:00 Uhr = fernsehen."},
+  {type:"mc", question:"Ich gehe um 23:00 Uhr ins Bett.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Um 23:00 = ins Bett."},
+  {type:"mc", question:"Der Kurs ist am Dienstag.", answers:["Richtig","Falsch"], correct:"Falsch", explain:"Im Text: Heute ist Montag."},
+  {type:"mc", question:"Die Pause dauert 20 Minuten.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: Pause = 20 Minuten."},
+  {type:"mc", question:"Ich gehe um 18:00 Uhr nach Hause.", answers:["Richtig","Falsch"], correct:"Richtig", explain:"Im Text: 18:00 Uhr = nach Hause."}
 ];
 
 let current=0,score=0,timer,timeLeft=0;
@@ -132,21 +131,18 @@ function loadQuestion(){
   if(current>=40){ passage.style.display="block"; } else { passage.style.display="none"; }
 
   if(q.type==="mc"){
-    const opts = shuffle([...q.answers]);
-    opts.forEach(ans=>{
+    const shuffled = shuffle([...q.answers]);
+    shuffled.forEach(ans=>{
       const btn=document.createElement("div");
       btn.className="answer"; btn.innerText=ans;
       btn.onclick=()=>checkAnswer(btn,ans,q.correct,q.explain);
       aEl.appendChild(btn);
     });
-
     if(current<20) resetTimer(20);
     else if(current<40) resetTimer(35);
     else resetTimer(300);
-
   } else {
-    fEl.style.display="block";
-    input.value=""; input.focus();
+    fEl.style.display="block"; input.value=""; input.focus();
     if(current<40) resetTimer(35); else resetTimer(300);
   }
 }
@@ -170,4 +166,13 @@ function nextQuestion(){ clearInterval(timer); current++; if(current<quizData.le
 function prevQuestion(){ if(current>0){ current--; loadQuestion(); } }
 function resetTimer(seconds){
   timeLeft=seconds; tEl.innerText="⏱ "+timeLeft+"s"; clearInterval(timer);
-  timer=setInterval(()=>{ timeLeft--;
+  timer=setInterval(()=>{ timeLeft--; tEl.innerText="⏱ "+timeLeft+"s";
+    if(timeLeft<=0){ clearInterval(timer);
+      const q=quizData[current]; eEl.style.display="block"; eEl.innerHTML="⏰ Zeit abgelaufen. Richtige Antwort: "+q.correct;
+    }
+  },1000);
+}
+loadQuestion();
+</script>
+</body>
+</
